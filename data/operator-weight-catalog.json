@@ -1,0 +1,1892 @@
+{
+  "schema": 1,
+  "basis": "derived_checkpoint_rank_payload",
+  "source": "rank-weight-analysis.json",
+  "sourceSha256": "08e368ec1f61b098c1d75d5899ead067cc60b5e01cfe1c40b412f7afc3c4a214",
+  "scope": "Checkpoint logical tensors and source-derived initial TP/EP partitions. Kernel packing and DSA-CP weight gathering are described separately.",
+  "glm": {
+    "kda": [
+      {
+        "name": "self_attn.o_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.o_proj.weight",
+        "shape": [
+          4096,
+          8192
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1024
+            ],
+            "rule": "KDA RowParallelLinear，输入通道沿 axis1 / TP"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              8192
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.v_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.v_proj.weight",
+        "shape": [
+          8192,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              4096
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.q_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.q_proj.weight",
+        "shape": [
+          8192,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              4096
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.k_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.k_proj.weight",
+        "shape": [
+          8192,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              4096
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.forget_gate.f_a_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.forget_gate.f_a_proj.weight",
+        "shape": [
+          128,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "KDA g_a / f_a / o_norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.g_a_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.g_a_proj.weight",
+        "shape": [
+          128,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "KDA g_a / f_a / o_norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.fn",
+        "checkpointName": "model.language_model.layers.L.attn_hc.fn",
+        "shape": [
+          24,
+          16384
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.forget_gate.f_b_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.forget_gate.f_b_proj.weight",
+        "shape": [
+          8192,
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              128
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.g_b_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.g_b_proj.weight",
+        "shape": [
+          8192,
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              128
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.b_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.b_proj.weight",
+        "shape": [
+          64,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              8,
+              4096
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              64,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.k_conv1d.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.k_conv1d.weight",
+        "shape": [
+          8192,
+          1,
+          4
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              1,
+              4
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              1,
+              4
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "input_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.input_layernorm.weight",
+        "shape": [
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.v_conv1d.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.v_conv1d.weight",
+        "shape": [
+          8192,
+          1,
+          4
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              1,
+              4
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              1,
+              4
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.q_conv1d.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.q_conv1d.weight",
+        "shape": [
+          8192,
+          1,
+          4
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024,
+              1,
+              4
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192,
+              1,
+              4
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.forget_gate.dt_bias",
+        "checkpointName": "model.language_model.layers.L.self_attn.forget_gate.dt_bias",
+        "shape": [
+          8192
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1024
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              8192
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.o_norm.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.o_norm.weight",
+        "shape": [
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128
+            ],
+            "rule": "KDA g_a / f_a / o_norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.base",
+        "checkpointName": "model.language_model.layers.L.attn_hc.base",
+        "shape": [
+          24
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.forget_gate.A_log",
+        "checkpointName": "model.language_model.layers.L.self_attn.forget_gate.A_log",
+        "shape": [
+          64
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              8
+            ],
+            "rule": "KDA Q/K/V、b、f_b/g_b、conv、A_log/dt_bias 沿通道 / TP"
+          },
+          "decode": {
+            "shape": [
+              64
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.scale",
+        "checkpointName": "model.language_model.layers.L.attn_hc.scale",
+        "shape": [
+          3
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              3
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              3
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ],
+    "sfa": [
+      {
+        "name": "self_attn.o_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.o_proj.weight",
+        "shape": [
+          4096,
+          16384
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "rule": "SFA RowParallelLinear，输入通道沿 axis1 / TP"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              16384
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.wq_b.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.wq_b.weight",
+        "shape": [
+          4096,
+          1536
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1536
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1536
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.q_a_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.q_a_proj.weight",
+        "shape": [
+          1536,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1536,
+              4096
+            ],
+            "rule": "SFA q_a / kv_a 低秩投影及其 norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              1536,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.q_b_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.q_b_proj.weight",
+        "shape": [
+          16384,
+          1536
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1536
+            ],
+            "rule": "SFA ColumnParallelLinear，输出通道沿 axis0 / TP"
+          },
+          "decode": {
+            "shape": [
+              16384,
+              1536
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.kv_b_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.kv_b_proj.weight",
+        "shape": [
+          32768,
+          512
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              512
+            ],
+            "rule": "SFA ColumnParallelLinear，输出通道沿 axis0 / TP"
+          },
+          "decode": {
+            "shape": [
+              32768,
+              512
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.kv_a_proj_with_mqa.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.kv_a_proj_with_mqa.weight",
+        "shape": [
+          512,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              512,
+              4096
+            ],
+            "rule": "SFA q_a / kv_a 低秩投影及其 norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              512,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.wk.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.wk.weight",
+        "shape": [
+          128,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.index_kpool_compress_gate",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.index_kpool_compress_gate",
+        "shape": [
+          128,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.fn",
+        "checkpointName": "model.language_model.layers.L.attn_hc.fn",
+        "shape": [
+          24,
+          16384
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.weights_proj.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.weights_proj.weight",
+        "shape": [
+          32,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              32,
+              4096
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              32,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "input_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.input_layernorm.weight",
+        "shape": [
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.q_a_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.q_a_layernorm.weight",
+        "shape": [
+          1536
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              1536
+            ],
+            "rule": "SFA q_a / kv_a 低秩投影及其 norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              1536
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.kv_a_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.kv_a_layernorm.weight",
+        "shape": [
+          512
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              512
+            ],
+            "rule": "SFA q_a / kv_a 低秩投影及其 norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              512
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.index_kpool_compress_ape",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.index_kpool_compress_ape",
+        "shape": [
+          4,
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4,
+              128
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4,
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.k_norm.bias",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.k_norm.bias",
+        "shape": [
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "self_attn.indexer.k_norm.weight",
+        "checkpointName": "model.language_model.layers.L.self_attn.indexer.k_norm.weight",
+        "shape": [
+          128
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              128
+            ],
+            "rule": "Indexer wq_b、wk/weights、pool gate、norm 在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              128
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.base",
+        "checkpointName": "model.language_model.layers.L.attn_hc.base",
+        "shape": [
+          24
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "attn_hc.scale",
+        "checkpointName": "model.language_model.layers.L.attn_hc.scale",
+        "shape": [
+          3
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              3
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              3
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ],
+    "moe": [
+      {
+        "name": "mlp.experts.E.gate_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.gate_proj.weight",
+        "shape": [
+          2048,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.down_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.down_proj.weight",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.up_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.up_proj.weight",
+        "shape": [
+          2048,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.gate_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.gate_proj.weight",
+        "shape": [
+          2048,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.up_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.up_proj.weight",
+        "shape": [
+          2048,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.down_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.down_proj.weight",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              2048
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.gate.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.gate.weight",
+        "shape": [
+          288,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              288,
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              288,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.fn",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.fn",
+        "shape": [
+          24,
+          16384
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.down_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.down_proj.weight_offset",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.down_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.down_proj.weight_scale",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.gate_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.gate_proj.weight_offset",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.gate_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.gate_proj.weight_scale",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.up_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.up_proj.weight_offset",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.experts.E.up_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.experts.E.up_proj.weight_scale",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "EP16 的 linear 分配：本地 18/288 专家；expert TP=1，保留专家完整张量"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.down_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.down_proj.weight_offset",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.down_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.down_proj.weight_scale",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.gate_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.gate_proj.weight_offset",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.gate_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.gate_proj.weight_scale",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "post_attention_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.post_attention_layernorm.weight",
+        "shape": [
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.up_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.up_proj.weight_offset",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.shared_experts.up_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.shared_experts.up_proj.weight_scale",
+        "shape": [
+          2048,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              2048,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.gate.e_score_correction_bias",
+        "checkpointName": "model.language_model.layers.L.mlp.gate.e_score_correction_bias",
+        "shape": [
+          288
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              288
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              288
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.base",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.base",
+        "shape": [
+          24
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.scale",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.scale",
+        "shape": [
+          3
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              3
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              3
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ],
+    "dense": [
+      {
+        "name": "mlp.gate_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.gate_proj.weight",
+        "shape": [
+          12288,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              4096
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.up_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.up_proj.weight",
+        "shape": [
+          12288,
+          4096
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              4096
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.down_proj.weight",
+        "checkpointName": "model.language_model.layers.L.mlp.down_proj.weight",
+        "shape": [
+          4096,
+          12288
+        ],
+        "dtype": "I8",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              12288
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              12288
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.fn",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.fn",
+        "shape": [
+          24,
+          16384
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24,
+              16384
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.gate_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.gate_proj.weight_offset",
+        "shape": [
+          12288,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.gate_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.gate_proj.weight_scale",
+        "shape": [
+          12288,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.up_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.up_proj.weight_offset",
+        "shape": [
+          12288,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.up_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.up_proj.weight_scale",
+        "shape": [
+          12288,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              12288,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.down_proj.weight_offset",
+        "checkpointName": "model.language_model.layers.L.mlp.down_proj.weight_offset",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "mlp.down_proj.weight_scale",
+        "checkpointName": "model.language_model.layers.L.mlp.down_proj.weight_scale",
+        "shape": [
+          4096,
+          1
+        ],
+        "dtype": "F32",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "FlashComm/SP 模式：Dense / Shared MLP disable_tp=True，权重复制"
+          },
+          "decode": {
+            "shape": [
+              4096,
+              1
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "post_attention_layernorm.weight",
+        "checkpointName": "model.language_model.layers.L.post_attention_layernorm.weight",
+        "shape": [
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.base",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.base",
+        "shape": [
+          24
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              24
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              24
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "ffn_hc.scale",
+        "checkpointName": "model.language_model.layers.L.ffn_hc.scale",
+        "shape": [
+          3
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              3
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              3
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ],
+    "embed": [
+      {
+        "name": "model.language_model.embed_tokens.weight",
+        "checkpointName": "model.language_model.embed_tokens.weight",
+        "shape": [
+          154880,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              19360,
+              4096
+            ],
+            "rule": "词表 TP 分片（axis0），DP 复制；不含加载器额外 vocab padding"
+          },
+          "decode": {
+            "shape": [
+              154880,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ],
+    "head": [
+      {
+        "name": "lm_head.weight",
+        "checkpointName": "lm_head.weight",
+        "shape": [
+          154880,
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              19360,
+              4096
+            ],
+            "rule": "词表 TP 分片（axis0），DP 复制；不含加载器额外 vocab padding"
+          },
+          "decode": {
+            "shape": [
+              154880,
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      },
+      {
+        "name": "model.language_model.norm.weight",
+        "checkpointName": "model.language_model.norm.weight",
+        "shape": [
+          4096
+        ],
+        "dtype": "BF16",
+        "phases": {
+          "prefill": {
+            "shape": [
+              4096
+            ],
+            "rule": "Norm / HC / router / 辅助参数在 TP 内复制"
+          },
+          "decode": {
+            "shape": [
+              4096
+            ],
+            "rule": "TP=1，保留完整 checkpoint tensor"
+          }
+        }
+      }
+    ]
+  }
+}
