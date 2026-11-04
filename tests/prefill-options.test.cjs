@@ -115,7 +115,8 @@ for(const pcp of [0,3,65,NaN]) {
 assert.equal(api.calculatePDSimulation(config(0,4)).p.valid,false); // 8*4 > 16 ranks.
 assert.equal(api.calculatePDSimulation(config(0,1,{d:{pcp:2}})).valid,false);
 const calibrated=run(config(0,1,{fidelity:'calibrated'}));
-assert.equal(calibrated.p.best.calibration.applied,true);
+// The old 4K host was not SKU-identified and cannot calibrate the 752T profile.
+assert.equal(calibrated.p.best.calibration.applied,false);
 for(const [hit,pcp] of [[50,1],[0,2],[100,2]]) {
   const r=run(config(hit,pcp,{fidelity:'calibrated'}));
   assert.equal(r.p.best.calibration.applied,false);
