@@ -750,5 +750,50 @@
   "historicalInterpolationFit": "Linear interpolation in per-DP batch using training anchors only. Exact measured input lengths only; no length extrapolation. Median of repeat cycle/TPOT observations for D. P initially used B1/4/8: 16K B2 exposed 12.8% underprediction, so B2 was promoted before B3/B6 were read; final P holdouts are B3/B6.",
   "fit": "Hardware operator model calibrated by phase-wide nonnegative relative weighted least squares: scale * analytic cost + overhead. Training observations only; repetitions weight decode points. Ideal operator model is a lower latency bound. Batch/context extrapolation is permitted; measured coverage is metadata, never a search constraint.",
   "capacityPolicy": "Recompute memory budget from visible capacity, utilization, same-profile loaded weights, reserve and batch-dependent workspace. Observed physical block size/cost calibrates geometry; observed allocated block count and max running batch are not limits. Shared full-prefix/private-tail + 5 state-guard blocks is an optimized unified-block allocation model, not a replay of r71 hybrid allocator.",
-  "modelDocument": "docs/hardware-calibrated-search.md"
+  "modelDocument": "docs/hardware-calibrated-search.md",
+  "prefillBudgetReference": {
+    "id": "a5-850e-workbook-32k-20261106",
+    "sourceWorkbook": "vLLM-Ascend 0.32 rc 版本总表.xlsx",
+    "sourceSha256": "c59918d9fa5e0dcc7e2e2912765ff1320da4652dad490cc1e44725ea31fdc10a",
+    "hardware": "a5-96",
+    "dp": 1,
+    "tp": 1,
+    "pcp": 8,
+    "ep": 8,
+    "mtpDraft": 5,
+    "kvDtype": "fp8",
+    "chunk": 32768,
+    "util": 90,
+    "execution": "eager; multistream_overlap_shared_expert=true",
+    "training": {
+      "sheet": "A5 性能总表",
+      "row": 4,
+      "input": 131072,
+      "output": 1,
+      "prefixHitRate": 0,
+      "batch": 4,
+      "averageConcurrency": 3.61,
+      "seconds": 14.4509,
+      "qps": 0.25
+    },
+    "crossCheck": {
+      "sheet": "A5 性能总表",
+      "row": 5,
+      "input": 131072,
+      "output": 1,
+      "prefixHitRate": 90,
+      "batch": 16,
+      "averageConcurrency": 14.1647,
+      "seconds": 6.047,
+      "qps": 2.3421
+    },
+    "limitations": [
+      "Summary-only measurements; no per-request or steady-window trace supplied.",
+      "P batch is nominal in-flight client concurrency, not asserted active kernel batch.",
+      "Cross-check was visible during model revision; not blind validation.",
+      "Actual prefix-hit tokens and output-correctness checks unavailable for the workbook APC row.",
+      "16K P row excluded: output throughput implies 1024 tokens despite output length 1, and concurrency/TTFT/QPS are inconsistent."
+    ],
+    "method": "One multiplicative correction from cold 128K TTFT at nominal in-flight 4; APC row is not used in fitting. Interpolate fit coefficients between 16K and 32K token budgets; clamp coefficients outside that range, not target batch or raw hardware cost."
+  }
 }

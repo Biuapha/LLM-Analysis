@@ -2,7 +2,10 @@
 // The fitted phase-wide scale/overhead use training points only; unseen batch and
 // context are evaluated by the operator model and bounded by the ideal roofline.
 function pdA5Family(c,s,phase){
- return c.fidelity==='calibrated'?pdA5Profile(c,s,phase):null;
+ if(c.fidelity!=='calibrated'||!pdData.a5Calibration||s.hw!=='a5-96'||
+  c.decodeMode!=='mtp'||c.mtpDraft!==5||(c.kvDtype!==undefined&&c.kvDtype!=='fp8'))return null;
+ return pdData.a5Calibration.families.filter(f=>f.phase===phase&&!f.prefixHitRate)
+  .sort((a,b)=>Math.abs(Math.log(c.input/a.input))-Math.abs(Math.log(c.input/b.input)))[0]||null;
 }
 function pdA5Profile(c,s,phase){
  if(!pdData.a5Calibration||s.hw!=='a5-96'||s.nodes!==1||s.tp!==1||s.ep!==8||
@@ -40,11 +43,13 @@ function pdA5Raw(c,s,batch,phase,memory,ideal=false){
 }
 function pdA5Fit(c,s,phase){
  const points=[];
- for(const f of pdData.a5Calibration.families.filter(f=>f.phase===phase&&f.tp===s.tp&&f.ep===s.ep&&f.pcp===pdPCP(s)&&!f.prefixHitRate)){
+ for(const f of pdData.a5Calibration.families.filter(f=>f.phase===phase&&!f.prefixHitRate)){
   const anchor={...c,input:f.input,output:phase==='decode'?f.output:1,prefixHitRate:0,chunk:16384,
    fidelity:'analytic',moeMultistream:true,dSharedPrefixRate:100,util:80,reserve:4,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,
    ratioSource:'custom',itlTpotRatio:1,dPrefixLayout:'shared',constraintStatistic:'mean'};
-  const stage={...s,usableGiB:0},memory=pdA5Memory(anchor,stage,phase,f);
+  // Fit against the observed topology, regardless of the requested target EP/TP.
+  // Target changes must neither refit the source nor silently drop calibration.
+  const stage={hw:'a5-96',nodes:1,dp:f.dp,tp:f.tp,ep:f.ep,pcp:f.pcp,usableGiB:0},memory=pdA5Memory(anchor,stage,phase,f);
   for(const r of f.training){
    const row=pdA5Raw(anchor,stage,r.batch,phase,memory),x=phase==='decode'?row.itlSeconds:row.seconds,y=phase==='decode'?r.cycleSeconds:r.seconds;
    points.push({input:f.input,batch:r.batch,x,y,weight:(r.repetitions||1)/(y*y)});
@@ -58,7 +63,24 @@ function pdA5Fit(c,s,phase){
  if(det>1e-15){const scale=(xy*ww-wy*xw)/det,overhead=(wy*xx-xy*xw)/det;if(scale>=0&&overhead>=0)candidates.push({scale,overhead});}
  const loss=f=>points.reduce((sum,p)=>sum+p.weight*(f.scale*p.x+f.overhead-p.y)**2,0);
  const best=candidates.sort((a,b)=>loss(a)-loss(b))[0];
+ // The newer workbook supplies a matching 32K-budget P observation. P batch
+ // here is nominal in-flight requests (including scheduling), never D active
+ // batch. Fit only its cold row; keep the APC row as a disclosed cross-check.
+ const budgetRef=pdData.a5Calibration.prefillBudgetReference;
+ let budgetCorrection=null;
+ if(phase==='prefill'&&budgetRef){
+  const p=budgetRef.training,anchor={...c,input:p.input,output:1,prefixHitRate:0,chunk:budgetRef.chunk,
+   util:budgetRef.util,reserve:4,moeMultistream:true,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,
+   mtpDraft:5,decodeMode:'mtp',kvDtype:'fp8',constraintStatistic:'mean'};
+  const stage={hw:'a5-96',nodes:1,dp:1,tp:1,pcp:8,ep:8,usableGiB:0};
+  const family=pdA5Profile(anchor,stage,phase),raw=pdA5Raw(anchor,stage,p.batch,phase,pdA5Memory(anchor,stage,phase,family));
+  const scale=p.seconds/raw.seconds,weight=Math.max(0,Math.min(1,(c.chunk-16384)/(budgetRef.chunk-16384)));
+  budgetCorrection={reference:budgetRef.id,weight,scale,sourceBatch:p.batch,sourceTTFT:p.seconds,sourceRawTTFT:raw.seconds,
+   evidence:'workbook_summary_nominal_inflight',blindValidation:false};
+  best.scale=best.scale*(1-weight)+scale*weight;best.overhead*=1-weight;
+ }
  return {...best,method:'nonnegative_relative_weighted_least_squares',trainingMultistream:true,trainingCount:points.length,training:points.map(({input,batch})=>({input,batch})),
+  budgetCorrection,
   bounds:{minInput:Math.min(...points.map(p=>p.input)),maxInput:Math.max(...points.map(p=>p.input)),maxBatch:Math.max(...points.map(p=>p.batch))}};
 }
 function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
@@ -73,7 +95,8 @@ function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
  const seconds=cycle/ratio,worst=worstCycle/ratio,duration=seconds*(decode?c.output-1:1),qps=s.dp*batch/duration;
  const metric=decode?pdDecodeSLO(c,c.constraintStatistic==='mean'?cycle:worstCycle,c.constraintStatistic==='mean'?seconds:worst):{seconds:worst,feasible:worst<=c.ttft};
  const sameInput=pdData.a5Calibration.families.find(x=>x.phase===phase&&x.input===c.input),maxMeasuredBatch=sameInput?Math.max(...sameInput.training.map(x=>x.batch)):null;
- const extrapolated=!sameInput||batch>maxMeasuredBatch||(!decode&&c.prefixHitRate!==0)||c.chunk!==16384||
+ const targetNative=Boolean(pdA5Profile(c,s,phase));
+ const extrapolated=!targetNative||!sameInput||batch>maxMeasuredBatch||(!decode&&c.prefixHitRate!==0)||c.chunk!==16384||
   (decode&&(c.output!==1024||c.dPrefixLayout!=='shared'))||c.computeScale!==1||c.memoryScale!==1||c.overlap!==0||c.imbalance!==1.1||
   c.pScale!==1||c.dScale!==1||c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||Boolean(s.usableGiB)||c.moeMultistream!==true||c.dSharedPrefixRate!==100;
  return {...row,seconds,worst,duration,qps,tokensPerSecond:qps*(decode?c.output:c.input),
@@ -83,10 +106,10 @@ function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
    {computedTokensPerSecond:qps*row.plan.computedTokens}),
   breakdown:Object.fromEntries(pdGroups.map(k=>[k,row.breakdown[k]*cycle/raw])),
   sloSeconds:metric.seconds,feasible:row.memoryFeasible&&metric.feasible,
-  calibration:{applied:true,runtime:false,empiricalOnly:false,targetNative:true,modelBased:true,extrapolated,
+  calibration:{applied:true,runtime:false,empiricalOnly:false,targetNative,transfer:!targetNative,modelBased:true,extrapolated,
    factor:cycle/raw,fit,idealFloorApplied:ideal>corrected,family:f.id,profile:pdData.a5Calibration.profile,reference:pdData.a5Calibration.source,
    measuredCoverage:{input: sameInput?.input??null,maxBatch:maxMeasuredBatch??null},
-   reason:'850E 硬件算子模型 + 少量实测校正；'+(extrapolated?'当前为未测区域模型预测':'当前为训练覆盖内模型预测')+'。batch 由显存、TTFT/TPOT/ITL 和扫描上限决定，实测覆盖不设限。'},
+   reason:'850E 硬件算子模型 + 少量实测校正；'+(fit.budgetCorrection?.weight>0?'P token预算校正含新版表128K冷缓存汇总测点（名义在途并发），APC未参与拟合；':'')+(!targetNative?'EP8 实测效率迁移到目标拓扑，尚无目标拓扑实测验证；':'')+(extrapolated?'当前为未测区域模型预测':'当前为训练覆盖内模型预测')+'。batch 由显存、TTFT/TPOT/ITL 和扫描上限决定，实测覆盖不设限。'},
   capacityBasis:memory.capacityBasis,plan:{...row.plan,...(!decode?{chunkBudgetMode:'per_dp',totalTokenBudget:c.chunk}:{}),hardwareModelFloorSeconds:ideal,rawModelSeconds:raw}};
 }
 function pdA5Stage(c,s,phase,f,errors){
@@ -94,7 +117,8 @@ function pdA5Stage(c,s,phase,f,errors){
  const limit=decode?(c.dConstraint==='itl'?c.itl:c.dConstraint==='both'?1:c.tpot):c.ttft;
  const base={config:s,phase,limit,maxBatch,valid:!errors.length,errors,results:[],feasible:[],best:null,fixedBatch:fixed,calibrationCap:null};
  if(errors.length)return {...base,failure:errors.join('；')};
- const memory=pdA5Memory(c,s,phase,f),fit=pdA5Fit(c,s,phase),results=[];let firstMemoryRejected=null;
+ // Observed EP8 memory geometry is valid only for the matching topology.
+ const memory=pdA5Profile(c,s,phase)?pdA5Memory(c,s,phase,f):pdMemory(c,s,phase),fit=pdA5Fit(c,s,phase),results=[];let firstMemoryRejected=null;
  for(let batch=fixed||1;batch<=maxBatch;batch++){
   const row=pdA5ModelRow(c,s,phase,f,batch,memory,fit);
   if(!row.memoryFeasible){firstMemoryRejected=row;break;}results.push(row);

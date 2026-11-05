@@ -20,4 +20,14 @@ for(const hw of ['a3-560','a5-96'])for(const input of [16384,131072])for(const t
  const c={...base(hw),input,tpot,itl:tpot*3.5,ttft:input===16384?2:15},r=ctx.calculatePDSimulation(c);
  for(const key of ['p','d']){const s=r[key],b=s.best;cases.push({hw,input,tpot,phase:key,batch:b?.batch,qps:b?.qps,latencyMs:b?.seconds*1000,peakGiB:b?.peakBytes/2**30,budgetGiB:s.memory.limit/2**30,scan:s.scannedBatches,boundary:ctx.pdStageBoundary(s)});}
 }
-const report={fit,validation,cases};console.log(JSON.stringify(report,null,2));
+const sourceValidation=[];
+for(const family of ctx.pdData.runtimeCalibration.families)for(const v of family.validation||[]){
+ const phase=family.phase,key=phase==='prefill'?'p':'d',c={...base('a3-560'),input:v.input,prefixHitRate:family.prefixHitRate||0};
+ const context=ctx.pdCrossContext(c,c[key],phase),a=ctx.pdCrossAnchor(c,context,family,v.batch,phase);
+ const actual=phase==='prefill'?v.measuredSeconds:v.itlMeanSeconds;
+ sourceValidation.push({family:family.id,input:v.input,batch:v.batch,observed:actual,predicted:a.observed,errorPercent:100*(a.observed/actual-1)});
+}
+const ref=ctx.pdData.a5Calibration.prefillBudgetReference,p=ref.crossCheck;
+const row=ctx.calculatePDSimulation({...base('a5-96'),output:1,input:p.input,ttft:100,prefixHitRate:p.prefixHitRate,chunk:ref.chunk,util:ref.util,fixedP:p.batch}).p.best;
+const workbookCrossCheck={reference:ref.id,role:'cross-check-visible-during-revision-not-blind-validation',observed:p.seconds,predicted:row.seconds,errorPercent:100*(row.seconds/p.seconds-1)};
+const report={fit,validation,a3SourceInterpolationValidation:sourceValidation,a3TargetEmpiricallyValidated:false,workbookCrossCheck,cases};console.log(JSON.stringify(report,null,2));
