@@ -43,24 +43,24 @@ const expected={
   ],
   "a5-96": [
     [
-      1676.3433758259848,
-      1.789609481721971
+      1610.4911360362657,
+      1.2418571920379469
     ],
     [
-      13666.483859096777,
-      0.21951513139227247
+      10200.06353944417,
+      0.19607720993755548
     ],
     [
       3644.6451848676625,
       2.1950010478977475
     ],
     [
-      22.720902013850754,
-      11.013839992975953
+      9.867519241197167,
+      3.9625647851516868
     ],
     [
-      23.62154751404031,
-      10.593902839257066
+      8.885182504260287,
+      3.520529532688968
     ],
     [
       18.03178300777369,
@@ -79,8 +79,9 @@ for(const hw of Object.keys(expected))for(let row=3;row<=9;row++){
  const r=ctx.calculatePDSimulation(c),b=p?r.p.best:r.d.best;
  assert.ok(r.valid&&b,hw+' row '+row);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);close(b.qps,expected[hw][row-3][1]);
  if(!p)close(b.itlTpotRatio,3.5);
- assert.equal(Boolean(b.calibration.empiricalOnly),false);
- if(hw==='a5-96'&&row>=8)assert.equal(Boolean(b.calibration.transfer),false);else assert.equal(b.calibration.transfer,true);
+ const native=hw==='a5-96'&&[3,4,6,7].includes(row);
+ assert.equal(Boolean(b.calibration.empiricalOnly),native);
+ if(hw==='a5-96'&&row!==5)assert.equal(Boolean(b.calibration.transfer),false);else assert.equal(b.calibration.transfer,true);
 }
 assert.deepEqual(data['pd-data'].devices.map(d=>d.id).sort(),['a3-560','a3-752','a3-800','a5-128','a5-96']);
 for(const hw of ['a3-752','a3-560','a5-96','a5-128']){

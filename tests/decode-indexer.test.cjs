@@ -8,7 +8,11 @@ const ctx=vm.createContext({memoryData:data['weight-data'],GiB:2**30,document:{g
 vm.runInContext(src.slice(src.indexOf('function calculateRankMemory('),src.indexOf('function readMemoryInputs('))+src.slice(src.indexOf('const pdData='),src.indexOf('/* Browser UI;'))+'\nthis.hardware=pdData.devices;',ctx);
 const base=hw=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('a3')?16:8,usableGiB:0},d:{hw,nodes:1,tp:hw.startsWith('a3')?2:1,ep:hw.startsWith('a3')?16:8,usableGiB:0},input:131072,output:1024,ttft:2,itl:.07,tpot:.02,dConstraint:'both',fidelity:'calibrated',decodeMode:'mtp',mtpDraft:5,dPrefixLayout:'shared',fixedP:0,fixedD:0,maxP:32,maxD:256,util:80,reserve:4,chunk:16384,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,prefixHitRate:0,ratioSource:'custom',itlTpotRatio:3.5,constraintStatistic:'mean'});
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-10*Math.max(1,Math.abs(b)),`${a} != ${b}`);
-const result=hw=>ctx.calculatePDSimulation(base(hw));
+// Explicit int8 exercises the original 800T transfer model. The new measured
+// 850E profile uses automatic FP8 runtime selection and has separate tests.
+const transferBase=base;
+const modelConfig=hw=>({...transferBase(hw),kvDtype:'int8'});
+const result=hw=>ctx.calculatePDSimulation(modelConfig(hw));
 for(const [hw,batch,qps]of [['a3-560',11,4.336537028893295],['a5-96',24,9.53789410967254]]){
  const r=result(hw),s=r.d,b=s.best;
  assert.ok(r.valid&&b);assert.equal(b.batch,batch);close(b.qps,qps);
@@ -22,7 +26,7 @@ for(const [hw,batch,qps]of [['a3-560',11,4.336537028893295],['a5-96',24,9.537894
  for(const fixedD of [4,8,16,24,32]){
   let last=0;
   for(const input of [16384,32768,65536,131072]){
-   const row=ctx.calculatePDSimulation({...base(hw),fixedD,input}).d.results[0];
+   const row=ctx.calculatePDSimulation({...modelConfig(hw),fixedD,input}).d.results[0];
    assert.ok(row.tpotSeconds>=last,`${hw} B${fixedD} got faster at ${input}`);last=row.tpotSeconds;
   }
  }
@@ -57,8 +61,8 @@ for(const row of family.training){
  close(actual.tpotSeconds,row.tpotSeconds);close(actual.itlSeconds,row.itlMeanSeconds);
  assert.equal(actual.calibration.empiricalOnly,true);
 }
-const capped=ctx.calculatePDSimulation({...base('a5-96'),itl:1,tpot:1}).d;
+const capped=ctx.calculatePDSimulation({...modelConfig('a5-96'),itl:1,tpot:1}).d;
 assert.equal(ctx.pdStageBoundary(capped).kind,'transfer_coverage');
-const limited=ctx.calculatePDSimulation({...base('a5-96'),maxD:4}).d;
+const limited=ctx.calculatePDSimulation({...modelConfig('a5-96'),maxD:4}).d;
 assert.equal(ctx.pdStageBoundary(limited).kind,'scan_limit');
 console.log('PASS: 128K A3/A5 constraints, context scaling, BF16 matrix precision, query-head occupancy, bounded KeyPool updates, measured-anchor isolation and scan boundaries.');

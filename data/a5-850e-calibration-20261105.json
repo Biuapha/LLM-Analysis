@@ -1,0 +1,751 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "profile": "v0.32rc r71 · GLM5.3-Flash W8A8-MXFP8-0918 · FP8 KV/indexer · MTP5",
+  "source": "docs/a5-850e-calibration-2026-11-05.md",
+  "hardware": "8 × Ascend950DT / 96 GiB; Atlas 850E confirmed by owner",
+  "imageDigest": "sha256:35ccad45c1786c6705c0897812f151cf903a5f7fb746a1671cf9091691a8c397",
+  "vllmCommit": "5df63a7203cdb9328d824a27b682e77c7b9928be",
+  "vllmAscendCommit": "e2e591b166b73a85ec3f9b7c5de229dde84432d8",
+  "settings": {
+    "memoryUtilization": 0.8,
+    "maxModelLength": 141072,
+    "maxBatchedTokens": 16384,
+    "decodeMaxSequences": 32,
+    "prefillMaxSequences": 16,
+    "seed": 1024,
+    "temperature": 0,
+    "speculativeTokens": 5
+  },
+  "fit": "Linear interpolation in per-DP batch using training anchors only. Exact measured input lengths only; no length extrapolation. Median of repeat cycle/TPOT observations for D. P initially used B1/4/8: 16K B2 exposed 12.8% underprediction, so B2 was promoted before B3/B6 were read; final P holdouts are B3/B6.",
+  "limitations": [
+    "Synthetic repeated Chinese decode workload; acceptance is workload dependent. Manual r=3.5 is normalization, not measured acceptance.",
+    "Cycle = steady TPOT × contemporaneous accepted/draft counts; no hardware ITL trace or p99 claim.",
+    "16K greedy output was not deterministic across cold runs. Two warm control runs matched the latest cold on all 8 DP ranks. No general model accuracy certification.",
+    "16K B5 boundary has one run; other accepted D B1–4 points have four repeats. B3 is validation only.",
+    "Measured FP8 runtime capacity and software/weight profile are not transferable to other KV types, MTP counts or serving versions.",
+    "PCP8 128K/90% prefix cache was excluded: two cold runs consistently returned token 4793, two warm runs token 98314. Effective cached tokens were 117504; root cause is unresolved. No APC performance calibration is claimed."
+  ],
+  "families": [
+    {
+      "id": "a5-850e-r71-d-mtp5-i16384",
+      "phase": "decode",
+      "input": 16384,
+      "output": 1024,
+      "dp": 8,
+      "tp": 1,
+      "pcp": 1,
+      "ep": 8,
+      "training": [
+        {
+          "batch": 1,
+          "cycleSeconds": 0.023200772610414217,
+          "tpotSeconds": 0.004052056664620692,
+          "repetitions": 4,
+          "cycleCVPercent": 1.6485545234835828,
+          "role": "train"
+        },
+        {
+          "batch": 2,
+          "cycleSeconds": 0.026060873328019298,
+          "tpotSeconds": 0.004541906823935559,
+          "repetitions": 4,
+          "cycleCVPercent": 0.9307522189128923,
+          "role": "train"
+        },
+        {
+          "batch": 4,
+          "cycleSeconds": 0.02971286561110497,
+          "tpotSeconds": 0.005088081223313336,
+          "repetitions": 4,
+          "cycleCVPercent": 0.13040371475119708,
+          "role": "train"
+        },
+        {
+          "batch": 5,
+          "cycleSeconds": 0.03453631734419008,
+          "tpotSeconds": 0.005802748032306924,
+          "repetitions": 1,
+          "cycleCVPercent": null,
+          "role": "capacity_probe"
+        }
+      ],
+      "validation": [
+        {
+          "input": 16384,
+          "batch": 3,
+          "n": 4,
+          "role": "validation",
+          "cycle_ms": 30.28248456118429,
+          "cycle_cv_percent": 0.12880987424713897,
+          "accepted_per_cycle": 5.804041353383459,
+          "measured_tpot_ms": 5.217482587506237,
+          "normalized_tpot_r3_5_ms": 8.652138446052655,
+          "normalized_qps_r3_5": 2.7115158528107046,
+          "window_seconds": 16.07367962999706,
+          "predicted_cycle_ms": 27.886869469562136,
+          "error_percent": -7.910893463123648
+        }
+      ],
+      "cachedTokens": 8704,
+      "runtimeMemory": {
+        "visibleBytes": 98515812352,
+        "numBlocks": 116,
+        "blockSize": 8704,
+        "loadedWeightBytes": 56103010304,
+        "loadedWeightPrecision": "GiB rounded to 2 decimal places in startup log",
+        "peakAllocatedBytes": 70637748224,
+        "peakReservedBytes": 75503763456,
+        "kvAllocatedBytes": 6809174016,
+        "rpcWorkerCount": 1
+      },
+      "batchBasis": "simultaneous running decode requests per DP, zero waiting/preemptions in the selected window",
+      "capacityBoundary": "B8 queues on both inputs; B5 queues at 128K but succeeds once at 16K. B5/16K is a single-run boundary anchor."
+    },
+    {
+      "id": "a5-850e-r71-d-mtp5-i131072",
+      "phase": "decode",
+      "input": 131072,
+      "output": 1024,
+      "dp": 8,
+      "tp": 1,
+      "pcp": 1,
+      "ep": 8,
+      "training": [
+        {
+          "batch": 1,
+          "cycleSeconds": 0.024390186189884165,
+          "tpotSeconds": 0.0041503043648434945,
+          "repetitions": 4,
+          "cycleCVPercent": 0.9326874033928509,
+          "role": "train"
+        },
+        {
+          "batch": 2,
+          "cycleSeconds": 0.027027373713963028,
+          "tpotSeconds": 0.00459896181280336,
+          "repetitions": 4,
+          "cycleCVPercent": 0.3538186247171825,
+          "role": "train"
+        },
+        {
+          "batch": 4,
+          "cycleSeconds": 0.031098138764911007,
+          "tpotSeconds": 0.00529996000099729,
+          "repetitions": 4,
+          "cycleCVPercent": 0.49195789943759516,
+          "role": "train"
+        }
+      ],
+      "validation": [
+        {
+          "input": 131072,
+          "batch": 3,
+          "n": 4,
+          "role": "validation",
+          "cycle_ms": 31.33333889760309,
+          "cycle_cv_percent": 0.07029763745109438,
+          "accepted_per_cycle": 5.86411806378185,
+          "measured_tpot_ms": 5.341809885169496,
+          "normalized_tpot_r3_5_ms": 8.952382542172312,
+          "normalized_qps_r3_5": 2.6205773096344966,
+          "window_seconds": 15.043360724994272,
+          "predicted_cycle_ms": 29.062756239437014,
+          "error_percent": -7.246539111539663
+        }
+      ],
+      "cachedTokens": 130560,
+      "runtimeMemory": {
+        "visibleBytes": 98515812352,
+        "numBlocks": 116,
+        "blockSize": 8704,
+        "loadedWeightBytes": 56103010304,
+        "loadedWeightPrecision": "GiB rounded to 2 decimal places in startup log",
+        "peakAllocatedBytes": 70637748224,
+        "peakReservedBytes": 75503763456,
+        "kvAllocatedBytes": 6809174016,
+        "rpcWorkerCount": 1
+      },
+      "batchBasis": "simultaneous running decode requests per DP, zero waiting/preemptions in the selected window",
+      "capacityBoundary": "B8 queues on both inputs; B5 queues at 128K but succeeds once at 16K. B5/16K is a single-run boundary anchor."
+    },
+    {
+      "id": "a5-850e-r71-p-pcp8-i16384-h0",
+      "phase": "prefill",
+      "input": 16384,
+      "prefixHitRate": 0,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "training": [
+        {
+          "batch": 1,
+          "seconds": 0.8357482489710347,
+          "completed": 107,
+          "observedQPS": 1.1888888888888889,
+          "originalRole": "train"
+        },
+        {
+          "batch": 2,
+          "seconds": 1.6104911360362657,
+          "completed": 111,
+          "observedQPS": 1.2333333333333334,
+          "originalRole": "validation"
+        },
+        {
+          "batch": 4,
+          "seconds": 2.541624776808176,
+          "completed": 141,
+          "observedQPS": 1.5666666666666667,
+          "originalRole": "train"
+        },
+        {
+          "batch": 8,
+          "seconds": 5.094930861844369,
+          "completed": 141,
+          "observedQPS": 1.5666666666666667,
+          "originalRole": "train"
+        }
+      ],
+      "validation": [
+        {
+          "batch": 3,
+          "observedSeconds": 2.0733755990003164,
+          "predictedSeconds": 2.076057956422221,
+          "errorPercent": 0.1293715148957153
+        },
+        {
+          "batch": 6,
+          "observedSeconds": 3.820657419290865,
+          "predictedSeconds": 3.8182778193262727,
+          "errorPercent": -0.06228247402075837
+        }
+      ],
+      "cachedTokens": 0,
+      "runtimeMemory": {
+        "visibleBytes": 98515812352,
+        "numBlocks": 1966,
+        "blockSize": 1152,
+        "loadedWeightBytes": 46407121633.28,
+        "loadedWeightPrecision": "GiB rounded to 2 decimal places in startup log",
+        "peakAllocatedBytes": 75724558336,
+        "peakReservedBytes": 80736157696,
+        "kvAllocatedBytes": 15437094912,
+        "rpcWorkerCount": 8
+      },
+      "batchBasis": "fixed outstanding requests per DP in closed-loop workload; TTFT includes scheduler delay"
+    },
+    {
+      "id": "a5-850e-r71-p-pcp8-i131072-h0",
+      "phase": "prefill",
+      "input": 131072,
+      "prefixHitRate": 0,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "training": [
+        {
+          "batch": 1,
+          "seconds": 5.658851600000162,
+          "completed": 16,
+          "observedQPS": 0.17777777777777778,
+          "originalRole": "train"
+        },
+        {
+          "batch": 2,
+          "seconds": 10.200063539444171,
+          "completed": 18,
+          "observedQPS": 0.2,
+          "originalRole": "validation"
+        },
+        {
+          "batch": 4,
+          "seconds": 20.42953431222203,
+          "completed": 18,
+          "observedQPS": 0.2,
+          "originalRole": "train"
+        }
+      ],
+      "validation": [
+        {
+          "batch": 3,
+          "observedSeconds": 15.484123190556906,
+          "predictedSeconds": 15.314798925833102,
+          "errorPercent": -1.09353472999405
+        }
+      ],
+      "cachedTokens": 0,
+      "runtimeMemory": {
+        "visibleBytes": 98515812352,
+        "numBlocks": 1966,
+        "blockSize": 1152,
+        "loadedWeightBytes": 46407121633.28,
+        "loadedWeightPrecision": "GiB rounded to 2 decimal places in startup log",
+        "peakAllocatedBytes": 75724558336,
+        "peakReservedBytes": 80736157696,
+        "kvAllocatedBytes": 15437094912,
+        "rpcWorkerCount": 8
+      },
+      "batchBasis": "fixed outstanding requests per DP in closed-loop workload; TTFT includes scheduler delay"
+    }
+  ],
+  "decodeObservations": [
+    {
+      "input": 16384,
+      "batch": 1,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 23.200772610414216,
+      "cycle_cv_percent": 1.6485545234835828,
+      "accepted_per_cycle": 5.735563633348075,
+      "measured_tpot_ms": 4.052056664620692,
+      "normalized_tpot_r3_5_ms": 6.628792174404062,
+      "normalized_qps_r3_5": 1.1797227378150468,
+      "window_seconds": 12.901369424980658
+    },
+    {
+      "input": 16384,
+      "batch": 2,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 26.060873328019298,
+      "cycle_cv_percent": 0.9307522189128923,
+      "accepted_per_cycle": 5.739430147058823,
+      "measured_tpot_ms": 4.541906823935559,
+      "normalized_tpot_r3_5_ms": 7.445963808005514,
+      "normalized_qps_r3_5": 2.100503589337115,
+      "window_seconds": 14.349991575007152
+    },
+    {
+      "input": 16384,
+      "batch": 3,
+      "n": 4,
+      "role": "validation",
+      "cycle_ms": 30.28248456118429,
+      "cycle_cv_percent": 0.12880987424713897,
+      "accepted_per_cycle": 5.804041353383459,
+      "measured_tpot_ms": 5.217482587506237,
+      "normalized_tpot_r3_5_ms": 8.652138446052655,
+      "normalized_qps_r3_5": 2.7115158528107046,
+      "window_seconds": 16.07367962999706,
+      "predicted_cycle_ms": 27.886869469562136,
+      "error_percent": -7.910893463123648
+    },
+    {
+      "input": 16384,
+      "batch": 4,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 29.71286561110497,
+      "cycle_cv_percent": 0.13040371475119708,
+      "accepted_per_cycle": 5.839252280773421,
+      "measured_tpot_ms": 5.088081223313336,
+      "normalized_tpot_r3_5_ms": 8.48939017460142,
+      "normalized_qps_r3_5": 3.684663652657277,
+      "window_seconds": 16.50596840000071
+    },
+    {
+      "input": 16384,
+      "batch": 5,
+      "n": 1,
+      "role": "capacity_probe",
+      "cycle_ms": 34.53631734419008,
+      "cycle_cv_percent": null,
+      "accepted_per_cycle": 5.951717557251908,
+      "measured_tpot_ms": 5.8027480323069245,
+      "normalized_tpot_r3_5_ms": 9.867519241197167,
+      "normalized_qps_r3_5": 3.9625647851516868,
+      "window_seconds": 4.489876289997483
+    },
+    {
+      "input": 131072,
+      "batch": 1,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 24.390186189884165,
+      "cycle_cv_percent": 0.9326874033928509,
+      "accepted_per_cycle": 5.877293577981652,
+      "measured_tpot_ms": 4.150304364843494,
+      "normalized_tpot_r3_5_ms": 6.96862462568119,
+      "normalized_qps_r3_5": 1.1221922936666273,
+      "window_seconds": 10.616832674990292
+    },
+    {
+      "input": 131072,
+      "batch": 2,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 27.027373713963026,
+      "cycle_cv_percent": 0.3538186247171825,
+      "accepted_per_cycle": 5.87381876663709,
+      "measured_tpot_ms": 4.59896181280336,
+      "normalized_tpot_r3_5_ms": 7.722106775418007,
+      "normalized_qps_r3_5": 2.0253894642557833,
+      "window_seconds": 11.529840664981748
+    },
+    {
+      "input": 131072,
+      "batch": 3,
+      "n": 4,
+      "role": "validation",
+      "cycle_ms": 31.33333889760309,
+      "cycle_cv_percent": 0.07029763745109438,
+      "accepted_per_cycle": 5.86411806378185,
+      "measured_tpot_ms": 5.341809885169496,
+      "normalized_tpot_r3_5_ms": 8.952382542172312,
+      "normalized_qps_r3_5": 2.6205773096344966,
+      "window_seconds": 15.043360724994272,
+      "predicted_cycle_ms": 29.062756239437014,
+      "error_percent": -7.246539111539663
+    },
+    {
+      "input": 131072,
+      "batch": 4,
+      "n": 4,
+      "role": "train",
+      "cycle_ms": 31.098138764911006,
+      "cycle_cv_percent": 0.49195789943759516,
+      "accepted_per_cycle": 5.867859100877193,
+      "measured_tpot_ms": 5.29996000099729,
+      "normalized_tpot_r3_5_ms": 8.885182504260287,
+      "normalized_qps_r3_5": 3.520529532688968,
+      "window_seconds": 12.856059095000091
+    }
+  ],
+  "decodeRejected": [
+    {
+      "stage": "i16384_b8_r0",
+      "input": 16384,
+      "batch": 8,
+      "role": "capacity_probe",
+      "overlap": [
+        235.82327865999832,
+        223.70637855000678
+      ],
+      "status": "rejected",
+      "reason": "Less than 1.5 seconds full-concurrency decode overlap"
+    }
+  ],
+  "prefillAPCCheck": {
+    "input": 131072,
+    "requestedHitPercent": 90,
+    "pcp": 8,
+    "accepted": false,
+    "coldDeterministic": true,
+    "coldTokenIds": [
+      [
+        4793
+      ],
+      [
+        4793
+      ]
+    ],
+    "warmTokenIds": [
+      [
+        98314
+      ],
+      [
+        98314
+      ]
+    ],
+    "cachedTokens": [
+      117504,
+      117504
+    ],
+    "scope": "One fixed synthetic token-ID prompt, one greedy output token, repeated cold/partial-prefix-warm control; not a general accuracy evaluation."
+  },
+  "prefillObservations": [
+    {
+      "stage": "i16384_h0_b1",
+      "role": "train",
+      "input": 16384,
+      "output": 1,
+      "batch": 1,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        25.459453899995424,
+        115.45945389999542
+      ],
+      "completed": 107,
+      "qps": 1.1888888888888889,
+      "ttft_mean_s": 0.8357482489710347,
+      "ttft_median_s": 0.8374554899928626,
+      "ttft_p90_s": 0.8424510000040755
+    },
+    {
+      "stage": "i16384_h0_b2",
+      "role": "validation",
+      "input": 16384,
+      "output": 1,
+      "batch": 2,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        134.50308511000185,
+        224.50308511000185
+      ],
+      "completed": 111,
+      "qps": 1.2333333333333334,
+      "ttft_mean_s": 1.6104911360362657,
+      "ttft_median_s": 1.61041732999729,
+      "ttft_p90_s": 1.6243163400067715
+    },
+    {
+      "stage": "i16384_h0_b4",
+      "role": "train",
+      "input": 16384,
+      "output": 1,
+      "batch": 4,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        246.92957190999005,
+        336.92957190999005
+      ],
+      "completed": 141,
+      "qps": 1.5666666666666667,
+      "ttft_mean_s": 2.541624776808176,
+      "ttft_median_s": 2.541591999994125,
+      "ttft_p90_s": 2.544752729998436
+    },
+    {
+      "stage": "i16384_h0_b3",
+      "role": "validation",
+      "input": 16384,
+      "output": 1,
+      "batch": 3,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        358.4683072600019,
+        448.4683072600019
+      ],
+      "completed": 130,
+      "qps": 1.4444444444444444,
+      "ttft_mean_s": 2.0733755990003164,
+      "ttft_median_s": 2.0739632500044536,
+      "ttft_p90_s": 2.080047209994518
+    },
+    {
+      "stage": "i16384_h0_b8",
+      "role": "train",
+      "input": 16384,
+      "output": 1,
+      "batch": 8,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        475.91104423999786,
+        565.9110442399979
+      ],
+      "completed": 141,
+      "qps": 1.5666666666666667,
+      "ttft_mean_s": 5.094930861844369,
+      "ttft_median_s": 5.094600839991472,
+      "ttft_p90_s": 5.098944010009291
+    },
+    {
+      "stage": "i16384_h0_b6",
+      "role": "validation",
+      "input": 16384,
+      "output": 1,
+      "batch": 6,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        593.8589557699888,
+        683.8589557699888
+      ],
+      "completed": 141,
+      "qps": 1.5666666666666667,
+      "ttft_mean_s": 3.820657419290865,
+      "ttft_median_s": 3.820818189997226,
+      "ttft_p90_s": 3.8245980099891312
+    },
+    {
+      "stage": "i131072_h0_b1",
+      "role": "train",
+      "input": 131072,
+      "output": 1,
+      "batch": 1,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        714.8431904899917,
+        804.8431904899917
+      ],
+      "completed": 16,
+      "qps": 0.17777777777777778,
+      "ttft_mean_s": 5.658851600000162,
+      "ttft_median_s": 5.657743329997174,
+      "ttft_p90_s": 5.680387679996784
+    },
+    {
+      "stage": "i131072_h0_b2",
+      "role": "validation",
+      "input": 131072,
+      "output": 1,
+      "batch": 2,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        845.9293256699893,
+        935.9293256699893
+      ],
+      "completed": 18,
+      "qps": 0.2,
+      "ttft_mean_s": 10.200063539444171,
+      "ttft_median_s": 10.117420180002227,
+      "ttft_p90_s": 10.826146480001626
+    },
+    {
+      "stage": "i131072_h0_b3",
+      "role": "validation",
+      "input": 131072,
+      "output": 1,
+      "batch": 3,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        993.0541912899935,
+        1083.0541912899935
+      ],
+      "completed": 18,
+      "qps": 0.2,
+      "ttft_mean_s": 15.484123190556906,
+      "ttft_median_s": 15.411244000002625,
+      "ttft_p90_s": 15.44045692999498
+    },
+    {
+      "stage": "i131072_h0_b4",
+      "role": "train",
+      "input": 131072,
+      "output": 1,
+      "batch": 4,
+      "dp": 1,
+      "tp": 1,
+      "pcp": 8,
+      "ep": 8,
+      "mtp": 5,
+      "prefix_hit_rate": 0,
+      "cached_tokens_min": 0,
+      "cached_tokens_max": 0,
+      "effective_hit_percent": 0,
+      "chunk": 16384,
+      "window_s": [
+        1155.0722624899936,
+        1245.0722624899936
+      ],
+      "completed": 18,
+      "qps": 0.2,
+      "ttft_mean_s": 20.42953431222203,
+      "ttft_median_s": 20.58131118999154,
+      "ttft_p90_s": 20.593639250000706
+    }
+  ],
+  "capacityAudit": [
+    {
+      "file": "i131072_b5_r0-metrics.json",
+      "max_running_per_DP": 4,
+      "max_running_total": 32,
+      "max_waiting_total": 8,
+      "samples": 26
+    },
+    {
+      "file": "i131072_b8_r0-metrics.json",
+      "max_running_per_DP": 4,
+      "max_running_total": 32,
+      "max_waiting_total": 32,
+      "samples": 35
+    },
+    {
+      "file": "decode16k/i16384_b5_r0-metrics.json",
+      "max_running_per_DP": 5,
+      "max_running_total": 40,
+      "max_waiting_total": 24,
+      "samples": 27
+    },
+    {
+      "file": "decode16k/i16384_b8_r0-metrics.json",
+      "max_running_per_DP": 5,
+      "max_running_total": 40,
+      "max_waiting_total": 48,
+      "samples": 77
+    }
+  ]
+}
