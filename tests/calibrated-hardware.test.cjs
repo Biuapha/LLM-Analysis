@@ -8,66 +8,67 @@ const ctx=vm.createContext({memoryData:data['weight-data'],GiB:2**30,document:{g
 vm.runInContext(src.slice(src.indexOf('function calculateRankMemory('),src.indexOf('function readMemoryInputs('))+src.slice(src.indexOf('const pdData='),src.indexOf('/* Browser UI;')),ctx);
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8*Math.max(1,Math.abs(b)),`${a} != ${b}`);
 const base=(hw,input,output=1024)=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('a3')?16:8,usableGiB:0},d:{hw,nodes:1,tp:hw.startsWith('a3')?2:1,ep:hw.startsWith('a3')?16:8,usableGiB:0},input,output,ttft:2,itl:1,tpot:.02,dConstraint:'tpot',fidelity:'calibrated',decodeMode:'mtp',mtpDraft:5,dPrefixLayout:'shared',fixedP:0,fixedD:0,maxP:32,maxD:256,util:80,reserve:4,chunk:16384,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,prefixHitRate:0,ratioSource:'custom',itlTpotRatio:3.5,constraintStatistic:'mean'});
-// Regression values from the 14 workbook cases, including the source's 16396 input.
+// Current model estimates for the 14 workbook presets, not measured hardware truth.
+// Includes the original workbook's 16396 input. Updated for the BF16 KPool model.
 const expected={
   "a3-560": [
     [
-      1430.4405422616135,
-      1.3981706620520404
+      1428.803995035851,
+      1.3997721219626187
     ],
     [
-      11862.419669075636,
-      0.16859966649248107
+      11769.066721098307,
+      0.169937009229
     ],
     [
-      6850.152172693239,
-      1.7517859016089599
+      6760.837014904969,
+      1.7749281595673363
     ],
     [
-      30.972822379704926,
-      8.079482593120446
+      30.76361746564682,
+      8.134426309132232
     ],
     [
-      33.995363343774414,
-      7.3611326564175315
+      33.128028751490106,
+      7.55385661953645
     ],
     [
-      19.585556543673857,
-      4.791369702437683
+      19.913803596512853,
+      5.105090978146241
     ],
     [
-      19.633670846253647,
-      3.584720973611712
+      19.83570296265917,
+      4.336700622018795
     ]
   ],
   "a5-96": [
     [
-      1671.2957619084098,
-      1.7950144243615966
+      1676.3361595701701,
+      1.7896171855943446
     ],
     [
-      13360.92460182275,
-      0.2245353588471511
+      13666.420337304817,
+      0.21951615170294375
     ],
     [
-      3501.062724745682,
-      2.28502047205713
+      3644.6278343008585,
+      2.195011497390549
     ],
     [
-      20.915155857111635,
-      11.964738918813673
+      22.718537629015447,
+      11.01498623560315
     ],
     [
-      16.198624381470783,
-      15.448495710715155
+      23.619133417020482,
+      10.594985635514703
     ],
     [
-      19.137170961227515,
-      22.474979596155105
+      18.028789253011784,
+      23.85670611851371
     ],
     [
-      19.719510728302307,
-      13.086760603986322
+      17.569596104131588,
+      21.80964795640592
     ]
   ]
 };
