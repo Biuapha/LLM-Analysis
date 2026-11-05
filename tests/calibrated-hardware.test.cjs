@@ -55,28 +55,29 @@ const expected={
       4.810485330640953
     ],
     [
-      19.53674484866552,
-      17.612249336863275
+      31.6428598742816,
+      22.736648750421026
     ],
     [
-      21.17299155227004,
-      17.35921119862512
+      32.022279940395684,
+      21.24620443718321
     ],
     [
-      19.53674484866552,
-      17.612249336863275
+      19.805204805023966,
+      17.76836754894368
     ],
     [
-      19.831114607913342,
-      16.562142587261565
+      19.84225465951828,
+      16.552844091386152
     ]
   ]
 };
 for(const hw of Object.keys(expected))for(let row=3;row<=9;row++){
- const p=row<=5,c=base(hw,[4,5,7,9].includes(row)?131072:row===3&&hw==='a3-560'?16396:16384,p?1:1024);
+ const p=row<=5,input=hw==='a5-96'?[16384,131072,131072,18945,132609,18944,132609][row-3]:[16396,131072,131072,16384,131072,16384,131072][row-3],c=base(hw,input,p?1:1024);
  c.ttft=row===4?15:row===5?7:2;c.prefixHitRate=row===5?90:0;c.tpot=row===6||row===7?.05:.02;
  c.itl=3.5*c.tpot;c.dConstraint='both';
- if(p){c.chunk=hw==='a5-96'?32768:row===5?16384:4096;c.util=hw==='a5-96'?90:92;c.maxP=256;}
+ c.util=hw==='a5-96'?(p?90:95):92;c.maxP=256;c.maxD=2048;
+ if(p)c.chunk=hw==='a5-96'?32768:row===5?16384:4096;
  const r=ctx.calculatePDSimulation(c),b=p?r.p.best:r.d.best;
  assert.ok(r.valid&&b,hw+' row '+row);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);close(b.qps,expected[hw][row-3][1]);
  if(!p)close(b.itlTpotRatio,3.5);
@@ -121,7 +122,9 @@ assert.equal(initial.d.tp,2);
 for(let i=0;i<14;i++){
  ctx.pdLoadWorkbookCase(String(i));const c=ctx.readPDInputs(),r=ctx.calculatePDSimulation(c);
  const hw=i<7?'a3-560':'a5-96',row=i%7+3,p=row<=5,b=p?r.p.best:r.d.best;
- if(p){assert.equal(c.chunk,hw==='a5-96'?32768:row===5?16384:4096);assert.equal(c.util,hw==='a5-96'?90:92);assert.equal(c.maxP,256);}
+ if(p)assert.equal(c.chunk,hw==='a5-96'?32768:row===5?16384:4096);
+ assert.equal(c.util,hw==='a5-96'?(p?90:95):92);assert.equal(c.maxP,256);assert.equal(c.maxD,2048);
+ assert.equal(c.input,(hw==='a5-96'?[16384,131072,131072,18945,132609,18944,132609]:[16396,131072,131072,16384,131072,16384,131072])[row-3]);
  assert.ok(b);assert.equal(c.mtpDraft,5);assert.equal(c.dConstraint,'both');close(c.itl,3.5*c.tpot);assert.equal(r.config.p.dp,hw==='a3-560'?2:1);assert.equal(r.config.d.dp,8);
  assert.equal(r.config.d.tp,hw==='a3-560'?2:1);close(b.qps,expected[hw][row-3][1]);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);
 }
