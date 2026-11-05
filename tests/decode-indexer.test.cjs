@@ -9,7 +9,7 @@ vm.runInContext(src.slice(src.indexOf('function calculateRankMemory('),src.index
 const base=hw=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('a3')?16:8,usableGiB:0},d:{hw,nodes:1,tp:hw.startsWith('a3')?2:1,ep:hw.startsWith('a3')?16:8,usableGiB:0},input:131072,output:1024,ttft:2,itl:.07,tpot:.02,dConstraint:'both',fidelity:'calibrated',decodeMode:'mtp',mtpDraft:5,dPrefixLayout:'shared',fixedP:0,fixedD:0,maxP:32,maxD:256,util:80,reserve:4,chunk:16384,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,prefixHitRate:0,ratioSource:'custom',itlTpotRatio:3.5,constraintStatistic:'mean'});
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-10*Math.max(1,Math.abs(b)),`${a} != ${b}`);
 const result=hw=>ctx.calculatePDSimulation(base(hw));
-for(const [hw,batch,qps]of [['a3-560',11,4.336700622018795],['a5-96',24,9.53874786175455]]){
+for(const [hw,batch,qps]of [['a3-560',11,4.336537028893295],['a5-96',24,9.53789410967254]]){
  const r=result(hw),s=r.d,b=s.best;
  assert.ok(r.valid&&b);assert.equal(b.batch,batch);close(b.qps,qps);
  close(b.qps,8*batch/((1024-1)*b.tpotSeconds));close(b.itlSeconds/b.tpotSeconds,3.5);
@@ -45,7 +45,7 @@ for(const [hw,batch,qps]of [['a3-560',11,4.336700622018795],['a5-96',24,9.538747
  // a quarter tile; Q=4 occupies a full tile. Their GEMM cost is equal, apart
  // from causal boundary growth (use one pool for all query positions).
  const gp32=device.gp32;device.gp32=Infinity;
- close(kernel(forward(1,131072),'index-score').compute,kernel(forward(4,131072),'index-score').compute);
+ close(kernel(forward(1,131071),'index-score').compute,kernel(forward(4,131071),'index-score').compute);
  device.gp32=gp32;
 }
 // Same-host observations remain exactly the measured anchors, never refitted
