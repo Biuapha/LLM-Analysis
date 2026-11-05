@@ -11,7 +11,7 @@ const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-10*Math.max(1,Math.abs(b)),`${a} !
 // Explicit int8 exercises the original 800T transfer model. The new measured
 // 850E profile uses automatic FP8 runtime selection and has separate tests.
 const transferBase=base;
-const modelConfig=hw=>({...transferBase(hw),kvDtype:'int8'});
+const modelConfig=hw=>({...transferBase(hw),moeMultistream:false,chunkBudgetMode:'per_sequence',kvDtype:'int8'});
 const result=hw=>ctx.calculatePDSimulation(modelConfig(hw));
 for(const [hw,batch,qps]of [['a3-560',11,4.336537028893295],['a5-96',24,9.53789410967254]]){
  const r=result(hw),s=r.d,b=s.best;

@@ -12,6 +12,7 @@ page = root / 'glm53_prefill_decode_operator_block_diagram.html'
 html = page.read_text(encoding='utf8')
 data = json.loads((root / 'data/a5-850e-calibration-20261105.json').read_text(encoding='utf8'))
 source = (root / 'src/850e-runtime-calibration.js').read_text(encoding='utf8')
+multistream = (root / 'src/moe-multistream.js').read_text(encoding='utf8')
 
 def embed_data(match):
     document = json.loads(match[2])
@@ -21,10 +22,13 @@ def embed_data(match):
 updated, data_count = re.subn(r'(<script[^>]*id="pd-data"[^>]*>)([\s\S]*?)(</script>)', embed_data, html)
 updated, code_count = re.subn(r'// Atlas 850E runtime observations[\s\S]*?(?=function pdPureStage\()', lambda _: source + '\n', updated)
 assert data_count == code_count == 1, 'Expected exactly one embedded data/code section'
+updated, stream_count = re.subn(r'// Shared-expert scheduling, pinned[\s\S]*?// End shared-expert scheduling\.\n', lambda _: multistream, updated)
+assert stream_count == 1, 'Expected one multistream source section'
 if args.check:
     # JSON serialization style is immaterial; compare parsed data and source.
     embedded = json.loads(re.search(r'<script[^>]*id="pd-data"[^>]*>([\s\S]*?)</script>', html)[1])
     assert embedded['a5Calibration'] == data and source.strip() in html, 'Run this script to synchronize the page'
+    assert multistream.strip() in html, 'Run this script to synchronize multistream scheduling'
     print('850E embedded data and source are synchronized')
 else:
     page.write_text(updated, encoding='utf8', newline='\n')

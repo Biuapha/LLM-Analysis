@@ -125,7 +125,7 @@ for(const [hit,pcp] of [[50,1],[0,2],[100,2]]) {
 }
 assert.doesNotThrow(()=>api.pdNativePayload(cold.config));
 const exported=api.pdExportData(warm);
-assert.equal(exported.schemaVersion,7);
+assert.equal(exported.schemaVersion,8);
 assert.equal(exported.prefillOptions.cachedTokens,2048);
 assert.equal(exported.config.p.pcp,1);
 assert.equal(exported.prefillOptions.calibrationEligible,false);

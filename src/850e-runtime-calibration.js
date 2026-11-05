@@ -42,7 +42,7 @@ function pdA5Fit(c,s,phase){
  const points=[];
  for(const f of pdData.a5Calibration.families.filter(f=>f.phase===phase&&f.tp===s.tp&&f.ep===s.ep&&f.pcp===pdPCP(s)&&!f.prefixHitRate)){
   const anchor={...c,input:f.input,output:phase==='decode'?f.output:1,prefixHitRate:0,chunk:16384,
-   fidelity:'analytic',util:80,reserve:4,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,
+   fidelity:'analytic',moeMultistream:true,dSharedPrefixRate:100,util:80,reserve:4,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,
    ratioSource:'custom',itlTpotRatio:1,dPrefixLayout:'shared',constraintStatistic:'mean'};
   const stage={...s,usableGiB:0},memory=pdA5Memory(anchor,stage,phase,f);
   for(const r of f.training){
@@ -58,7 +58,7 @@ function pdA5Fit(c,s,phase){
  if(det>1e-15){const scale=(xy*ww-wy*xw)/det,overhead=(wy*xx-xy*xw)/det;if(scale>=0&&overhead>=0)candidates.push({scale,overhead});}
  const loss=f=>points.reduce((sum,p)=>sum+p.weight*(f.scale*p.x+f.overhead-p.y)**2,0);
  const best=candidates.sort((a,b)=>loss(a)-loss(b))[0];
- return {...best,method:'nonnegative_relative_weighted_least_squares',trainingCount:points.length,training:points.map(({input,batch})=>({input,batch})),
+ return {...best,method:'nonnegative_relative_weighted_least_squares',trainingMultistream:true,trainingCount:points.length,training:points.map(({input,batch})=>({input,batch})),
   bounds:{minInput:Math.min(...points.map(p=>p.input)),maxInput:Math.max(...points.map(p=>p.input)),maxBatch:Math.max(...points.map(p=>p.batch))}};
 }
 function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
@@ -75,7 +75,7 @@ function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
  const sameInput=pdData.a5Calibration.families.find(x=>x.phase===phase&&x.input===c.input),maxMeasuredBatch=sameInput?Math.max(...sameInput.training.map(x=>x.batch)):null;
  const extrapolated=!sameInput||batch>maxMeasuredBatch||(!decode&&c.prefixHitRate!==0)||c.chunk!==16384||
   (decode&&(c.output!==1024||c.dPrefixLayout!=='shared'))||c.computeScale!==1||c.memoryScale!==1||c.overlap!==0||c.imbalance!==1.1||
-  c.pScale!==1||c.dScale!==1||c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||Boolean(s.usableGiB);
+  c.pScale!==1||c.dScale!==1||c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||Boolean(s.usableGiB)||c.moeMultistream!==true||c.dSharedPrefixRate!==100;
  return {...row,seconds,worst,duration,qps,tokensPerSecond:qps*(decode?c.output:c.input),
   ...(decode?{itlSeconds:cycle,worstITL:worstCycle,tpotSeconds:seconds,worstTPOT:worst,itlTpotRatio:ratio,
    projection:{...row.projection,kind:'calibrated_hardware_prediction',acceptanceMeasured:false,acceptanceBasis:c.ratioSource==='reference'?'邻近训练点的接受产出作为场景假设，未测 batch 不代表已验证接受率':'用户显式 r 假设',measuredAcceptedTokensPerCycle:measuredRatio,

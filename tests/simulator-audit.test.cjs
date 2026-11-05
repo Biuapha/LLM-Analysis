@@ -42,7 +42,7 @@ for(const decodeMode of ['ratio','mtp']){
 }
 // Dtype cannot differ between the memory model and fallback operator costs.
 const int8=run(base({fidelity:'calibrated',input:16384,output:1024,fixedD:33,kvDtype:'int8'}));
-assert.equal(int8.d.memory.config.kvDtype,'int8');assert.equal(Boolean(int8.d.results[0]?.calibration.transfer),true);
+assert.equal(int8.d.memory.config.kvDtype,'int8');assert.equal(Boolean(int8.d.results[0]?.calibration.transfer),false);
 const normalized=int8.config,m=int8.d.memory;
 const inferred=ctx.pdBatch(normalized,normalized.d,33,'decode',m),explicit=ctx.pdBatch({...normalized,kvDtype:'int8'},normalized.d,33,'decode',m);
 close(inferred.duration,explicit.duration);
@@ -69,7 +69,7 @@ for(const hardware of data['pd-data'].devices.filter(h=>!h.empiricalOnly))for(co
   for(const row of rows){assert.ok(Number.isFinite(row.duration)&&row.duration>0);assert.ok(row.peakBytes>=previous);previous=row.peakBytes;close(row.peakBytes,stage.memory.weight+stage.memory.reserve+row.kvBytes+row.workspace);}
   assert.equal(stage.best?.qps??null,stage.feasible.length?Math.max(...stage.feasible.map(x=>x.qps)):null);
  }
- if(!epOn){const f=ctx.pdForward(r.config,r.config.d,2,1,4096,'decode',true);close(f.scratch.ffn,Math.max(2*12288/tp*6,f.route.localExperts*f.route.tokensPerExpert*2048/f.route.expertTP*6*c.imbalance));}
+ if(!epOn){const f=ctx.pdForward(r.config,r.config.d,2,1,4096,'decode',true);close(f.scratch.ffn,Math.max(2*12288/tp*6,f.route.localExperts*f.route.tokensPerExpert*2048/f.route.expertTP*6*c.imbalance+2*2048/tp*6));}
 }
 // Verify selected statistics preserve the same raw candidate costs and only change eligibility.
 const mean=run(base({fixedD:0,maxD:8})),worst=run(base({fixedD:0,maxD:8,constraintStatistic:'worst'}));

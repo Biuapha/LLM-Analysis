@@ -7,68 +7,68 @@ const src=scripts.find(([,a,b])=>b.includes('function calculatePDSimulation('))[
 const ctx=vm.createContext({memoryData:data['weight-data'],GiB:2**30,document:{getElementById:id=>({textContent:JSON.stringify(data[id])})}});
 vm.runInContext(src.slice(src.indexOf('function calculateRankMemory('),src.indexOf('function readMemoryInputs('))+src.slice(src.indexOf('const pdData='),src.indexOf('/* Browser UI;')),ctx);
 const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-8*Math.max(1,Math.abs(b)),`${a} != ${b}`);
-const base=(hw,input,output=1024)=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('a3')?16:8,usableGiB:0},d:{hw,nodes:1,tp:hw.startsWith('a3')?2:1,ep:hw.startsWith('a3')?16:8,usableGiB:0},input,output,ttft:2,itl:1,tpot:.02,dConstraint:'tpot',fidelity:'calibrated',decodeMode:'mtp',mtpDraft:5,dPrefixLayout:'shared',fixedP:0,fixedD:0,maxP:32,maxD:256,util:80,reserve:4,chunk:16384,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,prefixHitRate:0,ratioSource:'custom',itlTpotRatio:3.5,constraintStatistic:'mean'});
+const base=(hw,input,output=1024)=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('a3')?16:8,usableGiB:0},d:{hw,nodes:1,tp:hw.startsWith('a3')?2:1,ep:hw.startsWith('a3')?16:8,usableGiB:0},input,output,ttft:2,itl:1,tpot:.02,dConstraint:'tpot',fidelity:'analytic',decodeMode:'mtp',mtpDraft:5,dPrefixLayout:'shared',fixedP:0,fixedD:0,maxP:32,maxD:256,util:80,reserve:4,chunk:16384,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,prefixHitRate:0,ratioSource:'custom',itlTpotRatio:3.5,constraintStatistic:'mean'});
 // Current model estimates for the 14 workbook presets, not measured hardware truth.
 // Includes the original workbook's 16396 input. Updated for the BF16 KPool model.
 const expected={
   "a3-560": [
     [
-      1428.809791051195,
-      1.3997664437395636
+      1975.44158853416,
+      3.0372955772649237
     ],
     [
-      11769.118532993043,
-      0.16993626110513593
+      10716.90878316502,
+      0.37324195632639157
     ],
     [
-      6760.865696360062,
-      1.7749206298330404
+      3348.720667394186,
+      3.58345804021266
     ],
     [
-      49.77566068581082,
-      11.311750474322453
+      49.85282431752751,
+      17.255091673131187
     ],
     [
-      49.52394173519737,
-      9.790183653816396
+      49.95542494006393,
+      15.028060290361557
     ],
     [
-      19.91468623059385,
-      5.104864716620866
+      19.736702512628657,
+      9.113130599703597
     ],
     [
-      19.83645125204827,
-      4.336537028893295
+      19.915238178004277,
+      7.853420363339667
     ]
   ],
   "a5-96": [
     [
-      1473.5066751463844,
-      1.3573063724338483
+      1117.5299570557293,
+      3.5793223928766027
     ],
     [
-      10395.140911293087,
-      0.19239758432011608
+      4620.85469933511,
+      0.4328203611959012
     ],
     [
-      6570.869947041071,
-      1.8262422018265208
+      3826.6101390566546,
+      4.181246434460229
     ],
     [
-      16.974987100918025,
-      20.270178672876156
+      19.53674484866552,
+      17.612249336863275
     ],
     [
-      18.370788442504676,
-      20.007112553327612
+      21.17299155227004,
+      17.35921119862512
     ],
     [
-      16.974987100918025,
-      20.270178672876156
+      19.53674484866552,
+      17.612249336863275
     ],
     [
-      18.370788442504676,
-      20.007112553327612
+      19.831114607913342,
+      16.562142587261565
     ]
   ]
 };
@@ -79,9 +79,13 @@ for(const hw of Object.keys(expected))for(let row=3;row<=9;row++){
  const r=ctx.calculatePDSimulation(c),b=p?r.p.best:r.d.best;
  assert.ok(r.valid&&b,hw+' row '+row);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);close(b.qps,expected[hw][row-3][1]);
  if(!p)close(b.itlTpotRatio,3.5);
- const native=hw==='a5-96';
+ const native=false;
  assert.equal(Boolean(b.calibration.targetNative),native);assert.equal(Boolean(b.calibration.empiricalOnly),false);
- if(hw==='a5-96')assert.equal(Boolean(b.calibration.transfer),false);else assert.equal(b.calibration.transfer,true);
+ assert.equal(Boolean(b.calibration.transfer),false);
+ if(p&&(hw==='a5-96'||row===5)){
+  assert.ok(r.p.results.some(x=>x.feasible&&x.batch>b.batch&&x.qps<b.qps));
+  assert.equal(ctx.pdStageBoundary(r.p).kind,'throughput_optimum');
+ }
 }
 assert.deepEqual(data['pd-data'].devices.map(d=>d.id).sort(),['a3-560','a3-752','a3-800','a5-128','a5-96']);
 for(const hw of ['a3-752','a3-560','a5-96','a5-128']){
@@ -89,7 +93,7 @@ for(const hw of ['a3-752','a3-560','a5-96','a5-128']){
  assert.ok(r.p.best&&r.d.best);close(r.d.best.itlTpotRatio,3.5);
  assert.equal(r.d.best.projection.acceptanceMeasured,false);
 }
-const source=base('a3-800',16384);source.d.tp=4;source.ratioSource='reference';source.itlTpotRatio=1;
+const source={...base('a3-800',16384),fidelity:'calibrated'};source.d.tp=4;source.ratioSource='reference';source.itlTpotRatio=1;
 const actual=ctx.calculatePDSimulation(source);assert.ok(actual.p.best&&actual.d.best);assert.equal(actual.d.best.calibration.empiricalOnly,true);
 for(const fidelity of ['analytic','ideal']){const r=ctx.calculatePDSimulation({...source,fidelity});assert.equal(r.p.best,null);assert.equal(r.d.best,null);}
 const controls=new Map();
