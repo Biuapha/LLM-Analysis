@@ -55,7 +55,7 @@ close(on.d.fit.scale,off.d.fit.scale);assert.ok(on.d.fit.trainingMultistream);
 assert.ok(off.d.results[0].tpotSeconds>on.d.results[0].tpotSeconds);
 assert.equal(ctx.pdCrossContext(on.config,on.config.d,'decode'),null);
 assert.equal(ctx.calculatePDSimulation({...base('a3-560'),fidelity:'calibrated'}).d.results[0].calibration.transfer,true);
-// Published graph controls: exact event timing agrees with its six-curve model.
+// Historical v10 analytic graph controls, retained separately from v13 calibrated curves.
 for(const [hw,nodes,batch,ms]of [['a5-96',1,41,19.5627389882712],['a5-96',2,58,29.920788486660236],['a5-96',4,50,29.984344024707116],['a5-128',1,43,29.798859882608703],['a5-128',2,40,29.796109743983475],['a5-128',4,38,29.670576920322908]]){
  const c=base(hw);c.d={...c.d,nodes,ep:8*nodes};
  const r=ctx.calculatePDSimulation({...c,fixedD:0}),b=r.d.best;
