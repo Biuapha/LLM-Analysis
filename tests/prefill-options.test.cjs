@@ -19,7 +19,7 @@ function load(file) {
   const engine = source.slice(source.indexOf('const pdData='), source.indexOf('/* Browser UI;'));
   const exporting = source.slice(source.indexOf('function pdExportData('), source.indexOf('/* Official msModeling'));
   const native = source.slice(source.indexOf('function pdNativePayload('), source.indexOf('function pdOfficialView('));
-  vm.runInContext(memory + engine + exporting + native + '\nthis.pdWorld = pdWorld;', context);
+  vm.runInContext(memory + engine + exporting + native + '\nthis.pdWorld = pdWorld; this.pdHardware = pdHardware;', context);
   return context;
 }
 const api = load(path.join(root, 'glm53_prefill_decode_operator_block_diagram.html'));
@@ -100,6 +100,27 @@ assert.equal(tp1cp.config.p.dp,8);
 assert.equal(tp1cp.p.memory.n,32);
 assert.ok(tp1cp.p.memory.weight<tp1.p.memory.weight);
 assert.equal(api.pdForward(tp1cp.config,tp1cp.config.p,1,4096,0,'prefill').kdaParallel,2);
+
+// Independently enumerate PCP collectives from the KDA forward graph:
+// one hidden-state gather and one o_proj reduction per KDA layer. FFN
+// reductions stay on TP, so TP1 must not acquire a second PCP all-reduce.
+for(const tp of [1,2]) {
+  const r=run(config(0,4,{p:{hw:'a5-96',tp,nodes:1,ep:8},moeMultistream:false}));
+  const stage=r.config.p,hw=api.pdHardware(stage),batch=2,q=1024,H=4096;
+  const f=api.pdForward(r.config,stage,batch,q,0,'prefill',false);
+  const localBytes=f.queryTokens*H*2,fullBytes=batch*q*H*2;
+  let expected=0;
+  for(let layer=0;layer<45;layer++) {
+    const isKda=layer%4!==3;
+    expected+=api.pdCollective(hw,tp,localBytes,'allreduce'); // FFN path
+    expected+=api.pdCollective(hw,isKda?f.kdaParallel:tp,isKda?fullBytes:localBytes,'allreduce');
+    expected+=isKda?api.pdCollective(hw,4,fullBytes,'allgather'):
+      api.pdCollective(hw,4,batch*q*(1024+128*4),'allgather');
+  }
+  const routeBytes=f.route.logicalRoutedTokens/api.pdWorld(stage)*H*2*r.config.imbalance;
+  expected+=42*(2*api.pdCollective(hw,stage.ep,routeBytes,'alltoall')+api.pdCollective(hw,tp,localBytes,'allgather'));
+  close(f.times.communication,expected);
+}
 
 for(const [pcp,tp,nodes,ep] of [[1,8,1,16],[2,8,1,16],[4,4,1,16],[8,2,1,16],[16,1,1,16],[32,1,2,32],[64,1,4,64]]) {
   const r=run(config(50,pcp,{p:{tp,nodes,ep}}));

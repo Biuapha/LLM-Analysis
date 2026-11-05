@@ -13,16 +13,16 @@ const base=(hw,input,output=1024)=>({p:{hw,nodes:1,tp:1,pcp:8,ep:hw.startsWith('
 const expected={
   "a3-560": [
     [
-      1975.44158853416,
-      3.0372955772649237
+      1956.9561699678557,
+      3.065985887715898
     ],
     [
-      10716.90878316502,
-      0.37324195632639157
+      5303.637693022711,
+      0.37709966550526886
     ],
     [
-      3348.720667394186,
-      3.58345804021266
+      3056.221609435002,
+      3.926416841944396
     ],
     [
       49.85282431752751,
@@ -43,16 +43,16 @@ const expected={
   ],
   "a5-96": [
     [
-      1117.5299570557293,
-      3.5793223928766027
+      1923.8599505882373,
+      4.158306844297023
     ],
     [
-      4620.85469933511,
-      0.4328203611959012
+      3998.9779589669574,
+      0.500127787780219
     ],
     [
-      3826.6101390566546,
-      4.181246434460229
+      6652.1354500703355,
+      4.810485330640953
     ],
     [
       19.53674484866552,
@@ -76,13 +76,15 @@ for(const hw of Object.keys(expected))for(let row=3;row<=9;row++){
  const p=row<=5,c=base(hw,[4,5,7,9].includes(row)?131072:row===3&&hw==='a3-560'?16396:16384,p?1:1024);
  c.ttft=row===4?15:row===5?7:2;c.prefixHitRate=row===5?90:0;c.tpot=row===6||row===7?.05:.02;
  c.itl=3.5*c.tpot;c.dConstraint='both';
+ if(p){c.chunk=hw==='a5-96'?32768:row===5?16384:4096;c.util=hw==='a5-96'?90:92;c.maxP=256;}
  const r=ctx.calculatePDSimulation(c),b=p?r.p.best:r.d.best;
  assert.ok(r.valid&&b,hw+' row '+row);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);close(b.qps,expected[hw][row-3][1]);
  if(!p)close(b.itlTpotRatio,3.5);
  const native=false;
  assert.equal(Boolean(b.calibration.targetNative),native);assert.equal(Boolean(b.calibration.empiricalOnly),false);
  assert.equal(Boolean(b.calibration.transfer),false);
- if(p&&(hw==='a5-96'||row===5)){
+ if(p)assert.notEqual(ctx.pdStageBoundary(r.p).kind,'scan_limit');
+ if(p&&row!==3){
   assert.ok(r.p.results.some(x=>x.feasible&&x.batch>b.batch&&x.qps<b.qps));
   assert.equal(ctx.pdStageBoundary(r.p).kind,'throughput_optimum');
  }
@@ -119,6 +121,7 @@ assert.equal(initial.d.tp,2);
 for(let i=0;i<14;i++){
  ctx.pdLoadWorkbookCase(String(i));const c=ctx.readPDInputs(),r=ctx.calculatePDSimulation(c);
  const hw=i<7?'a3-560':'a5-96',row=i%7+3,p=row<=5,b=p?r.p.best:r.d.best;
+ if(p){assert.equal(c.chunk,hw==='a5-96'?32768:row===5?16384:4096);assert.equal(c.util,hw==='a5-96'?90:92);assert.equal(c.maxP,256);}
  assert.ok(b);assert.equal(c.mtpDraft,5);assert.equal(c.dConstraint,'both');close(c.itl,3.5*c.tpot);assert.equal(r.config.p.dp,hw==='a3-560'?2:1);assert.equal(r.config.d.dp,8);
  assert.equal(r.config.d.tp,hw==='a3-560'?2:1);close(b.qps,expected[hw][row-3][1]);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);
 }
