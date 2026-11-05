@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "date": "2026-11-05",
   "profile": "v0.32rc r71 · GLM5.3-Flash W8A8-MXFP8-0918 · FP8 KV/indexer · MTP5",
   "source": "docs/a5-850e-calibration-2026-11-05.md",
@@ -17,7 +17,6 @@
     "temperature": 0,
     "speculativeTokens": 5
   },
-  "fit": "Linear interpolation in per-DP batch using training anchors only. Exact measured input lengths only; no length extrapolation. Median of repeat cycle/TPOT observations for D. P initially used B1/4/8: 16K B2 exposed 12.8% underprediction, so B2 was promoted before B3/B6 were read; final P holdouts are B3/B6.",
   "limitations": [
     "Synthetic repeated Chinese decode workload; acceptance is workload dependent. Manual r=3.5 is normalization, not measured acceptance.",
     "Cycle = steady TPOT × contemporaneous accepted/draft counts; no hardware ITL trace or p99 claim.",
@@ -747,5 +746,9 @@
       "max_waiting_total": 48,
       "samples": 77
     }
-  ]
+  ],
+  "historicalInterpolationFit": "Linear interpolation in per-DP batch using training anchors only. Exact measured input lengths only; no length extrapolation. Median of repeat cycle/TPOT observations for D. P initially used B1/4/8: 16K B2 exposed 12.8% underprediction, so B2 was promoted before B3/B6 were read; final P holdouts are B3/B6.",
+  "fit": "Hardware operator model calibrated by phase-wide nonnegative relative weighted least squares: scale * analytic cost + overhead. Training observations only; repetitions weight decode points. Ideal operator model is a lower latency bound. Batch/context extrapolation is permitted; measured coverage is metadata, never a search constraint.",
+  "capacityPolicy": "Recompute memory budget from visible capacity, utilization, same-profile loaded weights, reserve and batch-dependent workspace. Observed physical block size/cost calibrates geometry; observed allocated block count and max running batch are not limits. Shared full-prefix/private-tail + 5 state-guard blocks is an optimized unified-block allocation model, not a replay of r71 hybrid allocator.",
+  "modelDocument": "docs/hardware-calibrated-search.md"
 }

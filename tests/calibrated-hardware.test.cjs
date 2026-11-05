@@ -25,12 +25,12 @@ const expected={
       1.7749206298330404
     ],
     [
-      30.765985021873785,
-      8.133800334971244
+      49.77566068581082,
+      11.311750474322453
     ],
     [
-      33.13040201720823,
-      7.55331550600135
+      49.52394173519737,
+      9.790183653816396
     ],
     [
       19.91468623059385,
@@ -43,45 +43,45 @@ const expected={
   ],
   "a5-96": [
     [
-      1610.4911360362657,
-      1.2418571920379469
+      1473.5066751463844,
+      1.3573063724338483
     ],
     [
-      10200.06353944417,
-      0.19607720993755548
+      10395.140911293087,
+      0.19239758432011608
     ],
     [
-      3644.6451848676625,
-      2.1950010478977475
+      6570.869947041071,
+      1.8262422018265208
     ],
     [
-      9.867519241197167,
-      3.9625647851516868
+      16.974987100918025,
+      20.270178672876156
     ],
     [
-      8.885182504260287,
-      3.520529532688968
+      18.370788442504676,
+      20.007112553327612
     ],
     [
-      18.03178300777369,
-      23.852745271851187
+      16.974987100918025,
+      20.270178672876156
     ],
     [
-      17.572263267464923,
-      21.806337631921426
+      18.370788442504676,
+      20.007112553327612
     ]
   ]
 };
 for(const hw of Object.keys(expected))for(let row=3;row<=9;row++){
  const p=row<=5,c=base(hw,[4,5,7,9].includes(row)?131072:row===3&&hw==='a3-560'?16396:16384,p?1:1024);
  c.ttft=row===4?15:row===5?7:2;c.prefixHitRate=row===5?90:0;c.tpot=row===6||row===7?.05:.02;
- if(hw==='a5-96'&&row>=8)c.mtpDraft=3;
+ c.itl=3.5*c.tpot;c.dConstraint='both';
  const r=ctx.calculatePDSimulation(c),b=p?r.p.best:r.d.best;
  assert.ok(r.valid&&b,hw+' row '+row);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);close(b.qps,expected[hw][row-3][1]);
  if(!p)close(b.itlTpotRatio,3.5);
- const native=hw==='a5-96'&&[3,4,6,7].includes(row);
- assert.equal(Boolean(b.calibration.empiricalOnly),native);
- if(hw==='a5-96'&&row!==5)assert.equal(Boolean(b.calibration.transfer),false);else assert.equal(b.calibration.transfer,true);
+ const native=hw==='a5-96';
+ assert.equal(Boolean(b.calibration.targetNative),native);assert.equal(Boolean(b.calibration.empiricalOnly),false);
+ if(hw==='a5-96')assert.equal(Boolean(b.calibration.transfer),false);else assert.equal(b.calibration.transfer,true);
 }
 assert.deepEqual(data['pd-data'].devices.map(d=>d.id).sort(),['a3-560','a3-752','a3-800','a5-128','a5-96']);
 for(const hw of ['a3-752','a3-560','a5-96','a5-128']){
@@ -115,7 +115,7 @@ assert.equal(initial.d.tp,2);
 for(let i=0;i<14;i++){
  ctx.pdLoadWorkbookCase(String(i));const c=ctx.readPDInputs(),r=ctx.calculatePDSimulation(c);
  const hw=i<7?'a3-560':'a5-96',row=i%7+3,p=row<=5,b=p?r.p.best:r.d.best;
- assert.ok(b);assert.equal(r.config.p.dp,hw==='a3-560'?2:1);assert.equal(r.config.d.dp,8);
+ assert.ok(b);assert.equal(c.mtpDraft,5);assert.equal(c.dConstraint,'both');close(c.itl,3.5*c.tpot);assert.equal(r.config.p.dp,hw==='a3-560'?2:1);assert.equal(r.config.d.dp,8);
  assert.equal(r.config.d.tp,hw==='a3-560'?2:1);close(b.qps,expected[hw][row-3][1]);close((p?b.seconds:b.tpotSeconds)*1000,expected[hw][row-3][0]);
 }
 assert.ok(!html.includes('校准验收报告.html'));

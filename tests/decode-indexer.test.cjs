@@ -62,7 +62,10 @@ for(const row of family.training){
  assert.equal(actual.calibration.empiricalOnly,true);
 }
 const capped=ctx.calculatePDSimulation({...modelConfig('a5-96'),itl:1,tpot:1}).d;
-assert.equal(ctx.pdStageBoundary(capped).kind,'transfer_coverage');
+assert.equal(ctx.pdStageBoundary(capped).kind,'modeled_memory');
+assert.ok(capped.best.batch>32&&capped.best.calibration.extrapolated);
+assert.equal(capped.calibrationCap,null);
+assert.equal(capped.best.transfer.anchorBatch,32);
 const limited=ctx.calculatePDSimulation({...modelConfig('a5-96'),maxD:4}).d;
 assert.equal(ctx.pdStageBoundary(limited).kind,'scan_limit');
 console.log('PASS: 128K A3/A5 constraints, context scaling, BF16 matrix precision, query-head occupancy, bounded KeyPool updates, measured-anchor isolation and scan boundaries.');

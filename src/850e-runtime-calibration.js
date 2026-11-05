@@ -1,60 +1,106 @@
-// Atlas 850E runtime observations are bounded to the measured software profile.
-// No source-hardware transfer or analytic memory admission enters this path.
+// Atlas 850E runtime observations calibrate a hardware model, never its search range.
+// The fitted phase-wide scale/overhead use training points only; unseen batch and
+// context are evaluated by the operator model and bounded by the ideal roofline.
 function pdA5Family(c,s,phase){
- if(!pdData.a5Calibration||c.fidelity!=='calibrated'||s.hw!=='a5-96'||s.nodes!==1||s.tp!==1||s.ep!==8||s.usableGiB||
-  c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||c.chunk!==16384||c.decodeMode!=='mtp'||c.mtpDraft!==5||c.kvDtype!==undefined||
-  c.pScale!==1||c.dScale!==1||c.computeScale!==1||c.memoryScale!==1||c.overlap!==0||c.imbalance!==1.1)return null;
- if(phase==='decode'&&(c.decodeMode!=='mtp'||c.output!==1024||c.dPrefixLayout!=='shared'))return null;
- return pdData.a5Calibration.families.find(f=>f.phase===phase&&f.input===c.input&&f.pcp===pdPCP(s)&&
-  (phase!=='prefill'||f.prefixHitRate===c.prefixHitRate))||null;
+ return c.fidelity==='calibrated'?pdA5Profile(c,s,phase):null;
 }
+function pdA5Profile(c,s,phase){
+ if(!pdData.a5Calibration||s.hw!=='a5-96'||s.nodes!==1||s.tp!==1||s.ep!==8||
+  c.decodeMode!=='mtp'||c.mtpDraft!==5||(c.kvDtype!==undefined&&c.kvDtype!=='fp8'))return null;
+ const families=pdData.a5Calibration.families.filter(f=>f.phase===phase&&f.pcp===pdPCP(s)&&(!f.prefixHitRate));
+ return families.sort((a,b)=>Math.abs(Math.log(c.input/a.input))-Math.abs(Math.log(c.input/b.input)))[0]||null;
+}
+// Interpolation is retained only for the reference acceptance assumption and
+// observed comparisons. It never supplies the modeled latency or batch ceiling.
 function pdA5Reference(f,batch){
- const rows=f.training.slice().sort((a,b)=>a.batch-b.batch);
- if(batch<rows[0].batch||batch>rows.at(-1).batch)return null;
- const a=rows.filter(r=>r.batch<=batch).at(-1),b=rows.find(r=>r.batch>=batch);
- const at=k=>a.batch===b.batch?a[k]:a[k]+(b[k]-a[k])*(batch-a.batch)/(b.batch-a.batch);
+ const rows=f.training.slice().sort((a,b)=>a.batch-b.batch),x=Math.max(rows[0].batch,Math.min(rows.at(-1).batch,batch));
+ const a=rows.filter(r=>r.batch<=x).at(-1),b=rows.find(r=>r.batch>=x);
+ const at=k=>a.batch===b.batch?a[k]:a[k]+(b[k]-a[k])*(x-a.batch)/(b.batch-a.batch);
  return f.phase==='decode'?{cycleSeconds:at('cycleSeconds'),tpotSeconds:at('tpotSeconds')}:{seconds:at('seconds')};
 }
-function pdA5Stage(c,s,phase,f,errors){
- const decode=phase==='decode',fixed=decode?c.fixedD:c.fixedP,requestedMax=decode?c.maxD:c.maxP;
- const minBatch=fixed||f.training[0].batch,cap=f.training.at(-1).batch,maxBatch=fixed||Math.min(requestedMax,cap);
- const limit=decode?(c.dConstraint==='itl'?c.itl:c.dConstraint==='both'?1:c.tpot):c.ttft;
- const m=f.runtimeMemory,capacityBasis='850E 同配置成功测点及调度器实际并发；搜索止于已验证 batch，非芯片理论上限';
- const memory={valid:true,errors:[],weight:m.loadedWeightBytes,reserve:c.reserve*GiB,limit:m.visibleBytes*c.util/100,
-  block:m.blockSize,blocks:m.numBlocks,poolBytes:m.kvAllocatedBytes/m.numBlocks,kv:m.kvAllocatedBytes,kvBudget:m.kvAllocatedBytes,
-  usableGiB:m.visibleBytes/GiB,config:{kvDtype:'fp8',pcp:pdPCP(s),dp:s.dp,tp:s.tp,ep:s.ep},capacityBasis,
-  observedRuntime:{profile:pdData.a5Calibration.profile,allocatedPeakBytes:m.peakAllocatedBytes,kvAllocatedBytes:m.kvAllocatedBytes}};
- const base={config:s,phase,limit,maxBatch,valid:!errors.length,errors,memory,results:[],feasible:[],best:null,
-  fixedBatch:fixed,calibrationCap:cap,scannedBatches:0,firstMemoryRejected:null};
- if(errors.length)return {...base,failure:errors.join('；')};
- if(fixed&&!pdA5Reference(f,fixed))return {...base,failure:`850E 此配置实测覆盖 batch ${f.training[0].batch}–${cap}；固定 batch ${fixed} 超出覆盖，未作外推。`};
- const results=[];
- for(let batch=minBatch;batch<=maxBatch;batch++){
-  const ref=pdA5Reference(f,batch),measuredRatio=decode?ref.cycleSeconds/ref.tpotSeconds:null;
-  const ratio=decode?(c.ratioSource==='reference'?measuredRatio:c.itlTpotRatio):null;
-  const seconds=decode?ref.cycleSeconds/ratio:ref.seconds,duration=decode?(c.output-1)*seconds:seconds;
-  const itl=decode?ref.cycleSeconds:null,qps=s.dp*batch/duration;
-  const metric=decode?pdDecodeSLO(c,itl,seconds):{seconds,feasible:seconds<=c.ttft};
-  const cached=f.cachedTokens??0;
-  const reason='850E · '+pdData.a5Calibration.profile+' 同配置实测；'+(decode?(c.ratioSource==='reference'?'使用实测接受产出':'按用户 r 归一化，非该 r 的实测吞吐'):'P batch 表示每 DP 闭环在途并发，TTFT 包含排队；只对训练测点插值');
-  results.push({batch,qps,seconds,worst:seconds,duration,sloSeconds:metric.seconds,feasible:metric.feasible,memoryFeasible:true,
-   tokensPerSecond:qps*(decode?c.output:c.input),...(decode?{}:{computedTokensPerSecond:qps*(c.input-cached)}),
-   peakBytes:m.peakAllocatedBytes,workspace:null,kvBytes:m.kvAllocatedBytes,perSequence:null,ids:null,
-   breakdown:Object.fromEntries(pdGroups.map(k=>[k,0])),evals:0,capacityBasis,
-   calibration:{applied:true,runtime:true,empiricalOnly:true,targetNative:true,factor:null,family:f.id,profile:pdData.a5Calibration.profile,
-    reference:pdData.a5Calibration.source,reason,validation:f.validation},
-   plan:decode?{decodeTokens:c.output-1,draftTokens:5,acceptedTokensPerCycle:ratio,expectedCycles:(c.output-1)/ratio,
-    measuredAcceptedTokensPerCycle:measuredRatio,contextBasis:'measured full-concurrency decode window; output includes first P token'}:
-    {pcp:8,inputTokens:c.input,computedTokens:c.input-cached,cachedTokens:cached,requestedHitRate:c.prefixHitRate,cacheBasis:'runtime_observed_full_blocks'},
-   ...(decode?{itlSeconds:itl,worstITL:itl,tpotSeconds:seconds,worstTPOT:seconds,itlTpotRatio:ratio,
-    projection:{kind:c.ratioSource==='reference'?'same_hardware_observation':'same_hardware_normalized_scenario',
-     acceptanceMeasured:c.ratioSource==='reference',acceptanceBasis:c.ratioSource==='reference'?'同一稳态窗口的 accepted / draft 计数':'用户显式 r；实测周期保持不变',
-     measuredAcceptedTokensPerCycle:measuredRatio,cycleMeasuredDirectly:false,
-     cycleBasis:'steady TPOT × contemporaneous MTP counters; derived, not a hardware trace',
-     memoryBasis:'FP8 KV；记录实际预分配缓存池与实测并发边界；非逐请求解析分配'}}:{})});
+function pdA5Memory(c,s,phase,f){
+ const m=f.runtimeMemory,total=s.usableGiB||m.visibleBytes/GiB;
+ const memory=calculateRankMemory({kvDtype:'fp8',dp:s.dp,tp:s.tp,ep:s.ep,total,util:c.util,reserve:c.reserve,
+  q:phase==='decode'?c.mtpDraft:0,sp:'off',vision:'off',casts:true,quant:'checkpoint',pcp:pdPCP(s)});
+ // Same-profile loaded weights and bytes per physical block are observations.
+ // Recompute the available pool from the requested budget; do not copy the
+ // allocator's old numBlocks/max-running/peak allocation as a capacity limit.
+ const weight=m.loadedWeightBytes,poolBytes=m.kvAllocatedBytes/m.numBlocks;
+ const rawBudget=memory.limit-weight-memory.reserve,kvBudget=Math.max(0,rawBudget),blocks=Math.floor(kvBudget/poolBytes);
+ return {valid:memory.valid,errors:memory.errors,config:memory.config,total:memory.total,limit:memory.limit,reserve:memory.reserve,
+  weight,weightMin:weight,analyticWeightBytes:memory.weight,block:m.blockSize,poolBytes,rawBudget,kvBudget,blocks,kv:blocks*poolBytes,
+  alignment:kvBudget-blocks*poolBytes,deficit:Math.max(0,-rawBudget),hardwareProfile:'a5-850e-r71-fp8',
+  usableGiB:total,capacityBasis:'850E 可见容量、同画像权重/物理页成本 + 动态 KV/MTP 状态/workspace 预算；面向优化配置的容量模型',
+  observedRuntime:{profile:pdData.a5Calibration.profile,allocatedPeakBytes:m.peakAllocatedBytes,kvAllocatedBytes:m.kvAllocatedBytes,numBlocks:m.numBlocks},
+  allocationAssumption:'统一 block-ID 成本；共享完整前缀 + 每请求私有尾部和 5 个状态保护块；非 r71 分配器逐组重放'};
+}
+function pdA5Raw(c,s,batch,phase,memory,ideal=false){
+ const analytic={...c,fidelity:ideal?'ideal':'analytic',kvDtype:'fp8',chunkBudgetMode:'per_dp',...(ideal?{pScale:1,dScale:1,overlap:0,imbalance:1}:{})};
+ return pdBatch(analytic,s,batch,phase,memory);
+}
+function pdA5Fit(c,s,phase){
+ const points=[];
+ for(const f of pdData.a5Calibration.families.filter(f=>f.phase===phase&&f.tp===s.tp&&f.ep===s.ep&&f.pcp===pdPCP(s)&&!f.prefixHitRate)){
+  const anchor={...c,input:f.input,output:phase==='decode'?f.output:1,prefixHitRate:0,chunk:16384,
+   fidelity:'analytic',util:80,reserve:4,pScale:1,dScale:1,computeScale:1,memoryScale:1,overlap:0,imbalance:1.1,
+   ratioSource:'custom',itlTpotRatio:1,dPrefixLayout:'shared',constraintStatistic:'mean'};
+  const stage={...s,usableGiB:0},memory=pdA5Memory(anchor,stage,phase,f);
+  for(const r of f.training){
+   const row=pdA5Raw(anchor,stage,r.batch,phase,memory),x=phase==='decode'?row.itlSeconds:row.seconds,y=phase==='decode'?r.cycleSeconds:r.seconds;
+   points.push({input:f.input,batch:r.batch,x,y,weight:(r.repetitions||1)/(y*y)});
+  }
  }
- const feasible=results.filter(r=>r.feasible).sort((a,b)=>b.qps-a.qps||a.seconds-b.seconds||a.batch-b.batch);
- const minLatency=results.length?Math.min(...results.map(r=>r.sloSeconds)):null;
- return {...base,results,feasible,best:feasible[0]||null,minLatency,scannedBatches:results.length,
-  failure:!results.length?'扫描上限低于此配置实测覆盖下限。':!feasible.length?'已测范围内没有满足时延约束的候选。':''};
+ // Weighted least squares of y = scale * roofline_cost + nonnegative overhead.
+ // Relative errors prevent long P requests from dominating short requests.
+ let xx=0,xw=0,ww=0,xy=0,wy=0;
+ for(const p of points){xx+=p.weight*p.x*p.x;xw+=p.weight*p.x;ww+=p.weight;xy+=p.weight*p.x*p.y;wy+=p.weight*p.y;}
+ const candidates=[{scale:xy/xx,overhead:0},{scale:0,overhead:wy/ww}],det=xx*ww-xw*xw;
+ if(det>1e-15){const scale=(xy*ww-wy*xw)/det,overhead=(wy*xx-xy*xw)/det;if(scale>=0&&overhead>=0)candidates.push({scale,overhead});}
+ const loss=f=>points.reduce((sum,p)=>sum+p.weight*(f.scale*p.x+f.overhead-p.y)**2,0);
+ const best=candidates.sort((a,b)=>loss(a)-loss(b))[0];
+ return {...best,method:'nonnegative_relative_weighted_least_squares',trainingCount:points.length,training:points.map(({input,batch})=>({input,batch})),
+  bounds:{minInput:Math.min(...points.map(p=>p.input)),maxInput:Math.max(...points.map(p=>p.input)),maxBatch:Math.max(...points.map(p=>p.batch))}};
+}
+function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
+ const decode=phase==='decode',reference=pdA5Reference(f,batch),measuredRatio=decode?reference.cycleSeconds/reference.tpotSeconds:null;
+ const ratio=decode?Math.min(c.output-1,c.mtpDraft+1,c.ratioSource==='reference'?measuredRatio:c.itlTpotRatio):1;
+ const scenario={...c,ratioSource:'custom',itlTpotRatio:ratio},row=pdA5Raw(scenario,s,batch,phase,memory);
+ const floor=pdA5Raw({...scenario,pScale:1,dScale:1},s,batch,phase,memory,true);
+ const raw=decode?row.itlSeconds:row.seconds,ideal=decode?floor.itlSeconds:floor.seconds,manual=decode?c.dScale:c.pScale;
+ const corrected=fit.scale*raw+fit.overhead*manual,cycle=Math.max(ideal,corrected);
+ const worstRaw=decode?row.worstITL:row.worst,worstFloor=decode?floor.worstITL:floor.worst;
+ const worstCycle=Math.max(cycle,worstFloor,fit.scale*worstRaw+fit.overhead*manual);
+ const seconds=cycle/ratio,worst=worstCycle/ratio,duration=seconds*(decode?c.output-1:1),qps=s.dp*batch/duration;
+ const metric=decode?pdDecodeSLO(c,c.constraintStatistic==='mean'?cycle:worstCycle,c.constraintStatistic==='mean'?seconds:worst):{seconds:worst,feasible:worst<=c.ttft};
+ const sameInput=pdData.a5Calibration.families.find(x=>x.phase===phase&&x.input===c.input),maxMeasuredBatch=sameInput?Math.max(...sameInput.training.map(x=>x.batch)):null;
+ const extrapolated=!sameInput||batch>maxMeasuredBatch||(!decode&&c.prefixHitRate!==0)||c.chunk!==16384||
+  (decode&&(c.output!==1024||c.dPrefixLayout!=='shared'))||c.computeScale!==1||c.memoryScale!==1||c.overlap!==0||c.imbalance!==1.1||
+  c.pScale!==1||c.dScale!==1||c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||Boolean(s.usableGiB);
+ return {...row,seconds,worst,duration,qps,tokensPerSecond:qps*(decode?c.output:c.input),
+  ...(decode?{itlSeconds:cycle,worstITL:worstCycle,tpotSeconds:seconds,worstTPOT:worst,itlTpotRatio:ratio,
+   projection:{...row.projection,kind:'calibrated_hardware_prediction',acceptanceMeasured:false,acceptanceBasis:c.ratioSource==='reference'?'邻近训练点的接受产出作为场景假设，未测 batch 不代表已验证接受率':'用户显式 r 假设',measuredAcceptedTokensPerCycle:measuredRatio,
+    cycleMeasuredDirectly:false,memoryBasis:'FP8 物理页成本；按可用容量重建缓存预算，含共享前缀/私有状态/workspace，非原运行时池上限'}}:
+   {computedTokensPerSecond:qps*row.plan.computedTokens}),
+  breakdown:Object.fromEntries(pdGroups.map(k=>[k,row.breakdown[k]*cycle/raw])),
+  sloSeconds:metric.seconds,feasible:row.memoryFeasible&&metric.feasible,
+  calibration:{applied:true,runtime:false,empiricalOnly:false,targetNative:true,modelBased:true,extrapolated,
+   factor:cycle/raw,fit,idealFloorApplied:ideal>corrected,family:f.id,profile:pdData.a5Calibration.profile,reference:pdData.a5Calibration.source,
+   measuredCoverage:{input: sameInput?.input??null,maxBatch:maxMeasuredBatch??null},
+   reason:'850E 硬件算子模型 + 少量实测校正；'+(extrapolated?'当前为未测区域模型预测':'当前为训练覆盖内模型预测')+'。batch 由显存、TTFT/TPOT/ITL 和扫描上限决定，实测覆盖不设限。'},
+  capacityBasis:memory.capacityBasis,plan:{...row.plan,...(!decode?{chunkBudgetMode:'per_dp',totalTokenBudget:c.chunk}:{}),hardwareModelFloorSeconds:ideal,rawModelSeconds:raw}};
+}
+function pdA5Stage(c,s,phase,f,errors){
+ const decode=phase==='decode',fixed=decode?c.fixedD:c.fixedP,maxBatch=fixed||(decode?c.maxD:c.maxP);
+ const limit=decode?(c.dConstraint==='itl'?c.itl:c.dConstraint==='both'?1:c.tpot):c.ttft;
+ const base={config:s,phase,limit,maxBatch,valid:!errors.length,errors,results:[],feasible:[],best:null,fixedBatch:fixed,calibrationCap:null};
+ if(errors.length)return {...base,failure:errors.join('；')};
+ const memory=pdA5Memory(c,s,phase,f),fit=pdA5Fit(c,s,phase),results=[];let firstMemoryRejected=null;
+ for(let batch=fixed||1;batch<=maxBatch;batch++){
+  const row=pdA5ModelRow(c,s,phase,f,batch,memory,fit);
+  if(!row.memoryFeasible){firstMemoryRejected=row;break;}results.push(row);
+ }
+ const feasible=results.filter(r=>r.feasible).sort((a,b)=>b.qps-a.qps||a.worst-b.worst||a.batch-b.batch);
+ return {...base,memory,results,feasible,best:feasible[0]||null,firstMemoryRejected,fit,
+  minLatency:results.length?Math.min(...results.map(r=>r.sloSeconds)):null,scannedBatches:results.length+(firstMemoryRejected?1:0),
+  failure:!results.length?'权重、KV/MTP 状态、workspace 与预留之和超出显存预算。':!feasible.length?'模型预测没有满足时延约束的候选。':''};
 }

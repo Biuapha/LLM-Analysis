@@ -41,11 +41,16 @@ for(const decodeMode of ['ratio','mtp']){
  assert.match(shared.plan.cacheAllocation.basis,/shared_prefix/);
 }
 // Dtype cannot differ between the memory model and fallback operator costs.
-const int8=run(base({fidelity:'calibrated',input:16384,output:1024,fixedD:33}));
-assert.equal(int8.d.memory.config.kvDtype,'int8');assert.equal(Boolean(int8.d.results[0]?.calibration.transfer),false);
+const int8=run(base({fidelity:'calibrated',input:16384,output:1024,fixedD:33,kvDtype:'int8'}));
+assert.equal(int8.d.memory.config.kvDtype,'int8');assert.equal(Boolean(int8.d.results[0]?.calibration.transfer),true);
 const normalized=int8.config,m=int8.d.memory;
 const inferred=ctx.pdBatch(normalized,normalized.d,33,'decode',m),explicit=ctx.pdBatch({...normalized,kvDtype:'int8'},normalized.d,33,'decode',m);
 close(inferred.duration,explicit.duration);
+const fp8=run(base({fidelity:'calibrated',input:16384,output:1024,fixedD:33}));
+assert.equal(fp8.d.memory.config.kvDtype,'fp8');assert.equal(fp8.d.best.calibration.targetNative,true);
+const fp8Ideal=run({...fp8.config,fidelity:'ideal'});
+assert.equal(fp8Ideal.d.memory.hardwareProfile,fp8.d.memory.hardwareProfile);
+assert.ok(fp8.d.best.itlSeconds>=fp8Ideal.d.best.itlSeconds);
 const reference=run(base({ratioSource:'reference'}));assert.equal(reference.d.results[0].itlTpotRatio,1);
 assert.equal(run(base({decodeMode:undefined})).d.results[0].itlTpotRatio,1);
 for(const [k,v]of [['fixedD',NaN],['fixedP',null],['input',Infinity],['itlTpotRatio',NaN],['itlTpotRatio',0],['itlTpotRatio',8],['constraintStatistic','p99'],['dPrefixLayout','unknown'],['kvDtype','fp4']])assert.equal(ctx.calculatePDSimulation(base({[k]:v})).valid,false,k+' '+v);
