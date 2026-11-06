@@ -107,6 +107,20 @@ vm.runInContext(src.slice(src.indexOf('function pdNativePayload('),src.indexOf('
 assert.throws(()=>ctx.pdNativePayload(source),/800T/);
 const native=base({fidelity:'msmodeling',decodeMode:'ratio',itl:.07,tpot:.02});native.p.pcp=1;
 const payload=ctx.pdNativePayload(native);assert.equal(payload.dConstraint,'both');assert.equal(payload.itlTpotRatio,1);assert.equal(payload.tpot,.02);
+// The legacy 850 key must use the user-corrected 112 GiB in both stages and
+// explicitly forward that ceiling to an adapter with an older reference profile.
+const atlas850={...native,p:{...native.p,hw:'a5-128',pcp:1,ep:8,usableGiB:0},d:{...native.d,hw:'a5-128',tp:1,ep:8,usableGiB:0}};
+const atlasPayload=ctx.pdNativePayload(atlas850);
+assert.equal(atlasPayload.p.usableGiB,112);assert.equal(atlasPayload.d.usableGiB,112);
+assert.equal(atlas850.p.usableGiB,0,'Preparing a native request must not mutate form input');
+assert.equal(ctx.pdNativePayload({...atlas850,d:{...atlas850.d,usableGiB:100}}).d.usableGiB,100);
+const atlasCase=run(base({p:{hw:'a5-128',nodes:1,tp:1,pcp:8,ep:8,usableGiB:0},d:{hw:'a5-128',nodes:1,tp:1,ep:8,usableGiB:0},input:131072,output:1024,dSharedPrefixRate:95}));
+for(const stage of ['p','d']){close(atlasCase[stage].memory.usableGiB,112);close(atlasCase[stage].memory.limit/2**30,89.6);}
+const at72=run({...atlasCase.config,fixedD:72}).d.results[0];
+const at73=run({...atlasCase.config,fixedD:73}).d.firstMemoryRejected;
+assert.ok(at72.memoryFeasible&&at72.peakBytes<=89.6*2**30);
+assert.equal(at73.batch,73);assert.ok(!at73.memoryFeasible&&at73.peakBytes>89.6*2**30);
+assert.equal(ctx.calculatePDSimulation({...atlasCase.config,d:{...atlasCase.config.d,usableGiB:128}}).d.valid,false);
 vm.runInContext('let pdNativeSettings=null;const pdNativeCopy=[];'+src.slice(src.indexOf('function pdNativeControls('),src.indexOf('function pdNativeReset(')),ctx);
 for(const [k,v]of Object.entries({'ratio':'3.5','decode-mode':'mtp','ratio-source':'custom',constraint:'tpot',chunk:'1024'}))el('pd-'+k).value=v;
 ctx.pdNativeControls(true);assert.equal(el('pd-constraint').value,'both');assert.equal(el('pd-constraint').disabled,true);assert.equal(el('pd-ratio').disabled,true);
