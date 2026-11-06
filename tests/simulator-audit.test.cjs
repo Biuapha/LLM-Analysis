@@ -115,6 +115,14 @@ assert.equal(atlasPayload.p.usableGiB,112);assert.equal(atlasPayload.d.usableGiB
 assert.equal(atlas850.p.usableGiB,0,'Preparing a native request must not mutate form input');
 assert.equal(ctx.pdNativePayload({...atlas850,d:{...atlas850.d,usableGiB:100}}).d.usableGiB,100);
 const atlasCase=run(base({p:{hw:'a5-128',nodes:1,tp:1,pcp:8,ep:8,usableGiB:0},d:{hw:'a5-128',nodes:1,tp:1,ep:8,usableGiB:0},input:131072,output:1024,dSharedPrefixRate:95}));
+const atlasHardware=vm.runInContext('pdData.devices',ctx).find(h=>h.id==='a5-128');
+assert.equal(atlasHardware.memoryBandwidth,1.4e12,'1.4 TB/s must be decimal bytes/s, not TiB/s');
+assert.equal(atlasHardware.memoryEfficiency,.8);
+let earlierBandwidth;
+try{atlasHardware.memoryBandwidth=1.6*2**40;earlierBandwidth=run(atlasCase.config);}finally{atlasHardware.memoryBandwidth=1.4e12;}
+assert.ok(atlasCase.d.results[0].tpotSeconds>earlierBandwidth.d.results[0].tpotSeconds,'Lower HBM bandwidth must affect decode timing');
+assert.ok(atlasCase.p.results[0].seconds>=earlierBandwidth.p.results[0].seconds,'Prefill must also consume the corrected profile');
+close(atlasCase.d.results[0].peakBytes,earlierBandwidth.d.results[0].peakBytes);
 for(const stage of ['p','d']){close(atlasCase[stage].memory.usableGiB,112);close(atlasCase[stage].memory.limit/2**30,89.6);}
 const at72=run({...atlasCase.config,fixedD:72}).d.results[0];
 const at73=run({...atlasCase.config,fixedD:73}).d.firstMemoryRejected;

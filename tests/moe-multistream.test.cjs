@@ -55,10 +55,13 @@ close(on.d.fit.scale,off.d.fit.scale);assert.ok(on.d.fit.trainingMultistream);
 assert.ok(off.d.results[0].tpotSeconds>on.d.results[0].tpotSeconds);
 assert.equal(ctx.pdCrossContext(on.config,on.config.d,'decode'),null);
 assert.equal(ctx.calculatePDSimulation({...base('a3-560'),fidelity:'calibrated'}).d.results[0].calibration.transfer,true);
-// Historical v10 analytic graph controls, retained separately from v13 calibrated curves.
+// Historical v10 analytic graph controls, retained separately from the current
+// corrected-bandwidth curves. Pin the old 850 bandwidth only inside this fixture.
 for(const [hw,nodes,batch,ms]of [['a5-96',1,41,19.5627389882712],['a5-96',2,58,29.920788486660236],['a5-96',4,50,29.984344024707116],['a5-128',1,43,29.798859882608703],['a5-128',2,40,29.796109743983475],['a5-128',4,38,29.670576920322908]]){
  const c=base(hw);c.d={...c.d,nodes,ep:8*nodes};
- const r=ctx.calculatePDSimulation({...c,fixedD:0}),b=r.d.best;
+ const hardware=vm.runInContext('pdData.devices',ctx).find(h=>h.id===hw),bandwidth=hardware.memoryBandwidth;
+ let r;try{if(hw==='a5-128')hardware.memoryBandwidth=1.6*2**40;r=ctx.calculatePDSimulation({...c,fixedD:0});}finally{hardware.memoryBandwidth=bandwidth;}
+ const b=r.d.best;
  assert.equal(b.batch,batch);close(b.tpotSeconds*1000,ms);
  close(b.qps/(nodes*8),batch/(1023*b.tpotSeconds));
  assert.ok(b.memoryFeasible&&b.itlSeconds<=.105&&b.tpotSeconds<=.03);
