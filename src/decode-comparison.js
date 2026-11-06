@@ -4,7 +4,7 @@
   const data = JSON.parse(document.getElementById('comparison-data').textContent);
   const el = id => document.getElementById('comparison-' + id);
   const atlas850 = data.hardwareProfiles.find(h => h.id === 'a5-128');
-  const hardwareNote = `850：${atlas850.memoryGiB} GiB / ${atlas850.memoryBandwidth/2**40} TiB/s / INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。`;
+  const hardwareNote = `850：${atlas850.memoryGiB} GiB / ${atlas850.memoryBandwidth/1e12} TB/s（${atlas850.memoryBandwidth/1e9} GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。`;
   const colors = {8:'#69adff',16:'#ffad71',32:'#61d8ba'};
   const positions = [[46,43],[33,46],[20,40],[31,13],[69,23],[59,38]];
   const visible = new Set(data.series.map((_, i) => i));
@@ -93,7 +93,7 @@
   });
   function download(content,mime,extension){
     const url=URL.createObjectURL(new Blob([content],{type:mime}));
-    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-v13-850-${atlas850.memoryGiB}GiB.${extension}`;
+    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-v13-850-${atlas850.memoryGiB}GiB-${atlas850.memoryBandwidth/1e12}TBps.${extension}`;
     document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   el('json').addEventListener('click',()=>download(JSON.stringify(data,null,2),'application/json','json'));

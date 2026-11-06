@@ -2,7 +2,7 @@
 <div class="comparison-app">
   <header class="comparison-heading">
     <div><p class="comparison-eyebrow">GLM-5.3-Flash · 纯 Decode</p><h1>850 / 850E · 六曲线对比</h1><p>同一 case 下，比较 batch、平均 TPOT 与单卡请求率。</p></div>
-    <div class="comparison-version"><strong>v13 · 850 显存修正为 112 GiB</strong><span>MoE 共享专家 Multi-stream 开启</span><span>2026-11-06 · 固定场景</span></div>
+    <div class="comparison-version"><strong>v13 · 850 112 GiB / 1.4 TB/s</strong><span>MoE 共享专家 Multi-stream 开启</span><span>2026-11-06 · 固定场景</span></div>
   </header>
   <div class="comparison-case" aria-label="固定仿真条件">
     <span><b>128K → 1K</b> 输入 / 输出</span><span><b>95%</b> P prefix cache 命中</span><span><b>MTP5</b> 草稿长度</span><span><b>3.5</b> ITL / TPOT</span><span><b>TP1 · DP=EP</b> 8 / 16 / 32</span>
@@ -27,7 +27,7 @@
     <div id="comparison-inspection" aria-live="polite"></div>
   </section>
   <section class="comparison-notes" aria-label="硬件画像与建模口径">
-    <div><h2>硬件与显存</h2><p id="comparison-hardware-note">850：112 GiB / 1.6 TiB/s / INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。</p><p>两者均使用 80% 显存利用率、4 GiB 运行时预留；D 的输入前缀按 95% 跨请求物理共享估算。</p><p id="comparison-capacity-note"></p></div>
+    <div><h2>硬件与显存</h2><p id="comparison-hardware-note">850：112 GiB / 1.4 TB/s（1400 GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。</p><p>两者均使用 80% 显存利用率、4 GiB 运行时预留；D 的输入前缀按 95% 跨请求物理共享估算。</p><p id="comparison-capacity-note"></p></div>
     <div><h2>校准范围</h2><p>850 为硬件模型，暂无本机校准；850E 使用 EP8 测点校正，EP16 / EP32 沿用校正并按目标拓扑建模。六条完整曲线均为预测，未测 batch 和跨机拓扑属于外推。</p><p>P 命中率与 D 物理共享比例是独立假设；D 仍访问完整上下文。两种机型 KV 精度不同。本页保留固定成果，不随第 4 页参数变化。</p></div>
   </section>
   <footer class="comparison-footer"><span id="comparison-source"></span><div><button id="comparison-csv" type="button">下载 CSV</button><button id="comparison-json" type="button">下载 JSON</button><button id="comparison-svg" type="button">下载曲线 SVG</button></div></footer>

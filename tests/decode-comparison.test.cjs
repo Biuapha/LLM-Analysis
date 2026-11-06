@@ -13,6 +13,7 @@ assert.deepEqual(saved.sharedCase, current.sharedCase);
 assert.equal(saved.series.length, 6);
 assert.deepEqual(saved.hardwareProfiles,current.hardwareProfiles);
 assert.equal(saved.hardwareProfiles.find(h=>h.id==='a5-128').memoryGiB,112);
+assert.equal(saved.hardwareProfiles.find(h=>h.id==='a5-128').memoryBandwidth,1.4e12);
 assert.equal(saved.series[0].summary.budgetGiB,89.6);
 assert.equal(saved.series[0].summary.firstMemoryRejected,73);
 assert.equal(saved.series[0].rows[72].memoryFeasible,true);
