@@ -1,44 +1,49 @@
 # Page 5: GLM-5.3-Flash 850 / 850E comparison
 
 Open `glm53_prefill_decode_operator_block_diagram.html#comparison` or the fifth tab.
-The page presents the six v13 curves from capacity- and bandwidth-corrected engine commit `facb291`, using a fixed case:
-128K input, 1K output, P prefix hit 95%, D physical prefix sharing 95%, MTP5,
-ITL/TPOT 3.5, TP1, DP=EP 8/16/32, multistream enabled, memory utilization 80%,
-4 GiB runtime reserve, batch per DP 0–90. B0 has no defined TPOT or QPS.
+The page presents the frozen v13 curves with a per-hardware multiplicative
+correction to the user-confirmed B28 / DP8 / EP8 ITL anchors: 850 = 100 ms,
+850E = 62.4 ms. The factors are 0.9600549953756905 and 1.2536630749579762.
+Apply the same hardware factor to EP8, EP16 and EP32, preserving each curve's
+shape, hardware settings and capacity model. The page-four simulator is unchanged.
 
-The figure separates memory-feasible predictions from faded over-budget
-predictions. The six QPS labels and summary show each configuration's maximum
-per-card QPS satisfying TPOT <=30ms, ITL <=105ms and the model's memory budget.
-850E EP8 stops at B41 (17.308ms); B42 is over budget. It must not be presented as
-reaching the 30ms line with an executable batch.
+The figure retains all six QPS labels, recalculated constrained optima and two
+B28 anchor markers. The legend toggles curves and corresponding labels; the
+slider/click inspector and CSV, JSON and SVG exports use the corrected data.
+TPOT <= 30 ms corresponds to ITL <= 105 ms under the assumed ratio of 3.5.
+850E EP8 stops at the inherited B41 memory boundary, now at 21.698 ms.
 
-The legend toggles curves. The range input or chart click inspects a batch.
-Downloads include CSV/JSON for all series and SVG for the visible curves.
-This fixed GLM result is independent of page-four edits. The fifth tab is
-disabled for the DeepSeek model; switching to DeepSeek while on page five opens
-its performance page so GLM results are never labeled as DeepSeek predictions.
+The anchors came from the 4K-output profiling workload. The chart retains the
+128K-input / 1K-output QPS convention and TPOT = ITL / 3.5. This TPOT is derived,
+not streaming-measured TPOT. Only the two B28 EP8 anchors are measured inputs;
+other batches and cross-node EP16/32 are extrapolated. In particular, a whole-
+curve factor also scales modeled communication; it does not calibrate the network.
+
+Capacity assumptions remain 80% memory utilization, 4 GiB reserve, 95% physical
+prefix sharing, 850 INT8 KV and 850E FP8 KV. The B28 run used FP8 KV on both
+hardware, 92.96875% actual cache hits and different memory settings. No capacity
+endpoints were revalidated. DeepSeek and the page-four engine are unchanged.
 
 ## Rebuilding
 
-The original report is saved in `data/decode-comparison-v13.json`; it includes
-the source engine, commit, original HTML digest, configurations and predictions.
-These identify the original curve-generation engine, not the later page layout.
-Editable assets are `src/decode-comparison.{html,css,js}`. Run:
+Keep the frozen baseline in `data/decode-comparison-v13.json`. The published
+corrected report is `data/decode-comparison-b28.json`. Editable chart assets are
+`src/decode-comparison.{html,css,js}`. Run:
 
 ```sh
 python scripts/embed-decode-comparison.py
 node tests/decode-comparison.test.cjs
 ```
 
-The embedder is idempotent and retains the standalone HTML with no external
-chart library or data fetch. The data regression test recomputes all 540 nonzero
-points through the production calibrated stage entry and checks all six optima.
-Any future model revision needs an intentional snapshot/version update.
+The embedder is idempotent. Cache reference data and comparison data are loaded
+through synchronous local JS assets so every file uploaded is under 1 MB. Each
+loader inserts the same application/json script element before its consumer;
+no fetch race or external chart library is introduced. Cache reference JSON
+values are unchanged. Publish the HTML and `data/` assets together.
 
-850 has no native timing calibration. 850E EP8 uses sparse measured correction;
-EP16/32 transfer that correction to modeled target topologies. Complete curves
-are predictions. Their automatic KV dtypes differ: 850 INT8, 850E FP8. Cache-hit
-rate alone does not establish physical sharing, and decode attends full context.
+The test independently reproduces the baseline stage results, verifies all 540
+corrected points and six constrained optima, and checks the data loaders and
+interactive renderer without reading any images.
 
 ## Atlas 850 capacity correction (2026-11-06)
 

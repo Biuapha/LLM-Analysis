@@ -1,4 +1,4 @@
-"""Embed the fixed six-curve result and page assets into the standalone site."""
+"""Embed the fixed six-curve result and page assets into the site with synchronous data assets."""
 import json
 import re
 from pathlib import Path
@@ -19,6 +19,21 @@ def asset(tag, name, body, attrs=''):
         marker = '</head>' if tag == 'style' else '</body>'
         assert marker in html
         html = html.replace(marker, block+'\n'+marker, 1)
+
+def external_json(name, filename, data):
+    global html
+    payload = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
+    js = "(() => {\n  const node = document.createElement('script');\n"
+    js += f"  node.id = {json.dumps(name)}; node.type = 'application/json';\n"
+    js += "  node.textContent = JSON.stringify(" + payload + ");\n"
+    js += "  document.currentScript.before(node);\n})();\n"
+    (root / filename).write_text(js, encoding='utf-8')
+    block = f'<script id="{name}-loader" src="{filename}"></script>'
+    pattern = rf'<script id="{name}(?:-loader)?"[^>]*>[\s\S]*?</script>'
+    assert re.search(pattern, html), name
+    html = re.sub(pattern, lambda _: block, html, count=1)
+
+external_json('cache-data', 'data/glm53-cache-reference.js', json.loads((root / 'data/glm53-cache-reference.json').read_text(encoding='utf-8')))
 
 body = (root / 'src/decode-comparison.html').read_text(encoding='utf-8').strip()
 block = '<!-- decode-comparison-page:start -->\n'+body+'\n<!-- decode-comparison-page:end -->'
@@ -48,10 +63,10 @@ for old, new in edits:
         html = html.replace(old, new, 1)
 html = html.replace('GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真</title>', 'GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 六曲线对比</title>')
 
-data = json.loads((root / 'data/decode-comparison-v13.json').read_text(encoding='utf-8'))
+data = json.loads((root / 'data/decode-comparison-b28.json').read_text(encoding='utf-8'))
 assert len(data['series']) == 6
 asset('style', 'comparison-style', (root / 'src/decode-comparison.css').read_text(encoding='utf-8'))
-asset('script', 'comparison-data', json.dumps(data,ensure_ascii=False,separators=(',',':')), ' type="application/json"')
+external_json('comparison-data', 'data/decode-comparison-b28.js', data)
 asset('script', 'comparison-script', (root / 'src/decode-comparison.js').read_text(encoding='utf-8'))
 path.write_bytes(html.replace('\n',newline).encode('utf-8'))
-print('Embedded page 5, six v13 curves, navigation and comparison assets.')
+print('Embedded page 5, six B28-corrected curves and synchronous data assets.')

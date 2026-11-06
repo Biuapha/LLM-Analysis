@@ -1,18 +1,18 @@
 <section class="deck-slide" id="comparison-page" role="tabpanel" aria-labelledby="comparison-tab" hidden>
 <div class="comparison-app">
   <header class="comparison-heading">
-    <div><p class="comparison-eyebrow">GLM-5.3-Flash · 纯 Decode</p><h1>850 / 850E · 六曲线对比</h1><p>同一 case 下，比较 batch、平均 TPOT 与单卡请求率。</p></div>
-    <div class="comparison-version"><strong>v13 · 850 112 GiB / 1.4 TB/s</strong><span>MoE 共享专家 Multi-stream 开启</span><span>2026-11-06 · 固定场景</span></div>
+    <div><p class="comparison-eyebrow">GLM-5.3-Flash · 纯 Decode</p><h1>850 / 850E · 六曲线对比</h1><p>按 B28 实测 ITL 校正，保留六条曲线与单卡 QPS 标记。</p></div>
+    <div class="comparison-version"><strong>v13 · B28 实测比例校正</strong><span>850 ITL 100 ms · 850E ITL 62.4 ms</span><span>2026-11-06 · 固定场景</span></div>
   </header>
   <div class="comparison-case" aria-label="固定仿真条件">
     <span><b>128K → 1K</b> 输入 / 输出</span><span><b>95%</b> P prefix cache 命中</span><span><b>MTP5</b> 草稿长度</span><span><b>3.5</b> ITL / TPOT</span><span><b>TP1 · DP=EP</b> 8 / 16 / 32</span>
   </div>
   <div class="comparison-layout">
     <article class="comparison-panel comparison-chart-panel">
-      <div class="comparison-chart-heading"><h2>Batch / DP 与平均 TPOT</h2><button type="button" id="comparison-reset">显示全部曲线</button></div>
+      <div class="comparison-chart-heading"><h2>Batch / DP 与校正后 TPOT</h2><button type="button" id="comparison-reset">显示全部曲线</button></div>
       <div id="comparison-legend" class="comparison-legend" aria-label="选择显示的曲线"></div>
       <div class="comparison-chart-scroll"><svg id="comparison-chart" viewBox="0 0 1040 570" role="img" aria-label="850 和 850E 的六条 batch 与 TPOT 曲线，标出 30 ms 约束下的最佳单卡 QPS" aria-describedby="comparison-chart-note"></svg></div>
-      <p id="comparison-chart-note" class="comparison-muted">实线：850；虚线：850E。淡线与 ×：超过模型显存预算，仅表示耗时预测。标注单位为 QPS/卡。</p>
+      <p id="comparison-chart-note" class="comparison-muted">实线：850；虚线：850E。淡线与 ×：超过模型显存预算，仅表示耗时预测。标注单位为 QPS/卡；菱形锚点为 B28 / EP8 实测 ITL 按 r=3.5 换算。</p>
     </article>
     <aside class="comparison-panel comparison-best">
       <h2>TPOT ≤ 30 ms</h2><p class="comparison-muted">同时满足 ITL ≤ 105 ms 与显存预算<br>取 B1–B90 内单卡 QPS 最高的整数 batch</p>
@@ -22,13 +22,13 @@
     </aside>
   </div>
   <section class="comparison-panel comparison-inspector" aria-label="查看指定 batch 的预测">
-    <div class="comparison-slider"><label for="comparison-batch">查看 batch / DP <output id="comparison-batch-value" for="comparison-batch">40</output></label><input type="range" id="comparison-batch" min="0" max="90" step="1" value="40"/><span>0—90</span></div>
+    <div class="comparison-slider"><label for="comparison-batch">查看 batch / DP <output id="comparison-batch-value" for="comparison-batch">28</output></label><input type="range" id="comparison-batch" min="0" max="90" step="1" value="28"/><span>0—90</span></div>
     <p class="comparison-muted">移动滑块或点击图表查看同一 batch；无请求时（B0），TPOT 和 QPS 不定义。</p>
     <div id="comparison-inspection" aria-live="polite"></div>
   </section>
   <section class="comparison-notes" aria-label="硬件画像与建模口径">
     <div><h2>硬件与显存</h2><p id="comparison-hardware-note">850：112 GiB / 1.4 TB/s（1400 GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。</p><p>两者均使用 80% 显存利用率、4 GiB 运行时预留；D 的输入前缀按 95% 跨请求物理共享估算。</p><p id="comparison-capacity-note"></p></div>
-    <div><h2>校准范围</h2><p>850 为硬件模型，暂无本机校准；850E 使用 EP8 测点校正，EP16 / EP32 沿用校正并按目标拓扑建模。六条完整曲线均为预测，未测 batch 和跨机拓扑属于外推。</p><p>P 命中率与 D 物理共享比例是独立假设；D 仍访问完整上下文。两种机型 KV 精度不同。本页保留固定成果，不随第 4 页参数变化。</p></div>
+    <div><h2>校准范围</h2><p>B28 / DP8 / EP8：850 的 ITL 为 100 ms，850E 为 62.4 ms；各自三条曲线分别乘 0.960055、1.253663。六个 QPS 最优点已重新计算。未测 batch 和 EP16 / EP32 为外推，容量模型未重新校准。</p><p>锚点来自 4K 输出采样；曲线沿用 1K 输出，TPOT = ITL / 3.5，是换算值而非流式实测 TPOT。原容量模型保留 95% 物理共享与两种 KV 精度；本轮实测均为 FP8 KV、实际命中 92.96875%。本页不改变第 4 页仿真引擎。</p></div>
   </section>
   <footer class="comparison-footer"><span id="comparison-source"></span><div><button id="comparison-csv" type="button">下载 CSV</button><button id="comparison-json" type="button">下载 JSON</button><button id="comparison-svg" type="button">下载曲线 SVG</button></div></footer>
 </div>

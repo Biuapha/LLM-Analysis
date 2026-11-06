@@ -6,7 +6,7 @@
   const atlas850 = data.hardwareProfiles.find(h => h.id === 'a5-128');
   const hardwareNote = `850：${atlas850.memoryGiB} GiB / ${atlas850.memoryBandwidth/1e12} TB/s（${atlas850.memoryBandwidth/1e9} GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。`;
   const colors = {8:'#69adff',16:'#ffad71',32:'#61d8ba'};
-  const positions = [[46,43],[33,46],[20,40],[31,13],[69,23],[59,38]];
+  const positions = [[14,35],[38,44],[58,52],[65,16],[74,35],[44,13]];
   const visible = new Set(data.series.map((_, i) => i));
   const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const name = s => `${s.hardware} · DP${s.ranks} EP${s.ranks}`;
@@ -24,7 +24,7 @@
     for (let b = 0; b <= 90; b += 10) svg += text(x(b),513,b,'text-anchor="middle"');
     svg += `<path d="M68 36V488H1002" fill="none" stroke="#527087"/>`;
     svg += text(535,550,'Batch / DP（每个 DP 的请求数）','text-anchor="middle" font-size="15"');
-    svg += text(18,260,'平均 TPOT（ms）','text-anchor="middle" transform="rotate(-90 18 260)"');
+    svg += text(18,260,'校正后 TPOT（ms）','text-anchor="middle" transform="rotate(-90 18 260)"');
     svg += `<line x1="68" y1="${y(30)}" x2="1002" y2="${y(30)}" stroke="#e3cc91" stroke-dasharray="7 5"/>` + text(996,y(30)-10,'30 ms · ITL 105 ms','text-anchor="end"');
     data.series.forEach((s, i) => {
       if (!visible.has(i)) return;
@@ -48,8 +48,19 @@
       const px=x(p.batchPerDP),py=y(p.tpotMs),lx=x(positions[i][0]),ly=y(positions[i][1]);
       svg += `<g data-best="${i}"><title>${esc(name(s))}: B${p.batchPerDP}, ${p.tpotMs.toFixed(3)} ms, ${p.qpsPerCard.toFixed(6)} QPS/卡</title><path d="M${px},${py}L${lx},${ly}" stroke="${color}" stroke-width="1"/>`;
       svg += marker(px,py,color,diamond,6);
-      svg += `<rect data-qps-label="${i}" x="${lx-39}" y="${ly-16}" width="78" height="32" rx="5" fill="#102230" stroke="${color}" ${diamond?'stroke-dasharray="4 2"':''}/>`;
-      svg += text(lx,ly+5,p.qpsPerCard.toFixed(3)+(p.limit==='memory'?' *':''),`text-anchor="middle" font-weight="700" style="fill:${color}"`)+'</g>';
+      svg += `<rect data-qps-label="${i}" x="${lx-62}" y="${ly-17}" width="124" height="34" rx="5" fill="#102230" stroke="${color}" ${diamond?'stroke-dasharray="4 2"':''}/>`;
+      svg += text(lx,ly+5,p.qpsPerCard.toFixed(3)+' QPS/卡'+(p.limit==='memory'?' *':''),`text-anchor="middle" font-weight="700" style="fill:${color}"`)+'</g>';
+    });
+    // B28 EP8 anchors are the only measured inputs to this fixed comparison.
+    Object.entries(data.anchors).forEach(([hardware,a])=>{
+      const index=data.series.findIndex(s=>s.hardware===hardware&&s.ranks===8);
+      if(!visible.has(index))return;
+      const px=x(a.batchPerDP),py=y(a.targetNormalizedTPOTms);
+      const labelX=x(hardware==='850'?17:17),labelY=y(hardware==='850'?46:7);
+      svg+=`<g data-calibration-anchor="${hardware}"><title>${hardware} B28 EP8: ITL ${a.targetITLms} ms; TPOT ${a.targetNormalizedTPOTms.toFixed(3)} ms at r=3.5</title><path d="M${px},${py}L${labelX},${labelY}" stroke="#d6e5ef" stroke-width="1"/>`;
+      svg+=marker(px,py,'#f4e3aa',true,8);
+      svg+=`<rect data-anchor-label="${hardware}" x="${labelX-112}" y="${labelY-17}" width="224" height="34" rx="5" fill="#102230" stroke="#b3cadb"/>`;
+      svg+=text(labelX,labelY+5,`${hardware} B28 · ITL ${a.targetITLms} ms`,'text-anchor="middle" style="fill:#e4eff6"')+'</g>';
     });
     const batch=Number(el('batch').value);
     svg += `<line id="comparison-cursor" x1="${x(batch)}" y1="36" x2="${x(batch)}" y2="488" stroke="#c3d8e5" opacity="0.35" stroke-dasharray="2 5" pointer-events="none"/>`;
@@ -71,7 +82,7 @@
   el('summary').innerHTML=data.series.map(s=>`<div class="comparison-summary-row" style="--series:${colors[s.ranks]}"><b>${esc(name(s))}</b><strong>${s.summary.qpsPerCard.toFixed(3)}</strong><small>B${s.summary.batchPerDP} · ${s.summary.tpotMs.toFixed(3)} ms${s.summary.limit==='memory'?' *':''}</small><small>QPS/卡</small></div>`).join('');
   const memoryPoint=data.series.find(s=>s.hardware==='850E'&&s.ranks===8).summary;
   el('memory-note').textContent=`* 850E EP8：B${memoryPoint.batchPerDP} 已到模型显存边界，TPOT ${memoryPoint.tpotMs.toFixed(3)} ms；B${memoryPoint.firstMemoryRejected} 起超预算，不能继续加 batch 到 30 ms。`;
-  el('source').textContent=`来源：${data.engine} · 曲线基线 ${data.commit.slice(0,7)} · 540 个非零 batch 测算点`;
+  el('source').textContent=`来源：${data.engine} · 曲线基线 ${data.commit.slice(0,7)} · 540 个非零 batch 测算点 · 850 ×0.960055 / 850E ×1.253663`;
   el('hardware-note').textContent=hardwareNote+'每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。';
   const atlasPoint=data.series.find(s=>s.hardware==='850'&&s.ranks===8).summary;
   el('capacity-note').textContent=`850 的显存预算为 ${atlas850.memoryGiB} × 80% = ${atlasPoint.budgetGiB} GiB，包含 4 GiB 运行时预留；EP8 从 B${atlasPoint.firstMemoryRejected} 起超预算。30 ms 最优 B${atlasPoint.batchPerDP} 仍满足显存约束。`;
@@ -93,19 +104,19 @@
   });
   function download(content,mime,extension){
     const url=URL.createObjectURL(new Blob([content],{type:mime}));
-    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-v13-850-${atlas850.memoryGiB}GiB-${atlas850.memoryBandwidth/1e12}TBps.${extension}`;
+    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-B28-corrected-QPS.${extension}`;
     document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   el('json').addEventListener('click',()=>download(JSON.stringify(data,null,2),'application/json','json'));
   el('csv').addEventListener('click',()=>{
-    const columns=['hardware','id','batchPerDP','totalInFlight','tpotMs','itlMs','qpsPerCard','peakGiB','memoryBudgetGiB','memoryFeasible','meets30msLimit','calibrationApplied','calibrationTransferred','extrapolated'];
+    const columns=['hardware','id','batchPerDP','totalInFlight','tpotMs','itlMs','qpsPerCard','peakGiB','memoryBudgetGiB','memoryFeasible','meets30msLimit','calibrationApplied','calibrationTransferred','calibrationFactor','baselineTPOTms','baselineITLms','isCalibrationAnchor','extrapolated'];
     const rows=data.series.flatMap(s=>s.rows.map(r=>columns.map(k=>r[k]??s[k]??'').join(',')));
     download('\uFEFF'+[columns.join(','),...rows].join('\r\n')+'\r\n','text/csv;charset=utf-8','csv');
   });
   el('svg').addEventListener('click',()=>{
     // Export the visible curves with the fixed case and model scope attached.
     const chart=el('chart').cloneNode(true);chart.querySelector('#comparison-cursor')?.remove();
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 790" width="1040" height="790" font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect width="1040" height="790" fill="#0b1b27"/>${text(24,32,'GLM-5.3-Flash · 850 / 850E · 纯 Decode · v13','font-weight="700"')}${text(24,58,'128K / 1K · P 命中 95% · D 物理共享 95% · MTP5 · ITL/TPOT=3.5 · TP1 · 多流开启')}<g transform="translate(0 130)">${chart.innerHTML}</g>${data.series.filter((_,i)=>visible.has(i)).map((s,i)=>text(24+(i%3)*340,88+Math.floor(i/3)*24,`${s.hardware==='850'?'实线':'虚线'} ${name(s)}: ${s.summary.qpsPerCard.toFixed(3)} QPS/卡`, `style="fill:${colors[s.ranks]}"`)).join('')}${text(24,720,'80% 显存利用率 / 4 GiB 预留；淡线为超显存预算。B0 时延不定义。')}${text(24,746,'850 未本机校准；850E EP8 测点校正，EP16/32 迁移；六条曲线均为预测。')}${text(24,772,hardwareNote)}</svg>`;
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 790" width="1040" height="790" font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect width="1040" height="790" fill="#0b1b27"/>${text(24,32,'GLM-5.3-Flash · 850 / 850E · B28 ITL 校正 · QPS/卡','font-weight="700"')}${text(24,58,'128K / 1K · P 命中 95% · D 物理共享 95% · MTP5 · ITL/TPOT=3.5 · TP1 · 多流开启')}<g transform="translate(0 130)">${chart.innerHTML}</g>${data.series.filter((_,i)=>visible.has(i)).map((s,i)=>text(24+(i%3)*340,88+Math.floor(i/3)*24,`${s.hardware==='850'?'实线':'虚线'} ${name(s)}: ${s.summary.qpsPerCard.toFixed(3)} QPS/卡`, `style="fill:${colors[s.ranks]}"`)).join('')}${text(24,720,'80% 显存利用率 / 4 GiB 预留；淡线为超显存预算。B0 时延不定义。')}${text(24,746,'B28 EP8 ITL: 850 100 ms / 850E 62.4 ms；其余 batch 与 EP16/32 外推；TPOT=ITL/3.5。')}${text(24,772,hardwareNote)}</svg>`;
     download(svg,'image/svg+xml;charset=utf-8','svg');
   });
   renderChart();inspect();
