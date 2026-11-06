@@ -11,6 +11,12 @@ const current = JSON.parse(cp.execFileSync(process.execPath, ['scripts/report-mu
 assert.equal(saved.engine, current.engine);
 assert.deepEqual(saved.sharedCase, current.sharedCase);
 assert.equal(saved.series.length, 6);
+assert.deepEqual(saved.hardwareProfiles,current.hardwareProfiles);
+assert.equal(saved.hardwareProfiles.find(h=>h.id==='a5-128').memoryGiB,112);
+assert.equal(saved.series[0].summary.budgetGiB,89.6);
+assert.equal(saved.series[0].summary.firstMemoryRejected,73);
+assert.equal(saved.series[0].rows[72].memoryFeasible,true);
+assert.equal(saved.series[0].rows[73].memoryFeasible,false);
 for (let i=0;i<6;i++) {
   const actual=current.series[i], expected=saved.series[i];
   assert.equal(expected.id,actual.id);

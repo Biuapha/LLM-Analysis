@@ -3,6 +3,8 @@
   'use strict';
   const data = JSON.parse(document.getElementById('comparison-data').textContent);
   const el = id => document.getElementById('comparison-' + id);
+  const atlas850 = data.hardwareProfiles.find(h => h.id === 'a5-128');
+  const hardwareNote = `850：${atlas850.memoryGiB} GiB / ${atlas850.memoryBandwidth/2**40} TiB/s / INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。`;
   const colors = {8:'#69adff',16:'#ffad71',32:'#61d8ba'};
   const positions = [[46,43],[33,46],[20,40],[31,13],[69,23],[59,38]];
   const visible = new Set(data.series.map((_, i) => i));
@@ -70,6 +72,9 @@
   const memoryPoint=data.series.find(s=>s.hardware==='850E'&&s.ranks===8).summary;
   el('memory-note').textContent=`* 850E EP8：B${memoryPoint.batchPerDP} 已到模型显存边界，TPOT ${memoryPoint.tpotMs.toFixed(3)} ms；B${memoryPoint.firstMemoryRejected} 起超预算，不能继续加 batch 到 30 ms。`;
   el('source').textContent=`来源：${data.engine} · 曲线基线 ${data.commit.slice(0,7)} · 540 个非零 batch 测算点`;
+  el('hardware-note').textContent=hardwareNote+'每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。';
+  const atlasPoint=data.series.find(s=>s.hardware==='850'&&s.ranks===8).summary;
+  el('capacity-note').textContent=`850 的显存预算为 ${atlas850.memoryGiB} × 80% = ${atlasPoint.budgetGiB} GiB，包含 4 GiB 运行时预留；EP8 从 B${atlasPoint.firstMemoryRejected} 起超预算。30 ms 最优 B${atlasPoint.batchPerDP} 仍满足显存约束。`;
   el('legend').addEventListener('click',event=>{
     const button=event.target.closest('[data-series-toggle]');if(!button)return;
     const i=Number(button.dataset.seriesToggle);visible.has(i)?visible.delete(i):visible.add(i);
@@ -88,7 +93,7 @@
   });
   function download(content,mime,extension){
     const url=URL.createObjectURL(new Blob([content],{type:mime}));
-    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-v13.${extension}`;
+    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-v13-850-${atlas850.memoryGiB}GiB.${extension}`;
     document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   el('json').addEventListener('click',()=>download(JSON.stringify(data,null,2),'application/json','json'));
@@ -100,7 +105,7 @@
   el('svg').addEventListener('click',()=>{
     // Export the visible curves with the fixed case and model scope attached.
     const chart=el('chart').cloneNode(true);chart.querySelector('#comparison-cursor')?.remove();
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 790" width="1040" height="790" font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect width="1040" height="790" fill="#0b1b27"/>${text(24,32,'GLM-5.3-Flash · 850 / 850E · 纯 Decode · v13','font-weight="700"')}${text(24,58,'128K / 1K · P 命中 95% · D 物理共享 95% · MTP5 · ITL/TPOT=3.5 · TP1 · 多流开启')}<g transform="translate(0 130)">${chart.innerHTML}</g>${data.series.filter((_,i)=>visible.has(i)).map((s,i)=>text(24+(i%3)*340,88+Math.floor(i/3)*24,`${s.hardware==='850'?'实线':'虚线'} ${name(s)}: ${s.summary.qpsPerCard.toFixed(3)} QPS/卡`, `style="fill:${colors[s.ranks]}"`)).join('')}${text(24,720,'80% 显存利用率 / 4 GiB 预留；淡线为超显存预算。B0 时延不定义。')}${text(24,746,'850 未本机校准；850E EP8 测点校正，EP16/32 迁移；六条曲线均为预测。')}${text(24,772,'850: 128 GiB / 1.6 TiB/s / INT8 KV；850E: 96 GiB / 4 TiB/s / FP8 KV（可见 91.75 GiB）')}</svg>`;
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 790" width="1040" height="790" font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect width="1040" height="790" fill="#0b1b27"/>${text(24,32,'GLM-5.3-Flash · 850 / 850E · 纯 Decode · v13','font-weight="700"')}${text(24,58,'128K / 1K · P 命中 95% · D 物理共享 95% · MTP5 · ITL/TPOT=3.5 · TP1 · 多流开启')}<g transform="translate(0 130)">${chart.innerHTML}</g>${data.series.filter((_,i)=>visible.has(i)).map((s,i)=>text(24+(i%3)*340,88+Math.floor(i/3)*24,`${s.hardware==='850'?'实线':'虚线'} ${name(s)}: ${s.summary.qpsPerCard.toFixed(3)} QPS/卡`, `style="fill:${colors[s.ranks]}"`)).join('')}${text(24,720,'80% 显存利用率 / 4 GiB 预留；淡线为超显存预算。B0 时延不定义。')}${text(24,746,'850 未本机校准；850E EP8 测点校正，EP16/32 迁移；六条曲线均为预测。')}${text(24,772,hardwareNote)}</svg>`;
     download(svg,'image/svg+xml;charset=utf-8','svg');
   });
   renderChart();inspect();

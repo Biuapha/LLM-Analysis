@@ -1,7 +1,7 @@
 # Page 5: GLM-5.3-Flash 850 / 850E comparison
 
 Open `glm53_prefill_decode_operator_block_diagram.html#comparison` or the fifth tab.
-The page presents the six v13 curves from commit `580da4d`, using a fixed case:
+The page presents the six v13 curves from capacity-corrected engine commit `eff425c`, using a fixed case:
 128K input, 1K output, P prefix hit 95%, D physical prefix sharing 95%, MTP5,
 ITL/TPOT 3.5, TP1, DP=EP 8/16/32, multistream enabled, memory utilization 80%,
 4 GiB runtime reserve, batch per DP 0–90. B0 has no defined TPOT or QPS.
@@ -39,3 +39,18 @@ Any future model revision needs an intentional snapshot/version update.
 EP16/32 transfer that correction to modeled target topologies. Complete curves
 are predictions. Their automatic KV dtypes differ: 850 INT8, 850E FP8. Cache-hit
 rate alone does not establish physical sharing, and decode attends full context.
+
+## Atlas 850 capacity correction (2026-11-06)
+
+Atlas 850 now uses the user-confirmed 112 GiB capacity. Its legacy ID
+`a5-128` and msModeling reference-profile name remain stable for saved-config
+compatibility; `memoryGiB=112` is authoritative. Native requests with automatic
+capacity explicitly send `usableGiB=112` rather than inheriting the old profile.
+Bandwidth remains 1.6 TiB/s. Atlas 850E remains 96 GiB / 91.75 GiB visible.
+
+The chart uses an 89.6 GiB budget (112 x 80%), including the 4 GiB runtime
+reserve. 850 EP8 is feasible through B72; B73 and above are shown as
+over-budget predictions. All three 850 optima under 30ms are unchanged
+(B43/B40/B38, 1.411/1.312/1.252 QPS per card), since their peak memory already
+fits the corrected budget. All 540 points were recomputed from the corrected
+engine. The saved report retains its generating commit and HTML digest.
