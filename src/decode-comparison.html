@@ -1,0 +1,35 @@
+<section class="deck-slide" id="comparison-page" role="tabpanel" aria-labelledby="comparison-tab" hidden>
+<div class="comparison-app">
+  <header class="comparison-heading">
+    <div><p class="comparison-eyebrow">GLM-5.3-Flash · 纯 Decode</p><h1>850 / 850E · 六曲线对比</h1><p>同一 case 下，比较 batch、平均 TPOT 与单卡请求率。</p></div>
+    <div class="comparison-version"><strong>v13 仿真成果</strong><span>MoE 共享专家 Multi-stream 开启</span><span>2026-11-06 · 固定场景</span></div>
+  </header>
+  <div class="comparison-case" aria-label="固定仿真条件">
+    <span><b>128K → 1K</b> 输入 / 输出</span><span><b>95%</b> P prefix cache 命中</span><span><b>MTP5</b> 草稿长度</span><span><b>3.5</b> ITL / TPOT</span><span><b>TP1 · DP=EP</b> 8 / 16 / 32</span>
+  </div>
+  <div class="comparison-layout">
+    <article class="comparison-panel comparison-chart-panel">
+      <div class="comparison-chart-heading"><h2>Batch / DP 与平均 TPOT</h2><button type="button" id="comparison-reset">显示全部曲线</button></div>
+      <div id="comparison-legend" class="comparison-legend" aria-label="选择显示的曲线"></div>
+      <div class="comparison-chart-scroll"><svg id="comparison-chart" viewBox="0 0 1040 570" role="img" aria-label="850 和 850E 的六条 batch 与 TPOT 曲线，标出 30 ms 约束下的最佳单卡 QPS" aria-describedby="comparison-chart-note"></svg></div>
+      <p id="comparison-chart-note" class="comparison-muted">实线：850；虚线：850E。淡线与 ×：超过模型显存预算，仅表示耗时预测。标注单位为 QPS/卡。</p>
+    </article>
+    <aside class="comparison-panel comparison-best">
+      <h2>TPOT ≤ 30 ms</h2><p class="comparison-muted">同时满足 ITL ≤ 105 ms 与显存预算<br>取 B1–B90 内单卡 QPS 最高的整数 batch</p>
+      <div id="comparison-summary"></div>
+      <p class="comparison-memory-note" id="comparison-memory-note"></p>
+      <p class="comparison-formula">单卡 QPS = 每 DP 请求数 ÷<br>[(1024 − 1) × 平均 TPOT（秒）]<br><small>首 token 属于 P；本页 TP1，每个 DP 对应一张卡。</small></p>
+    </aside>
+  </div>
+  <section class="comparison-panel comparison-inspector" aria-label="查看指定 batch 的预测">
+    <div class="comparison-slider"><label for="comparison-batch">查看 batch / DP <output id="comparison-batch-value" for="comparison-batch">40</output></label><input type="range" id="comparison-batch" min="0" max="90" step="1" value="40"/><span>0—90</span></div>
+    <p class="comparison-muted">移动滑块或点击图表查看同一 batch；无请求时（B0），TPOT 和 QPS 不定义。</p>
+    <div id="comparison-inspection" aria-live="polite"></div>
+  </section>
+  <section class="comparison-notes" aria-label="硬件画像与建模口径">
+    <div><h2>硬件与显存</h2><p>850：128 GiB / 1.6 TiB/s / INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。</p><p>两者均使用 80% 显存利用率、4 GiB 运行时预留；D 的输入前缀按 95% 跨请求物理共享估算。</p></div>
+    <div><h2>校准范围</h2><p>850 为硬件模型，暂无本机校准；850E 使用 EP8 测点校正，EP16 / EP32 沿用校正并按目标拓扑建模。六条完整曲线均为预测，未测 batch 和跨机拓扑属于外推。</p><p>P 命中率与 D 物理共享比例是独立假设；D 仍访问完整上下文。两种机型 KV 精度不同。本页保留固定成果，不随第 4 页参数变化。</p></div>
+  </section>
+  <footer class="comparison-footer"><span id="comparison-source"></span><div><button id="comparison-csv" type="button">下载 CSV</button><button id="comparison-json" type="button">下载 JSON</button><button id="comparison-svg" type="button">下载曲线 SVG</button></div></footer>
+</div>
+</section>
