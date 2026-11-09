@@ -15,10 +15,15 @@ for (const [,src] of html.matchAll(/<script id="(?:cache-data|comparison-data)-l
 assert.deepEqual(loaded['comparison-data'], saved, 'Published data must match the corrected source');
 assert.deepEqual(loaded['cache-data'],JSON.parse(fs.readFileSync(path.join(root,'data/glm53-cache-reference.json'),'utf8')));
 const current = JSON.parse(cp.execFileSync(process.execPath, ['scripts/report-multistream-curves.cjs'], {cwd:root,encoding:'utf8',maxBuffer:4*1024*1024}));
-assert.equal(baseline.engine, current.engine);
+// The editable engine now includes a P-only efficiency transfer. The frozen
+// comparison keeps its original provenance; every D point below must match.
+assert.equal(baseline.engine, 'GLM Hardware v13 · measured correction and multistream');
+assert.equal(current.engine, 'GLM Hardware v14 · A5 Prefill efficiency transfer');
 assert.deepEqual(saved.sharedCase, current.sharedCase);
 assert.equal(saved.series.length, 6);
-assert.deepEqual(saved.hardwareProfiles,current.hardwareProfiles);
+const physicalProfiles=profiles=>profiles.map(({label,...hardware})=>hardware);
+assert.deepEqual(physicalProfiles(saved.hardwareProfiles),physicalProfiles(current.hardwareProfiles));
+assert.match(current.hardwareProfiles.find(h=>h.id==='a5-128').label,/P效率迁移/);
 assert.equal(saved.hardwareProfiles.find(h=>h.id==='a5-128').memoryGiB,112);
 assert.equal(saved.hardwareProfiles.find(h=>h.id==='a5-128').memoryBandwidth,1.4e12);
 assert.equal(saved.series[0].summary.budgetGiB,89.6);
@@ -28,7 +33,7 @@ assert.equal(saved.series[0].rows[73].memoryFeasible,false);
 for (let i=0;i<6;i++) {
   const actual=current.series[i], expected=saved.series[i];
   assert.equal(expected.id,actual.id);
-  assert.deepEqual(baseline.series[i].rows,actual.rows,'Page-four baseline must remain unchanged');
+  assert.deepEqual(baseline.series[i].rows,actual.rows,'Page-four Decode baseline must remain unchanged');
   const a=saved.anchors[expected.hardware], factor=a.targetITLms/current.series.find(s=>s.hardware===expected.hardware&&s.ranks===8).rows[28].itlMs;
   assert.ok(Math.abs(factor-expected.correctionFactor)<1e-12);
   for (const row of expected.rows.filter(r=>r.batchPerDP)) {
@@ -91,5 +96,5 @@ Promise.all(downloads.map(b=>b.text())).then(([j,c,s])=>{
   assert.equal(count(s,/data-qps-label=/g),6);
   assert.equal(count(s,/data-calibration-anchor=/g),2);
   assert.ok(s.includes('850 100 ms / 850E 62.4 ms'));
-  console.log('PASS: 540 corrected points, 6 optima/QPS labels, 2 anchors, unchanged engine/capacity, loaders, toggles, inspector and CSV/JSON/SVG exports; no images read.');
+  console.log('PASS: 540 corrected points, 6 optima/QPS labels, 2 anchors, unchanged Decode/capacity, loaders, toggles, inspector and CSV/JSON/SVG exports; no images read.');
 }).catch(error=>{console.error(error);process.exitCode=1;});

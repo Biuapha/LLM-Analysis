@@ -2,8 +2,13 @@
 // The fitted phase-wide scale/overhead use training points only; unseen batch and
 // context are evaluated by the operator model and bounded by the ideal roofline.
 function pdA5Family(c,s,phase){
- if(c.fidelity!=='calibrated'||!pdData.a5Calibration||s.hw!=='a5-96'||
-  c.decodeMode!=='mtp'||c.mtpDraft!==5||(c.kvDtype!==undefined&&c.kvDtype!=='fp8'))return null;
+ // P-only efficiency transfer: use the same measured service-time correction
+ // for both A5 devices, while evaluating each target's own operator costs.
+ // This does not transfer 850E allocator geometry or its Decode calibration.
+ const prefillTransfer=phase==='prefill'&&s.hw==='a5-128';
+ if(c.fidelity!=='calibrated'||!pdData.a5Calibration||!(s.hw==='a5-96'||prefillTransfer)||
+  c.decodeMode!=='mtp'||c.mtpDraft!==5||
+  (c.kvDtype!==undefined&&c.kvDtype!=='fp8'&&!(prefillTransfer&&c.kvDtype==='int8')))return null;
  return pdData.a5Calibration.families.filter(f=>f.phase===phase&&!f.prefixHitRate)
   .sort((a,b)=>Math.abs(Math.log(c.input/a.input))-Math.abs(Math.log(c.input/b.input)))[0]||null;
 }
@@ -38,7 +43,7 @@ function pdA5Memory(c,s,phase,f){
   allocationAssumption:'统一 block-ID 成本；共享完整前缀 + 每请求私有尾部和 5 个状态保护块；非 r71 分配器逐组重放'};
 }
 function pdA5Raw(c,s,batch,phase,memory,ideal=false){
- const analytic={...c,fidelity:ideal?'ideal':'analytic',kvDtype:'fp8',chunkBudgetMode:'per_dp',...(ideal?{pScale:1,dScale:1,overlap:0,imbalance:1}:{})};
+ const analytic={...c,fidelity:ideal?'ideal':'analytic',kvDtype:memory.config.kvDtype,chunkBudgetMode:'per_dp',...(ideal?{pScale:1,dScale:1,overlap:0,imbalance:1}:{})};
  return pdBatch(analytic,s,batch,phase,memory);
 }
 function pdA5Fit(c,s,phase){
@@ -95,7 +100,7 @@ function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
  const seconds=cycle/ratio,worst=worstCycle/ratio,duration=seconds*(decode?c.output-1:1),qps=s.dp*batch/duration;
  const metric=decode?pdDecodeSLO(c,c.constraintStatistic==='mean'?cycle:worstCycle,c.constraintStatistic==='mean'?seconds:worst):{seconds:worst,feasible:worst<=c.ttft};
  const sameInput=pdData.a5Calibration.families.find(x=>x.phase===phase&&x.input===c.input),maxMeasuredBatch=sameInput?Math.max(...sameInput.training.map(x=>x.batch)):null;
- const targetNative=Boolean(pdA5Profile(c,s,phase));
+ const targetNative=Boolean(pdA5Profile(c,s,phase)),hardwareTransfer=s.hw!=='a5-96';
  const extrapolated=!targetNative||!sameInput||batch>maxMeasuredBatch||(!decode&&c.prefixHitRate!==0)||c.chunk!==16384||
   (decode&&(c.output!==1024||c.dPrefixLayout!=='shared'))||c.computeScale!==1||c.memoryScale!==1||c.overlap!==0||c.imbalance!==1.1||
   c.pScale!==1||c.dScale!==1||c.constraintStatistic!=='mean'||c.util!==80||c.reserve!==4||Boolean(s.usableGiB)||c.moeMultistream!==true||c.dSharedPrefixRate!==100;
@@ -107,9 +112,12 @@ function pdA5ModelRow(c,s,phase,f,batch,memory,fit){
   breakdown:Object.fromEntries(pdGroups.map(k=>[k,row.breakdown[k]*cycle/raw])),
   sloSeconds:metric.seconds,feasible:row.memoryFeasible&&metric.feasible,
   calibration:{applied:true,runtime:false,empiricalOnly:false,targetNative,transfer:!targetNative,modelBased:true,extrapolated,
+   ...(hardwareTransfer?{sourceHardware:'a5-96',targetHardware:s.hw,targetEmpiricallyValidated:false,
+    transferKind:'prefill_service_efficiency',sourceKVDtype:'fp8',targetKVDtype:memory.config.kvDtype}:{}),
    factor:cycle/raw,fit,idealFloorApplied:ideal>corrected,family:f.id,profile:pdData.a5Calibration.profile,reference:pdData.a5Calibration.source,
-   measuredCoverage:{input: sameInput?.input??null,maxBatch:maxMeasuredBatch??null},
-   reason:'850E 硬件算子模型 + 少量实测校正；'+(fit.budgetCorrection?.weight>0?'P token预算校正含新版表128K冷缓存汇总测点（名义在途并发），APC未参与拟合；':'')+(!targetNative?'EP8 实测效率迁移到目标拓扑，尚无目标拓扑实测验证；':'')+(extrapolated?'当前为未测区域模型预测':'当前为训练覆盖内模型预测')+'。batch 由显存、TTFT/TPOT/ITL 和扫描上限决定，实测覆盖不设限。'},
+   measuredCoverage:{input:hardwareTransfer?null:sameInput?.input??null,maxBatch:hardwareTransfer?null:maxMeasuredBatch??null},
+   ...(hardwareTransfer?{sourceMeasuredCoverage:{hardware:'a5-96',input:sameInput?.input??null,maxBatch:maxMeasuredBatch??null}}:{}),
+   reason:(hardwareTransfer?'850 纯 P 硬件算子模型 + 850E 实测效率迁移；保留850自身带宽、KV精度与容量，尚无850本机纯P实测验证；':'850E 硬件算子模型 + 少量实测校正；')+(fit.budgetCorrection?.weight>0?'P token预算校正含新版表128K冷缓存汇总测点（名义在途并发），APC未参与拟合；':'')+(!targetNative&&!hardwareTransfer?'EP8 实测效率迁移到目标拓扑，尚无目标拓扑实测验证；':'')+(hardwareTransfer&&c.prefixHitRate>0?'缓存命中场景沿用冷缓存效率校正，属于外推；':'')+(extrapolated?'当前为未测区域模型预测':'当前为训练覆盖内模型预测')+'。batch 由显存、TTFT/TPOT/ITL 和扫描上限决定，实测覆盖不设限。'},
   capacityBasis:memory.capacityBasis,plan:{...row.plan,...(!decode?{chunkBudgetMode:'per_dp',totalTokenBudget:c.chunk}:{}),hardwareModelFloorSeconds:ideal,rawModelSeconds:raw}};
 }
 function pdA5Stage(c,s,phase,f,errors){
