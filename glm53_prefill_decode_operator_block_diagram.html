@@ -234,7 +234,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 .mtp5-curves-open:hover{border-color:#6be1ca;color:#fff}.mtp5-curves-open:focus-visible{outline:2px solid #36d8d2;outline-offset:3px}
 .mtp5-curves-notes{margin:0 0 18px;padding:12px 18px;border:1px solid #29445a;border-radius:8px;background:#0c1a26;color:#9fb5c4;font-size:12px}
 .mtp5-curves-notes p{margin:3px 0}.mtp5-curves-notes strong{color:#edf6fb}
-.mtp5-curves-figure{margin:0}.mtp5-curves-figure img{display:block;width:100%;height:auto;background:#fff;border-radius:8px}
+.mtp5-curves-figure{margin:0}.mtp5-curves-figure+.mtp5-curves-figure{margin-top:30px}.mtp5-curves-figure h2{margin:0 0 12px;color:#edf6fb;font-size:19px}.mtp5-curves-figure img{display:block;width:100%;height:auto;background:#fff;border-radius:8px}
 .mtp5-curves-figure figcaption{margin-top:12px;color:#93adbf;font-size:12px}
 @media(max-width:800px){#mtp5-curves-page{padding:18px 14px}.mtp5-curves-heading{flex-direction:column;gap:12px}.mtp5-curves-heading h1{font-size:23px}}
 @media print{#mtp5-curves-page{height:auto;overflow:visible}.mtp5-curves-open{display:none}.mtp5-curves-app{max-width:none}}
@@ -461,17 +461,24 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <section class="deck-slide" id="mtp5-curves-page" role="tabpanel" aria-labelledby="mtp5-curves-tab" hidden>
   <div class="mtp5-curves-app">
     <header class="mtp5-curves-heading">
-      <div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>Top 10 算子与满层总 ITL</h1><p>2 列 × 5 行算子双曲线，下方为满层总 ITL 双曲线；沿用同一批 B1–100 数据。</p></div>
-      <a class="mtp5-curves-open" href="assets/glm53-mtp5-top10-and-total-itl-850-vs-850e.svg" target="_blank" rel="noopener">打开完整矢量图 ↗</a>
+      <div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>Top 10 算子与满层总 ITL</h1><p>上方为 2 列 × 5 行算子双曲线，下方为 EP8 / EP16 / EP32 的满层总 ITL 六曲线。</p></div>
+      <a class="mtp5-curves-open" href="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg" target="_blank" rel="noopener">打开 ITL 六曲线矢量图 ↗</a>
     </header>
     <div class="mtp5-curves-notes">
-      <p><strong>相同 case：</strong>DP8 / TP1 / EP8，MTP5，128K 输入 / 1K 输出；每个 DP 均有 B 条序列，主模型 num_tokens = 6B。</p>
+      <p><strong>基准 case：</strong>DP8 / TP1 / EP8，MTP5，128K 输入 / 1K 输出；横轴为每个 DP 的 B 条序列，主模型 num_tokens = 6B。</p>
       <p><strong>算子：</strong>减层主模型 forward，8 rank × 20 周期均值；排除全部通信算子及 Slice，各子图独立纵轴。</p>
-      <p><strong>总 ITL：</strong>由减层实测外推至 45 层，包含通信、5 次草稿及调度开销；不折算步长，非满层客户端实测值。</p>
+      <p><strong>总 ITL：</strong>EP8 由减层实测外推至 45 层；EP16、EP32 在同一 batch 下，将两个 GMM 耗时分别缩放至 EP8 的 1/2、1/4。</p>
+      <p><strong>估算假设：</strong>仅缩放 GroupedMatmulSwigluQuantV2、GroupedMatmul；其他算子、通信及调度开销不变。包含 MTP5 草稿调用，不折算步长；非满层客户端实测值。</p>
     </div>
-    <figure class="mtp5-curves-figure">
-      <img src="assets/glm53-mtp5-top10-and-total-itl-850-vs-850e.svg" width="1400" height="2580" loading="lazy" decoding="async" alt="850 与 850E 的 MTP5 对比：上方十个非通信算子耗时曲线，下方满层总 ITL 估算曲线；横轴为每个 DP 的 batch 1 至 100。" aria-describedby="mtp5-curves-caption">
-      <figcaption id="mtp5-curves-caption">2026-11-10 采集数据。蓝色实线：850；橙色虚线：850E。总 ITL 以 ms / 轮表示，未按接受率或每轮输出 token 数折算。</figcaption>
+    <figure class="mtp5-curves-figure" id="mtp5-top10-figure">
+      <h2>Top 10 非通信算子 · EP8 基准</h2>
+      <img src="assets/glm53-mtp5-top10-compute-850-vs-850e-batch.svg" width="1400" height="1880" loading="lazy" decoding="async" alt="850 与 850E 的 MTP5 Top 10 非通信算子，2 列 5 行双曲线；横轴为每个 DP 的 batch 1 至 100。" aria-describedby="mtp5-top10-caption">
+      <figcaption id="mtp5-top10-caption">沿用原 Top 10 数据。蓝色实线：850；橙色虚线：850E。算子耗时以 μs / 卡 / 次表示。</figcaption>
+    </figure>
+    <figure class="mtp5-curves-figure" id="mtp5-itl-figure">
+      <h2>满层总 ITL · EP8 / EP16 / EP32 六曲线</h2>
+      <img src="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg" width="1380" height="950" loading="lazy" decoding="async" alt="满层 MTP5 总 ITL 六曲线：850 和 850E 各含 EP8、EP16、EP32。EP16 的两个 GMM 耗时为 EP8 的二分之一，EP32 为四分之一；其他开销不变。" aria-describedby="mtp5-itl-caption">
+      <figcaption id="mtp5-itl-caption">蓝色：850；橙色：850E。实线：EP8；虚线：EP16；点线：EP32。ITL 以 ms / 轮表示，不按接受率或每轮输出 token 数折算。数据来源：2026-11-10 采集的减层 profiling。</figcaption>
     </figure>
   </div>
 </section>
