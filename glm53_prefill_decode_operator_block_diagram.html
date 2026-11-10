@@ -462,13 +462,14 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
   <div class="mtp5-curves-app">
     <header class="mtp5-curves-heading">
       <div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>Top 10 算子与满层总 ITL</h1><p>上方为 2 列 × 5 行算子双曲线，下方为 EP8 / EP16 / EP32 的满层总 ITL 六曲线。</p></div>
-      <a class="mtp5-curves-open" href="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg" target="_blank" rel="noopener">打开 ITL 六曲线矢量图 ↗</a>
+      <a class="mtp5-curves-open" href="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg?v=b28-prof-v1" target="_blank" rel="noopener">打开 ITL 六曲线矢量图 ↗</a>
     </header>
     <div class="mtp5-curves-notes">
       <p><strong>基准 case：</strong>DP8 / TP1 / EP8，MTP5，128K 输入 / 1K 输出；横轴为每个 DP 的 B 条序列，主模型 num_tokens = 6B。</p>
       <p><strong>算子：</strong>减层主模型 forward，8 rank × 20 周期均值；排除全部通信算子及 Slice，各子图独立纵轴。</p>
-      <p><strong>总 ITL：</strong>EP8 由减层实测外推至 45 层；EP16、EP32 在同一 batch 下，将两个 GMM 耗时分别缩放至 EP8 的 1/2、1/4。</p>
-      <p><strong>估算假设：</strong>仅缩放 GroupedMatmulSwigluQuantV2、GroupedMatmul；其他算子、通信及调度开销不变。包含 MTP5 草稿调用，不折算步长；非满层客户端实测值。</p>
+      <p><strong>总 ITL 已校准：</strong>EP8 以 BS28 满层 prof 为锚点：850 = <strong>100.08 ms</strong>、850E = <strong>62.04 ms</strong>。原 batch 曲线分别乘以 0.810154、0.675993；其他 batch 保留原趋势，仍为估算。</p>
+      <p><strong>EP16 / EP32：</strong>GroupedMatmulSwigluQuantV2、GroupedMatmul 各自按 BS28 满层 prof 累计耗时校准，再缩至 EP8 的 1/2、1/4；其他算子、通信及调度开销在各 EP 间保持不变。包含 MTP5 草稿调用，不折算步长。</p>
+      <p><strong>计时口径：</strong>锚点取同层 KDA 起始到下一轮起始的间隔，8 rank 中位数的中位数，包含 profiler 影响。旧满层为 128K 输入 / 4K 输出，减层为 128K / 1K；单点校准不等于其他 batch 或 EP16 / EP32 的客户端实测。</p>
     </div>
     <figure class="mtp5-curves-figure" id="mtp5-top10-figure">
       <h2>Top 10 非通信算子 · EP8 基准</h2>
@@ -476,9 +477,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
       <figcaption id="mtp5-top10-caption">沿用原 Top 10 数据。蓝色实线：850；橙色虚线：850E。算子耗时以 μs / 卡 / 次表示。</figcaption>
     </figure>
     <figure class="mtp5-curves-figure" id="mtp5-itl-figure">
-      <h2>满层总 ITL · EP8 / EP16 / EP32 六曲线</h2>
-      <img src="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg" width="1380" height="950" loading="lazy" decoding="async" alt="满层 MTP5 总 ITL 六曲线：850 和 850E 各含 EP8、EP16、EP32。EP16 的两个 GMM 耗时为 EP8 的二分之一，EP32 为四分之一；其他开销不变。" aria-describedby="mtp5-itl-caption">
-      <figcaption id="mtp5-itl-caption">蓝色：850；橙色：850E。实线：EP8；虚线：EP16；点线：EP32。ITL 以 ms / 轮表示，不按接受率或每轮输出 token 数折算。数据来源：2026-11-10 采集的减层 profiling。</figcaption>
+      <h2>满层总 ITL · EP8 / EP16 / EP32 六曲线 · BS28 prof 校准</h2>
+      <img src="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg?v=b28-prof-v1" width="1380" height="950" loading="lazy" decoding="async" alt="满层 MTP5 总 ITL 六曲线：850 和 850E 各含 EP8、EP16、EP32。EP8 在 BS28 分别校准至 100.08 和 62.04 ms；EP16 的两个 GMM 耗时为 EP8 的二分之一，EP32 为四分之一；其他开销不变。" aria-describedby="mtp5-itl-caption">
+      <figcaption id="mtp5-itl-caption">蓝色：850；橙色：850E。实线：EP8；虚线：EP16；点线：EP32；星号：BS28 满层 prof 校准点。ITL 以 ms / 轮表示，不折算步长。BS28 的 EP8 / EP16 / EP32：850 为 100.08 / 86.28 / 79.38 ms，850E 为 62.04 / 55.30 / 51.93 ms。数据来源：2026-11-10 减层 sweep、2026-11-06 满层 BS28 prof。<a href="data/glm53-mtp5-itl-b28-calibrated.csv" download>下载六曲线数据 CSV</a> · <a href="data/glm53-mtp5-itl-b28-calibration.json" target="_blank" rel="noopener">校准公式与锚点</a></figcaption>
     </figure>
   </div>
 </section>
