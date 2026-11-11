@@ -461,25 +461,22 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <section class="deck-slide" id="mtp5-curves-page" role="tabpanel" aria-labelledby="mtp5-curves-tab" hidden>
   <div class="mtp5-curves-app">
     <header class="mtp5-curves-heading">
-      <div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>Top 10 算子与满层总 ITL</h1><p>上方为 2 列 × 5 行算子双曲线，下方为 EP8 / EP16 / EP32 的满层总 ITL 六曲线。</p></div>
-      <a class="mtp5-curves-open" href="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg?v=b28-prof-v1" target="_blank" rel="noopener">打开 ITL 六曲线矢量图 ↗</a>
+      <div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E · 2026-11-11</p><h1>Replay SSM · Top 10 算子与满层总 ITL</h1><p>仅开启 replay SSM，关闭 KDA QKV TP。上方 2 列 × 5 行为算子实测，下方为 EP8 / EP16 / EP32 总 ITL。</p></div>
+      <a class="mtp5-curves-open" href="assets/glm53-replayssm-only-top10-and-full-itl-ep8-ep16-ep32.svg" target="_blank" rel="noopener">打开完整 2×5+1 矢量图 ↗</a>
     </header>
     <div class="mtp5-curves-notes">
-      <p><strong>基准 case：</strong>DP8 / TP1 / EP8，MTP5，128K 输入 / 1K 输出；横轴为每个 DP 的 B 条序列，主模型 num_tokens = 6B。</p>
-      <p><strong>算子：</strong>减层主模型 forward，8 rank × 20 周期均值；排除全部通信算子及 Slice，各子图独立纵轴。</p>
-      <p><strong>总 ITL 已校准：</strong>EP8 以 BS28 满层 prof 为锚点：850 = <strong>100.08 ms</strong>、850E = <strong>62.04 ms</strong>。原 batch 曲线分别乘以 0.810154、0.675993；其他 batch 保留原趋势，仍为估算。</p>
-      <p><strong>EP16 / EP32：</strong>GroupedMatmulSwigluQuantV2、GroupedMatmul 各自按 BS28 满层 prof 累计耗时校准，再缩至 EP8 的 1/2、1/4；其他算子、通信及调度开销在各 EP 间保持不变。包含 MTP5 草稿调用，不折算步长。</p>
-      <p><strong>计时口径：</strong>锚点取同层 KDA 起始到下一轮起始的间隔，8 rank 中位数的中位数，包含 profiler 影响。旧满层为 128K 输入 / 4K 输出，减层为 128K / 1K；单点校准不等于其他 batch 或 EP16 / EP32 的客户端实测。</p>
+      <p><strong>配置：</strong>DP8 / TP1 / EP8 / MTP5，QKV IProj TP1；128K 输入。算子采集输出 1K，满层校准输出 8K；横轴 B 为每个 DP 的序列数，主模型 num_tokens = 6B。</p>
+      <p><strong>Top 10 算子：</strong>B1–100 减层实测，8 rank × 20 周期；非通信算子，各子图独立纵轴。</p>
+      <p><strong>满层 ITL：</strong>分层模型经满层稳态测量校准，以 ms / draft round 计，不折算接受步长。850 在 B1 / B28 / B60 / B100 的锚点为 39.43 / 90.15 / 139.19 / 214.37 ms；850E 在 B1 / B28 / B60 为 22.83 / 64.07 / 110.71 ms。其他 batch 为校准估算。</p>
+      <p><strong>850E 外推范围：</strong>当前 128K 输入 / 8K 输出 / 95% 共享前缀配置下，满层 B100 建立目标 batch 时发生容量不足；没有采纳 B100 实测值。B61–100 的 ITL 为外推，不代表已验证该范围的满层运行容量。</p>
+      <p><strong>EP16 / EP32 条件估算：</strong>两类 GMM 缩至 EP8 的 1/2、1/4，其余耗时保持不变；GMM 使用总 ITL 校准系数，没有独立满层 GMM 校准。跨机通信、负载均衡和重叠变化未建模，非多机实测。</p>
+      <p><strong>采集一致性：</strong>850E 算子来自两台同型号机器，5 个重叠 batch 的 Top 10 最大差异 1.42%；包含通信与等待的原始分层模型最大差异 7.22%，不是误差上限或置信区间。满层锚点均来自同一台补测机器。</p>
     </div>
-    <figure class="mtp5-curves-figure" id="mtp5-top10-figure">
-      <h2>Top 10 非通信算子 · EP8 基准</h2>
-      <img src="assets/glm53-mtp5-top10-compute-850-vs-850e-batch.svg" width="1400" height="1880" loading="lazy" decoding="async" alt="850 与 850E 的 MTP5 Top 10 非通信算子，2 列 5 行双曲线；横轴为每个 DP 的 batch 1 至 100。" aria-describedby="mtp5-top10-caption">
-      <figcaption id="mtp5-top10-caption">沿用原 Top 10 数据。蓝色实线：850；橙色虚线：850E。算子耗时以 μs / 卡 / 次表示。</figcaption>
-    </figure>
-    <figure class="mtp5-curves-figure" id="mtp5-itl-figure">
-      <h2>满层总 ITL · EP8 / EP16 / EP32 六曲线 · BS28 prof 校准</h2>
-      <img src="assets/glm53-full-mtp5-itl-ep8-ep16-ep32.svg?v=b28-prof-v1" width="1380" height="950" loading="lazy" decoding="async" alt="满层 MTP5 总 ITL 六曲线：850 和 850E 各含 EP8、EP16、EP32。EP8 在 BS28 分别校准至 100.08 和 62.04 ms；EP16 的两个 GMM 耗时为 EP8 的二分之一，EP32 为四分之一；其他开销不变。" aria-describedby="mtp5-itl-caption">
-      <figcaption id="mtp5-itl-caption">蓝色：850；橙色：850E。实线：EP8；虚线：EP16；点线：EP32；星号：BS28 满层 prof 校准点。ITL 以 ms / 轮表示，不折算步长。BS28 的 EP8 / EP16 / EP32：850 为 100.08 / 86.28 / 79.38 ms，850E 为 62.04 / 55.30 / 51.93 ms。数据来源：2026-11-10 减层 sweep、2026-11-06 满层 BS28 prof。<a href="data/glm53-mtp5-itl-b28-calibrated.csv" download>下载六曲线数据 CSV</a> · <a href="data/glm53-mtp5-itl-b28-calibration.json" target="_blank" rel="noopener">校准公式与锚点</a></figcaption>
+    <figure class="mtp5-curves-figure" id="mtp5-replay-figure">
+      <h2>Replay SSM only · 2×5+1 · EP8 / EP16 / EP32</h2>
+      <img src="assets/glm53-replayssm-only-top10-and-full-itl-ep8-ep16-ep32.svg" width="1400" height="2700" loading="lazy" decoding="async" alt="850 与 850E 的 replay SSM only 曲线：KDA QKV TP 关闭；上方十个算子为 B1 至 100 实测，下方满层 ITL 包含 EP8 校准估算和 EP16、EP32 条件估算，850E B61 至 100 为外推。" aria-describedby="mtp5-replay-caption">
+      <figcaption id="mtp5-replay-caption">上方算子耗时以 μs / 卡 / 次表示，下方 ITL 以 ms / 轮表示；实测锚点、校准范围和外推说明见图中标注。
+      <a href="data/glm53-replayssm-only-top10.csv" download>Top 10 数据 CSV</a> · <a href="data/glm53-replayssm-only-full-itl-ep8-ep16-ep32.csv" download>ITL 六曲线 CSV</a> · <a href="data/glm53-replayssm-only-full-itl-ep8-ep16-ep32-method.json" target="_blank" rel="noopener">估算方法</a> · <a href="data/glm53-replayssm-only-source-and-data.zip" download>数据与绘图源码</a></figcaption>
     </figure>
   </div>
 </section>
