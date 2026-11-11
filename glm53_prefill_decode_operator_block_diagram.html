@@ -492,10 +492,12 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
       <p><strong>EP16 / EP32 条件估算：</strong>两类 GMM 缩至 EP8 的 1/2、1/4，其余耗时保持不变；GMM 使用总 ITL 校准系数，没有独立满层 GMM 校准。跨机通信、负载均衡和重叠变化未建模，非多机实测。</p>
       <p><strong>采集一致性：</strong>850E 算子来自两台同型号机器，5 个重叠 batch 的 Top 10 最大差异 1.42%；包含通信与等待的原始分层模型最大差异 7.22%，不是误差上限或置信区间。满层锚点均来自同一台补测机器。</p>
     </div>
+
+      <div class="mtp5-curves-notes" id="mtp5-bound-notes"><p><strong>曲线标注：</strong>仅标注 B1 / B28 / B60 / B100，颜色对应 850 / 850E；来自本配置相同主模型窗口的 8 rank × 20 周期 prof，曲线数值保持不变。</p><p><strong>标签含义：</strong>Vector / MTE2 / Cube / Scalar 等为流水线活跃度推断，非已验证的关键路径瓶颈。保留 Fixpipe 等其他主导项；斜杠表示两项接近，Mixed 表示多项接近，? 表示活跃占比偏低。底部满层 ITL 不作单一瓶颈归类。</p><p><strong>判定口径：</strong>按 AIC / AIV 对应执行时间 × 流水线 ratio 近似活跃时间，再汇总同类 kernel；两引擎的 MTE2、Scalar 逐调用取最大贡献。距最大值 10% 内并列，最大代理占比低于 0.30 加 ?；这些是展示规则，不是硬件判定阈值。Scalar 可能含轮询或同步，MTE2 高也不直接等于 HBM 带宽饱和。</p><p><a href="data/glm53-replayssm-only-bound-labels.csv" download>下载 80 个标注点与指标 CSV</a> · <a href="data/glm53-replayssm-only-bound-method.json" target="_blank" rel="noopener">完整标注方法与局限</a></p></div>
     <figure class="mtp5-curves-figure" id="mtp5-replay-figure">
-      <h2>② Replay SSM only · 2×5+1 · EP8 / EP16 / EP32</h2>
-      <img src="assets/glm53-replayssm-only-top10-and-full-itl-ep8-ep16-ep32.svg" width="1400" height="2700" loading="lazy" decoding="async" alt="850 与 850E 的 replay SSM only 曲线：KDA QKV TP 关闭；上方十个算子为 B1 至 100 实测，下方满层 ITL 包含 EP8 校准估算和 EP16、EP32 条件估算，850E B61 至 100 为外推。" aria-describedby="mtp5-replay-caption">
-      <figcaption id="mtp5-replay-caption"><a href="assets/glm53-replayssm-only-top10-and-full-itl-ep8-ep16-ep32.svg" target="_blank" rel="noopener">打开矢量图 ↗</a> · 上方算子耗时以 μs / 卡 / 次表示，下方 ITL 以 ms / 轮表示；实测锚点、校准范围和外推说明见图中标注。
+      <h2>② Replay SSM only · 流水线瓶颈推断 · EP8 / EP16 / EP32</h2>
+      <img src="assets/glm53-replayssm-only-top10-and-full-itl-bound-preview.svg" width="1400" height="2700" loading="lazy" decoding="async" alt="850 与 850E 的 replay SSM only 曲线，B1、B28、B60、B100 带 Vector、MTE2、Cube、Scalar 等流水线活跃度推断标签：KDA QKV TP 关闭；上方十个算子为 B1 至 100 实测，下方满层 ITL 包含 EP8 校准估算和 EP16、EP32 条件估算，850E B61 至 100 为外推。" aria-describedby="mtp5-replay-caption">
+      <figcaption id="mtp5-replay-caption"><a href="assets/glm53-replayssm-only-top10-and-full-itl-bound-preview.svg" target="_blank" rel="noopener">打开矢量图 ↗</a> · 上方算子耗时以 μs / 卡 / 次表示，下方 ITL 以 ms / 轮表示；实测锚点、校准范围和外推说明见图中标注。
       <a href="data/glm53-replayssm-only-top10.csv" download>Top 10 数据 CSV</a> · <a href="data/glm53-replayssm-only-full-itl-ep8-ep16-ep32.csv" download>ITL 六曲线 CSV</a> · <a href="data/glm53-replayssm-only-full-itl-ep8-ep16-ep32-method.json" target="_blank" rel="noopener">估算方法</a> · <a href="data/glm53-replayssm-only-source-and-data.zip" download>数据与绘图源码</a></figcaption>
     </figure>
     <hr style="border:0;border-top:1px solid #29445a;margin:32px 0">
