@@ -1,0 +1,90 @@
+{
+  "sort_order": "850 B28 full-model ITL share descending",
+  "ranking": [
+    {
+      "rank": 1,
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "850_B28_full_ITL_share_percent": 19.64443116773584
+    },
+    {
+      "rank": 2,
+      "operator": "MatMulV3",
+      "850_B28_full_ITL_share_percent": 15.40021275683152
+    },
+    {
+      "rank": 3,
+      "operator": "GroupedMatmul",
+      "850_B28_full_ITL_share_percent": 9.980299837905937
+    },
+    {
+      "rank": 4,
+      "operator": "_kda_recoverssm_verify_kernel",
+      "850_B28_full_ITL_share_percent": 9.927443244846833
+    },
+    {
+      "rank": 5,
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "850_B28_full_ITL_share_percent": 4.764237008562097
+    },
+    {
+      "rank": 6,
+      "operator": "QuantBatchMatmulV3",
+      "850_B28_full_ITL_share_percent": 3.5553755422240263
+    },
+    {
+      "rank": 7,
+      "operator": "PoolKeyIndexer",
+      "850_B28_full_ITL_share_percent": 2.406360310150984
+    },
+    {
+      "rank": 8,
+      "operator": "Dispatch",
+      "850_B28_full_ITL_share_percent": 1.9788989187373678
+    },
+    {
+      "rank": 9,
+      "operator": "HcPre",
+      "850_B28_full_ITL_share_percent": 1.6388336954825038
+    },
+    {
+      "rank": 10,
+      "operator": "Combine",
+      "850_B28_full_ITL_share_percent": 1.63120994429885
+    },
+    {
+      "rank": 11,
+      "operator": "DynamicMxQuant",
+      "850_B28_full_ITL_share_percent": 1.5227096442785875
+    },
+    {
+      "rank": 12,
+      "operator": "CausalConv1d",
+      "850_B28_full_ITL_share_percent": 1.0248608292829804
+    },
+    {
+      "rank": 13,
+      "operator": "HcPost",
+      "850_B28_full_ITL_share_percent": 0.8222241014782358
+    },
+    {
+      "rank": 14,
+      "operator": "TransposeBatchMatMul",
+      "850_B28_full_ITL_share_percent": 0.7191131975284393
+    },
+    {
+      "rank": 15,
+      "operator": "RmsNorm",
+      "850_B28_full_ITL_share_percent": 0.628360635311682
+    },
+    {
+      "rank": 16,
+      "operator": "KeyPool",
+      "850_B28_full_ITL_share_percent": 0.3361053637815456
+    }
+  ],
+  "all_curve_values_unchanged": true,
+  "all_bound_MFU_MBU_share_labels_unchanged": true,
+  "full_ITL_and_100ms_waterline_preserved": true,
+  "image_files_viewed": 0,
+  "output": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-rank850b28-curve-bound-itl100.svg"
+}
