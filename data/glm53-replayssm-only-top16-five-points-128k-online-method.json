@@ -1,0 +1,49 @@
+{
+  "configuration": "Replay SSM only; KDA QKV TP1; DP8 EP8 MTP5",
+  "batch_range": [
+    1,
+    80
+  ],
+  "main_scope": "Two reduced main layers (one KDA and one SFA), 20 forwards, 8 ranks; no draft kernels in operator panels.",
+  "single_call_mean_operators": [
+    "GroupedMatmulSwigluQuantV2",
+    "GroupedMatmul",
+    "Dispatch",
+    "Combine"
+  ],
+  "single_call_mean": "Original two-call forward sum / 2; averages KDA-MoE and SFA-MoE invocations, does not select a specific layer.",
+  "rank_aggregation": {
+    "Dispatch": "Min across 8 ranks per matched invocation, then mean over 40 invocations.",
+    "Combine": "Min across 8 ranks per matched invocation, then mean over 40 invocations.",
+    "others": "8-rank mean; other panels sum all same-type calls per forward as marked in titles."
+  },
+  "communication_scope": "Dispatch/Combine measure fused kernel duration, excluding separate HCCL; fastest-rank kernel duration is not collective completion latency.",
+  "full_layer_shares": "Estimated operator time in 45 main layers + 5 draft calls / calibrated EP8 ITL; shares unchanged by display normalization; overlapping work/wait not allocated, shares need not sum to 100%.",
+  "MFU_MBU": "Existing Top10 estimates retained; work and time use consistent aggregation, so display division by2 does not change ratios. Six additional operators carry bound and full-layer shares only.",
+  "HBM_TB_per_second": {
+    "850": 1.4,
+    "850E": 4
+  },
+  "GMM_MBU": "Balanced-expert cold-read estimate; values over100% hidden.",
+  "bound": "Profiler pipeline activity heuristic, not proven critical-path bottleneck. Annotation batches1,14,28,44,60; selected fastest ranks used for Dispatch/Combine.",
+  "full_ITL": "Existing EP8 calibrated model unchanged; EP16/32 conditional estimates halve/quarter GMM contribution only; no multi-host measurements. 850E B61-80 extrapolated. No accepted-step normalization.",
+  "audit": "glm53-replayssm-only-overlap-prof-audit.json",
+  "plot_validation": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-validation.json",
+  "plotted_values": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-plotted-values.csv",
+  "full_share_data": "glm53-replayssm-only-top16-both-min8-full-shares-b1-80.csv",
+  "annotation_batches": [
+    1,
+    14,
+    28,
+    44,
+    60
+  ],
+  "annotation_points": 160,
+  "MFU_MBU_points": 100,
+  "hidden_MBU_over100": 6,
+  "extra_points_source": "B14 and B44:32 original profiler CSVs,8ranks x20main forwards; no interpolation. B28/B60 recalculated with40 existing metric points unchanged.",
+  "metric_ledger": "glm53-replayssm-only-mfu-mbu-five-points-method.json",
+  "bound_ledger": "glm53-replayssm-only-top16-five-points-bound-method.json",
+  "input_sequence_tokens": 131072,
+  "input_sequence_label": "128K input tokens per request; decode context grows with generation; not per-step6B tokens."
+}
