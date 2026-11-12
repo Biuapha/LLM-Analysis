@@ -1,0 +1,52 @@
+{
+  "figures": [
+    {
+      "source": "glm53-baseline-off-top10-and-full-itl-bound-preview.svg",
+      "output": "glm53-baseline-off-top10-and-full-itl-bound-preview-itl100.svg",
+      "bytes": 538090,
+      "waterline_ITL_ms": 100,
+      "axis_y_limits_ms": [
+        0.0,
+        240.26489017116805
+      ],
+      "svg_waterline_y": 1632.2794877107576,
+      "label_avoids_all_six_ITL_curves": true,
+      "original_svg_bytes_preserved": true,
+      "source_sha256": "e4f4ea78ffacdc4d897fd842af8a593e46f0d17a8678113b97160190fdec2209",
+      "svg_sha256": "69457c262cc00d761382cf37015acf95a049e96dcadae63f98e49f21ad81cb2a"
+    },
+    {
+      "source": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-curve-bound.svg",
+      "output": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-curve-bound-itl100.svg",
+      "bytes": 999647,
+      "waterline_ITL_ms": 100,
+      "axis_y_limits_ms": [
+        0.0,
+        171.87967122058888
+      ],
+      "svg_waterline_y": 4426.497619352256,
+      "label_avoids_all_six_ITL_curves": true,
+      "original_svg_bytes_preserved": true,
+      "source_sha256": "a3781945a4b26f16eefcf0e75084fb9aa991667dae7ab9f150a0fc79a803fb67",
+      "svg_sha256": "7b09c839fc99ed015ab442b2d17ba02928cd39bc092cfd48b77c4d1097d18fd5"
+    },
+    {
+      "source": "glm53-replayssm-qkv-tp8-top10-and-full-itl-bound-preview.svg",
+      "output": "glm53-replayssm-qkv-tp8-top10-and-full-itl-bound-preview-itl100.svg",
+      "bytes": 534710,
+      "waterline_ITL_ms": 100,
+      "axis_y_limits_ms": [
+        0.0,
+        234.99049740998484
+      ],
+      "svg_waterline_y": 1629.6462133121036,
+      "label_avoids_all_six_ITL_curves": true,
+      "original_svg_bytes_preserved": true,
+      "source_sha256": "043888a57afc483443015f43039b6c9127f8ff560df6cb9fe6b43812a9e170dd",
+      "svg_sha256": "a1e8165ec01fb0b66e79090e49e99d3efb3f36f8f2549f0b62c7383253444032"
+    }
+  ],
+  "all_other_content_unchanged": true,
+  "new_NPU_runs": 0,
+  "image_files_viewed": 0
+}
