@@ -1,0 +1,220 @@
+{
+  "conclusion": "All plotted operator values reproduce from original profiles; no mixed hardware files, shared source files, repeated cross-hardware duration series, or mismatched batch/call-count found.",
+  "checked_cases": 160,
+  "original_profile_csv_files": 1280,
+  "raw_operator_calls": 1382400,
+  "plotted_values_checked": 2560,
+  "maximum_recompute_error_us": 1.1368683772161603e-12,
+  "cross_hardware_identical_duration_series": 0,
+  "all_profile_file_hashes_unique": true,
+  "all_profile_hostnames_match_provenance": true,
+  "all_rank_device_ids_match": true,
+  "host_profile_counts": [
+    {
+      "hardware": "850",
+      "hostname": "motor-worker-198",
+      "profiles": 640
+    },
+    {
+      "hardware": "850E",
+      "hostname": "141-61-133-101.biochem.mpg.de",
+      "profiles": 120
+    },
+    {
+      "hardware": "850E",
+      "hostname": "141-61-133-110.biochem.mpg.de",
+      "profiles": 520
+    }
+  ],
+  "hardware_metadata": {
+    "850": [
+      {
+        "cube_cores": 32,
+        "vector_cores": 64,
+        "cube_frequency_MHz": "1650",
+        "vector_frequency_MHz": "1650",
+        "cann": "9.2.1"
+      }
+    ],
+    "850E": [
+      {
+        "cube_cores": 32,
+        "vector_cores": 64,
+        "cube_frequency_MHz": "1650",
+        "vector_frequency_MHz": "1650",
+        "cann": "9.2.1"
+      }
+    ]
+  },
+  "operators": [
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "median_absolute_relative_difference_percent": 50.76701825834249,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 520.963153125,
+      "850E_B60_us": 272.590484375,
+      "B60_850E_minus_850_percent": -47.67566904878691,
+      "display_unit": "us_per_call_mean"
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "median_absolute_relative_difference_percent": 0.7080578279872407,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 810.44041875,
+      "850E_B60_us": 802.7228,
+      "B60_850E_minus_850_percent": -0.9522746609680999,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "median_absolute_relative_difference_percent": 1.7155695841181318,
+      "batches_difference_under_5_percent": 73,
+      "total_batches": 80,
+      "850_B60_us": 686.771975,
+      "850E_B60_us": 675.240275,
+      "B60_850E_minus_850_percent": -1.6791162743645782,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "GroupedMatmul",
+      "median_absolute_relative_difference_percent": 52.538509187358954,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 254.16738125,
+      "850E_B60_us": 130.423925,
+      "B60_850E_minus_850_percent": -48.685813121033604,
+      "display_unit": "us_per_call_mean"
+    },
+    {
+      "operator": "MatMulV3",
+      "median_absolute_relative_difference_percent": 22.575608003345565,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 410.33271875,
+      "850E_B60_us": 347.666975,
+      "B60_850E_minus_850_percent": -15.271934429430644,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "median_absolute_relative_difference_percent": 0.4438465187131313,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 403.44528125,
+      "850E_B60_us": 403.64513750000003,
+      "B60_850E_minus_850_percent": 0.049537386924147775,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "median_absolute_relative_difference_percent": 31.25419804629518,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 242.395425,
+      "850E_B60_us": 180.1123125,
+      "B60_850E_minus_850_percent": -25.694838299856528,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "Dispatch",
+      "median_absolute_relative_difference_percent": 7.480630382649972,
+      "batches_difference_under_5_percent": 23,
+      "total_batches": 80,
+      "850_B60_us": 100.87854999999999,
+      "850E_B60_us": 106.56434999999999,
+      "B60_850E_minus_850_percent": 5.636282440617957,
+      "display_unit": "us_per_call_mean"
+    },
+    {
+      "operator": "Combine",
+      "median_absolute_relative_difference_percent": 2.221465619314267,
+      "batches_difference_under_5_percent": 71,
+      "total_batches": 80,
+      "850_B60_us": 80.533625,
+      "850E_B60_us": 80.122025,
+      "B60_850E_minus_850_percent": -0.5110908642197654,
+      "display_unit": "us_per_call_mean"
+    },
+    {
+      "operator": "HcPre",
+      "median_absolute_relative_difference_percent": 0.47483920368796007,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 107.69469999999998,
+      "850E_B60_us": 107.06021874999999,
+      "B60_850E_minus_850_percent": -0.5891480732106547,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "median_absolute_relative_difference_percent": 12.984640091191357,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 80.6108875,
+      "850E_B60_us": 71.0168,
+      "B60_850E_minus_850_percent": -11.90172667432796,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "median_absolute_relative_difference_percent": 36.60160121948974,
+      "batches_difference_under_5_percent": 0,
+      "total_batches": 80,
+      "850_B60_us": 78.43346249999999,
+      "850E_B60_us": 57.43643125,
+      "B60_850E_minus_850_percent": -26.77050149354301,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "HcPost",
+      "median_absolute_relative_difference_percent": 16.06452277960061,
+      "batches_difference_under_5_percent": 14,
+      "total_batches": 80,
+      "850_B60_us": 72.958225,
+      "850E_B60_us": 52.9667375,
+      "B60_850E_minus_850_percent": -27.401279979056504,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "KeyPool",
+      "median_absolute_relative_difference_percent": 2.84586177500184,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 69.80564375,
+      "850E_B60_us": 67.79301875,
+      "B60_850E_minus_850_percent": -2.883183782686627,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "CausalConv1d",
+      "median_absolute_relative_difference_percent": 2.6135667993079315,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 62.87321875,
+      "850E_B60_us": 60.535962500000004,
+      "B60_850E_minus_850_percent": -3.7174114773629197,
+      "display_unit": "us_per_forward"
+    },
+    {
+      "operator": "RmsNorm",
+      "median_absolute_relative_difference_percent": 0.5794190565575397,
+      "batches_difference_under_5_percent": 80,
+      "total_batches": 80,
+      "850_B60_us": 44.11520625,
+      "850E_B60_us": 43.90795625,
+      "B60_850E_minus_850_percent": -0.469792657945467,
+      "display_unit": "us_per_forward"
+    }
+  ],
+  "limitations": [
+    "Uses existing validated main20 graph windows; capture batch/tokens, per-graph counts and kernel boundaries rechecked.",
+    "850E contains two hosts, as disclosed in original provenance.",
+    "Matching vector core counts/frequency makes similar latency plausible; does not prove a Vector bottleneck.",
+    "MTE2/MTE3 activity is not proof of HBM saturation.",
+    "Dispatch and Combine show mean of per-invocation fastest-rank kernel durations, not collective completion latency."
+  ],
+  "online_updated": false,
+  "new_NPU_jobs": 0
+}

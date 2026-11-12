@@ -1,0 +1,76 @@
+{
+  "panels": 17,
+  "call_counts_per_main_forward": {
+    "GroupedMatmulSwigluQuantV2": 2,
+    "KvQuantSparseFlashAttentionVllm": 1,
+    "_kda_recoverssm_verify_kernel": 1,
+    "GroupedMatmul": 2,
+    "MatMulV3": 10,
+    "PoolKeyIndexer": 1,
+    "QuantBatchMatmulV3": 7,
+    "Dispatch": 2,
+    "Combine": 2,
+    "HcPre": 4,
+    "DynamicMxQuant": 7,
+    "TransposeBatchMatMul": 2,
+    "HcPost": 4,
+    "KeyPool": 1,
+    "CausalConv1d": 1,
+    "RmsNorm": 7
+  },
+  "multi_call_panels": 11,
+  "single_call_panels": 5,
+  "call_counts_identical_across_850_850E_B1_80": true,
+  "title_widths_checked": true,
+  "layout": "2x8+1; 6 fixed metric cells below each operator plot",
+  "curves": 38,
+  "points_per_curve": 80,
+  "batch_range": [
+    1,
+    80
+  ],
+  "operator_order_preserved": true,
+  "matches_updated_min8_source_after_display_divisor": true,
+  "single_mean_operators": [
+    "Combine",
+    "Dispatch",
+    "GroupedMatmul",
+    "GroupedMatmulSwigluQuantV2"
+  ],
+  "single_mean_divisor": 2,
+  "halved_operator_values": 640,
+  "unchanged_operator_values": 1920,
+  "unchanged_full_itl_values": 480,
+  "metric_and_share_labels_identical_to_previous": true,
+  "dispatch_and_combine_min8": true,
+  "no_points_or_markers_above_B80": true,
+  "bound_labels": 96,
+  "full_share_labels": 96,
+  "original_MFU_MBU_labels": 60,
+  "hidden_MBU_over100": 4,
+  "actual_text_cell_and_multiline_geometry_checked": true,
+  "all_text_pairs_checked": true,
+  "all_axes_and_legends_clear": true,
+  "font_and_glyph_transforms_preserved_exactly": true,
+  "global_numeric_rounding_removed": true,
+  "svg_is_vector_only": true,
+  "image_files_read": 0,
+  "online_updated": false,
+  "files": [
+    {
+      "name": "glm53-replayssm-only-top16-and-full-itl-b1-80-single-gmm-dispatch-combine.svg",
+      "bytes": 801074
+    },
+    {
+      "name": "glm53-replayssm-only-top16-and-full-itl-b1-80-single-gmm-dispatch-combine.png",
+      "bytes": 856252
+    }
+  ],
+  "png_dpi": 90,
+  "source_hashes": {
+    "top16-both-min8-full-shares-b1-80.csv": "a9f7aefeca521b0de8ff40b2ea8041ac02789293deefa227b1004d25f8fc832e",
+    "top16-both-min8-bound-method.json": "7d9e07868e13390174d718d3b257270f15b932b36fdf03131696b6a4c2e11ba2",
+    "mfu-mbu-balanced-filtered-method.json": "b015baa76267784d07923526db6f3c22754871c6af15bb9ef4792a6cac3d129d",
+    "full-itl-ep8-ep16-ep32-b1-80.csv": "3d09de47d0c95ad0dc4a7d4eabc7eaad7f7c9ee6311ce631137ec12635a3120e"
+  }
+}
