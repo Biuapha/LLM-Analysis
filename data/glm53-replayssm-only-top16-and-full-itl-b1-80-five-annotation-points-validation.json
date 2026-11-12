@@ -1,0 +1,85 @@
+{
+  "panels": 17,
+  "call_counts_per_main_forward": {
+    "GroupedMatmulSwigluQuantV2": 2,
+    "KvQuantSparseFlashAttentionVllm": 1,
+    "_kda_recoverssm_verify_kernel": 1,
+    "GroupedMatmul": 2,
+    "MatMulV3": 10,
+    "PoolKeyIndexer": 1,
+    "QuantBatchMatmulV3": 7,
+    "Dispatch": 2,
+    "Combine": 2,
+    "HcPre": 4,
+    "DynamicMxQuant": 7,
+    "TransposeBatchMatMul": 2,
+    "HcPost": 4,
+    "KeyPool": 1,
+    "CausalConv1d": 1,
+    "RmsNorm": 7
+  },
+  "multi_call_panels": 11,
+  "single_call_panels": 5,
+  "call_counts_identical_across_850_850E_B1_80": true,
+  "title_widths_checked": true,
+  "layout": "2x8+1; 10 fixed metric cells (five batches x two hardware columns) below each operator plot",
+  "curves": 38,
+  "points_per_curve": 80,
+  "batch_range": [
+    1,
+    80
+  ],
+  "operator_order_preserved": true,
+  "matches_updated_min8_source_after_display_divisor": true,
+  "single_mean_operators": [
+    "Combine",
+    "Dispatch",
+    "GroupedMatmul",
+    "GroupedMatmulSwigluQuantV2"
+  ],
+  "single_mean_divisor": 2,
+  "halved_operator_values": 640,
+  "unchanged_operator_values": 1920,
+  "unchanged_full_itl_values": 480,
+  "metric_and_share_labels_identical_to_previous": true,
+  "dispatch_and_combine_min8": true,
+  "no_points_or_markers_above_B80": true,
+  "annotation_batches": [
+    1,
+    14,
+    28,
+    44,
+    60
+  ],
+  "bound_labels": 160,
+  "full_share_labels": 160,
+  "MFU_MBU_points": 100,
+  "hidden_MBU_over100": 6,
+  "new_points_from_original_prof": true,
+  "previous_96_canonical_labels_unchanged": true,
+  "actual_text_cell_and_multiline_geometry_checked": true,
+  "all_text_pairs_checked": true,
+  "all_axes_and_legends_clear": true,
+  "font_and_glyph_transforms_preserved_exactly": true,
+  "global_numeric_rounding_removed": true,
+  "svg_is_vector_only": true,
+  "image_files_read": 0,
+  "online_updated": false,
+  "files": [
+    {
+      "name": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points.svg",
+      "bytes": 993455
+    },
+    {
+      "name": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points.png",
+      "bytes": 916596
+    }
+  ],
+  "png_dpi": 80,
+  "source_hashes": {
+    "top16-both-min8-full-shares-b1-80.csv": "a9f7aefeca521b0de8ff40b2ea8041ac02789293deefa227b1004d25f8fc832e",
+    "top16-five-points-bound-method.json": "a3a94403d374fb0ee6d4cfe058f2c34008865bd7541d88ad351d8e21539c5883",
+    "mfu-mbu-five-points-method.json": "18c01ce451c7bd7348164d0b0b1b02ba36491efb3fef387bd783edf4d852df2d",
+    "full-itl-ep8-ep16-ep32-b1-80.csv": "3d09de47d0c95ad0dc4a7d4eabc7eaad7f7c9ee6311ce631137ec12635a3120e"
+  }
+}

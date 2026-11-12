@@ -1,0 +1,1122 @@
+[
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2\nC~ 0.73%  V~0.01%\n满层~ 21.11%",
+    "canonical_label": "850 · B1\nMTE2\nC~ 0.73%  V~0.01%\n满层~ 21.11%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2\nC~ 5.9%  V~0.04%\n满层~ 21.64%",
+    "canonical_label": "850 · B14\nMTE2\nC~ 5.9%  V~0.04%\n满层~ 21.64%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2\nC~ 11.2%  V~0.08%\nMBU均衡~ 96.5%  ·  满层~ 19.64%",
+    "canonical_label": "850 · B28\nMTE2\nC~ 11.2%  V~0.08%\nMBU均衡~ 96.5%\n满层~ 19.64%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\nC~ 16.7%  V~0.11%\nMBU均衡~ 92.5%  ·  满层~ 16.42%",
+    "canonical_label": "850 · B44\nMTE2\nC~ 16.7%  V~0.11%\nMBU均衡~ 92.5%\n满层~ 16.42%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\nC~ 21.4%  V~0.15%\nMBU均衡~ 87.9%  ·  满层~ 14.35%",
+    "canonical_label": "850 · B60\nMTE2\nC~ 21.4%  V~0.15%\nMBU均衡~ 87.9%\n满层~ 14.35%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  MTE2\nC~ 1.6%  V~0.01%\n满层~ 9.99%",
+    "canonical_label": "850E · B1\nMTE2\nC~ 1.6%  V~0.01%\n满层~ 9.99%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2\nC~ 12.9%  V~0.09%\nMBU均衡~ 77.9%  ·  满层~ 12.52%",
+    "canonical_label": "850E · B14\nMTE2\nC~ 12.9%  V~0.09%\nMBU均衡~ 77.9%\n满层~ 12.52%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2\nC~ 23.6%  V~0.16%\nMBU均衡~ 71.3%  ·  满层~ 11.46%",
+    "canonical_label": "850E · B28\nMTE2\nC~ 23.6%  V~0.16%\nMBU均衡~ 71.3%\n满层~ 11.46%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2\nC~ 33.4%  V~0.23%\nMBU均衡~ 64.9%  ·  满层~ 9.92%",
+    "canonical_label": "850E · B44\nMTE2\nC~ 33.4%  V~0.23%\nMBU均衡~ 64.9%\n满层~ 9.92%"
+  },
+  {
+    "operator": "GroupedMatmulSwigluQuantV2",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2\nC~ 41.0%  V~0.28%\nMBU均衡~ 58.8%  ·  满层~ 8.92%",
+    "canonical_label": "850E · B60\nMTE2\nC~ 41.0%  V~0.28%\nMBU均衡~ 58.8%\n满层~ 8.92%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar?\nC~ 4.6%  V~0.16–0.39%\nMBU~ 1.7–6.4%  ·  满层~ 2.10%",
+    "canonical_label": "850 · B1\nScalar?\nC~ 4.6%  V~0.16–0.39%\nMBU~ 1.7–6.4%\n满层~ 2.10%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Scalar\nC~ 24.6%  V~0.83–2.1%\nMBU~ 9.0–34.5%  ·  满层~ 3.01%",
+    "canonical_label": "850 · B14\nScalar\nC~ 24.6%  V~0.83–2.1%\nMBU~ 9.0–34.5%\n满层~ 3.01%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Scalar\nC~ 25.5%  V~0.86–2.2%\nMBU~ 9.4–35.8%  ·  满层~ 4.76%",
+    "canonical_label": "850 · B28\nScalar\nC~ 25.5%  V~0.86–2.2%\nMBU~ 9.4–35.8%\n满层~ 4.76%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Scalar\nC~ 26.9%  V~0.91–2.3%\nMBU~ 9.9–37.7%  ·  满层~ 5.76%",
+    "canonical_label": "850 · B44\nScalar\nC~ 26.9%  V~0.91–2.3%\nMBU~ 9.9–37.7%\n满层~ 5.76%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Scalar\nC~ 27.6%  V~0.94–2.4%\nMBU~ 10.1–38.8%  ·  满层~ 6.19%",
+    "canonical_label": "850 · B60\nScalar\nC~ 27.6%  V~0.94–2.4%\nMBU~ 10.1–38.8%\n满层~ 6.19%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar?\nC~ 4.6%  V~0.16–0.40%\nMBU~ 0.60–2.3%  ·  满层~ 2.12%",
+    "canonical_label": "850E · B1\nScalar?\nC~ 4.6%  V~0.16–0.40%\nMBU~ 0.60–2.3%\n满层~ 2.12%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Scalar\nC~ 24.7%  V~0.84–2.1%\nMBU~ 3.2–12.2%  ·  满层~ 3.79%",
+    "canonical_label": "850E · B14\nScalar\nC~ 24.7%  V~0.84–2.1%\nMBU~ 3.2–12.2%\n满层~ 3.79%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Scalar\nC~ 25.8%  V~0.87–2.2%\nMBU~ 3.3–12.7%  ·  满层~ 5.87%",
+    "canonical_label": "850E · B28\nScalar\nC~ 25.8%  V~0.87–2.2%\nMBU~ 3.3–12.7%\n满层~ 5.87%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Scalar\nC~ 27.0%  V~0.91–2.3%\nMBU~ 3.5–13.3%  ·  满层~ 7.05%",
+    "canonical_label": "850E · B44\nScalar\nC~ 27.0%  V~0.91–2.3%\nMBU~ 3.5–13.3%\n满层~ 7.05%"
+  },
+  {
+    "operator": "KvQuantSparseFlashAttentionVllm",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Scalar\nC~ 27.9%  V~0.94–2.4%\nMBU~ 3.6–13.7%  ·  满层~ 7.43%",
+    "canonical_label": "850E · B60\nScalar\nC~ 27.9%  V~0.94–2.4%\nMBU~ 3.6–13.7%\n满层~ 7.43%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Vector\nV~ 6.3%\nMBU~ 14.9%  ·  满层~ 1.35%",
+    "canonical_label": "850 · B1\nVector\nV~ 6.3%\nMBU~ 14.9%\n满层~ 1.35%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Vector\nV~ 13.1%\nMBU~ 30.7%  ·  满层~ 5.87%",
+    "canonical_label": "850 · B14\nVector\nV~ 13.1%\nMBU~ 30.7%\n满层~ 5.87%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Vector\nV~ 13.4%\nMBU~ 31.5%  ·  满层~ 9.93%",
+    "canonical_label": "850 · B28\nVector\nV~ 13.4%\nMBU~ 31.5%\n满层~ 9.93%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Vector\nV~ 13.5%\nMBU~ 31.7%  ·  满层~ 12.40%",
+    "canonical_label": "850 · B44\nVector\nV~ 13.5%\nMBU~ 31.7%\n满层~ 12.40%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Vector\nV~ 13.5%\nMBU~ 31.7%  ·  满层~ 13.95%",
+    "canonical_label": "850 · B60\nVector\nV~ 13.5%\nMBU~ 31.7%\n满层~ 13.95%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Vector\nV~ 6.4%\nMBU~ 5.3%  ·  满层~ 1.35%",
+    "canonical_label": "850E · B1\nVector\nV~ 6.4%\nMBU~ 5.3%\n满层~ 1.35%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Vector\nV~ 13.5%\nMBU~ 11.1%  ·  满层~ 7.21%",
+    "canonical_label": "850E · B14\nVector\nV~ 13.5%\nMBU~ 11.1%\n满层~ 7.21%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Vector\nV~ 13.7%\nMBU~ 11.3%  ·  满层~ 12.10%",
+    "canonical_label": "850E · B28\nVector\nV~ 13.7%\nMBU~ 11.3%\n满层~ 12.10%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Vector\nV~ 13.6%\nMBU~ 11.2%  ·  满层~ 15.05%",
+    "canonical_label": "850E · B44\nVector\nV~ 13.6%\nMBU~ 11.2%\n满层~ 15.05%"
+  },
+  {
+    "operator": "_kda_recoverssm_verify_kernel",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Vector\nV~ 13.7%\nMBU~ 11.3%  ·  满层~ 16.62%",
+    "canonical_label": "850E · B60\nVector\nV~ 13.7%\nMBU~ 11.3%\n满层~ 16.62%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2\nC~ 0.72%\n满层~ 10.69%",
+    "canonical_label": "850 · B1\nMTE2\nC~ 0.72%\n满层~ 10.69%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2\nC~ 5.8%\n满层~ 11.02%",
+    "canonical_label": "850 · B14\nMTE2\nC~ 5.8%\n满层~ 11.02%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2\nC~ 11.0%\nMBU均衡~ 98.3%  ·  满层~ 9.98%",
+    "canonical_label": "850 · B28\nMTE2\nC~ 11.0%\nMBU均衡~ 98.3%\n满层~ 9.98%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\nC~ 16.7%\nMBU均衡~ 96.8%  ·  满层~ 8.27%",
+    "canonical_label": "850 · B44\nMTE2\nC~ 16.7%\nMBU均衡~ 96.8%\n满层~ 8.27%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\nC~ 22.0%\nMBU均衡~ 95.9%  ·  满层~ 7.01%",
+    "canonical_label": "850 · B60\nMTE2\nC~ 22.0%\nMBU均衡~ 95.9%\n满层~ 7.01%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  MTE2\nC~ 1.6%\n满层~ 4.74%",
+    "canonical_label": "850E · B1\nMTE2\nC~ 1.6%\n满层~ 4.74%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2\nC~ 13.3%\nMBU均衡~ 81.3%  ·  满层~ 6.10%",
+    "canonical_label": "850E · B14\nMTE2\nC~ 13.3%\nMBU均衡~ 81.3%\n满层~ 6.10%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2\nC~ 23.9%\nMBU均衡~ 74.6%  ·  满层~ 5.67%",
+    "canonical_label": "850E · B28\nMTE2\nC~ 23.9%\nMBU均衡~ 74.6%\n满层~ 5.67%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2\nC~ 34.8%\nMBU均衡~ 70.7%  ·  满层~ 4.77%",
+    "canonical_label": "850E · B44\nMTE2\nC~ 34.8%\nMBU均衡~ 70.7%\n满层~ 4.77%"
+  },
+  {
+    "operator": "GroupedMatmul",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2\nC~ 42.8%\nMBU均衡~ 65.4%  ·  满层~ 4.24%",
+    "canonical_label": "850E · B60\nMTE2\nC~ 42.8%\nMBU均衡~ 65.4%\n满层~ 4.24%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2\nC≥ 1.5%\nMBU~ 76.4%  ·  满层~ 23.07%",
+    "canonical_label": "850 · B1\nMTE2\nC≥ 1.5%\nMBU~ 76.4%\n满层~ 23.07%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2\nC≥ 17.1%\nMBU~ 66.1%  ·  满层~ 16.91%",
+    "canonical_label": "850 · B14\nMTE2\nC≥ 17.1%\nMBU~ 66.1%\n满层~ 16.91%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2\nC≥ 31.9%\nMBU~ 64.7%  ·  满层~ 15.40%",
+    "canonical_label": "850 · B28\nMTE2\nC≥ 31.9%\nMBU~ 64.7%\n满层~ 15.40%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\nC≥ 47.7%\nMBU~ 64.9%  ·  满层~ 12.77%",
+    "canonical_label": "850 · B44\nMTE2\nC≥ 47.7%\nMBU~ 64.9%\n满层~ 12.77%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\nC≥ 59.8%\nMBU~ 62.6%  ·  满层~ 11.54%",
+    "canonical_label": "850 · B60\nMTE2\nC≥ 59.8%\nMBU~ 62.6%\n满层~ 11.54%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  MTE2\nC≥ 2.8%\nMBU~ 51.0%  ·  满层~ 10.55%",
+    "canonical_label": "850E · B1\nMTE2\nC≥ 2.8%\nMBU~ 51.0%\n满层~ 10.55%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2\nC≥ 28.5%\nMBU~ 38.6%  ·  满层~ 10.86%",
+    "canonical_label": "850E · B14\nMTE2\nC≥ 28.5%\nMBU~ 38.6%\n满层~ 10.86%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2\nC≥ 50.4%\nMBU~ 35.8%  ·  满层~ 10.26%",
+    "canonical_label": "850E · B28\nMTE2\nC≥ 50.4%\nMBU~ 35.8%\n满层~ 10.26%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2\nC≥ 61.5%\nMBU~ 29.2%  ·  满层~ 10.41%",
+    "canonical_label": "850E · B44\nMTE2\nC≥ 61.5%\nMBU~ 29.2%\n满层~ 10.41%"
+  },
+  {
+    "operator": "MatMulV3",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Cube/MTE2\nC≥ 70.6%\nMBU~ 25.9%  ·  满层~ 10.32%",
+    "canonical_label": "850E · B60\nCube/MTE2\nC≥ 70.6%\nMBU~ 25.9%\n满层~ 10.32%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2/Scalar\nC~ 4.2%  V~1.1%\nMBU~ 7.2%  ·  满层~ 0.86%",
+    "canonical_label": "850 · B1\nMTE2/Scalar\nC~ 4.2%  V~1.1%\nMBU~ 7.2%\n满层~ 0.86%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2/Scalar\nC~ 18.8%  V~4.8%\nMBU~ 31.7%  ·  满层~ 1.74%",
+    "canonical_label": "850 · B14\nMTE2/Scalar\nC~ 18.8%  V~4.8%\nMBU~ 31.7%\n满层~ 1.74%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2/Scalar\nC~ 23.6%  V~6.0%\nMBU~ 39.9%  ·  满层~ 2.41%",
+    "canonical_label": "850 · B28\nMTE2/Scalar\nC~ 23.6%  V~6.0%\nMBU~ 39.9%\n满层~ 2.41%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2/Scalar\nC~ 26.5%  V~6.7%\nMBU~ 44.8%  ·  满层~ 2.69%",
+    "canonical_label": "850 · B44\nMTE2/Scalar\nC~ 26.5%  V~6.7%\nMBU~ 44.8%\n满层~ 2.69%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2/Scalar\nC~ 27.8%  V~7.1%\nMBU~ 47.0%  ·  满层~ 2.89%",
+    "canonical_label": "850 · B60\nMTE2/Scalar\nC~ 27.8%  V~7.1%\nMBU~ 47.0%\n满层~ 2.89%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  MTE2/Scalar\nC~ 4.2%  V~1.1%\nMBU~ 2.5%  ·  满层~ 0.88%",
+    "canonical_label": "850E · B1\nMTE2/Scalar\nC~ 4.2%  V~1.1%\nMBU~ 2.5%\n满层~ 0.88%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2/Scalar\nC~ 18.9%  V~4.8%\nMBU~ 11.2%  ·  满层~ 2.20%",
+    "canonical_label": "850E · B14\nMTE2/Scalar\nC~ 18.9%  V~4.8%\nMBU~ 11.2%\n满层~ 2.20%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2/Scalar\nC~ 23.8%  V~6.0%\nMBU~ 14.0%  ·  满层~ 2.98%",
+    "canonical_label": "850E · B28\nMTE2/Scalar\nC~ 23.8%  V~6.0%\nMBU~ 14.0%\n满层~ 2.98%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2/Scalar\nC~ 26.6%  V~6.8%\nMBU~ 15.7%  ·  满层~ 3.30%",
+    "canonical_label": "850E · B44\nMTE2/Scalar\nC~ 26.6%  V~6.8%\nMBU~ 15.7%\n满层~ 3.30%"
+  },
+  {
+    "operator": "PoolKeyIndexer",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2/Scalar\nC~ 27.8%  V~7.1%\nMBU~ 16.4%  ·  满层~ 3.51%",
+    "canonical_label": "850E · B60\nMTE2/Scalar\nC~ 27.8%  V~7.1%\nMBU~ 16.4%\n满层~ 3.51%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2\nC 1.5%\nMBU~ 79.3%  ·  满层~ 5.01%",
+    "canonical_label": "850 · B1\nMTE2\nC 1.5%\nMBU~ 79.3%\n满层~ 5.01%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2\nC 18.0%\nMBU~ 72.5%  ·  满层~ 3.76%",
+    "canonical_label": "850 · B14\nMTE2\nC 18.0%\nMBU~ 72.5%\n满层~ 3.76%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2\nC 32.6%\nMBU~ 69.4%  ·  满层~ 3.56%",
+    "canonical_label": "850 · B28\nMTE2\nC 32.6%\nMBU~ 69.4%\n满层~ 3.56%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\nC 40.9%\nMBU~ 58.9%  ·  满层~ 3.41%",
+    "canonical_label": "850 · B44\nMTE2\nC 40.9%\nMBU~ 58.9%\n满层~ 3.41%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\nC 51.9%\nMBU~ 57.9%  ·  满层~ 3.05%",
+    "canonical_label": "850 · B60\nMTE2\nC 51.9%\nMBU~ 57.9%\n满层~ 3.05%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  MTE2\nC 3.0%\nMBU~ 55.6%  ·  满层~ 2.65%",
+    "canonical_label": "850E · B1\nMTE2\nC 3.0%\nMBU~ 55.6%\n满层~ 2.65%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2\nC 31.8%\nMBU~ 44.9%  ·  满层~ 2.74%",
+    "canonical_label": "850E · B14\nMTE2\nC 31.8%\nMBU~ 44.9%\n满层~ 2.74%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2\nC 50.5%\nMBU~ 37.6%  ·  满层~ 2.89%",
+    "canonical_label": "850E · B28\nMTE2\nC 50.5%\nMBU~ 37.6%\n满层~ 2.89%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2\nC 59.5%\nMBU~ 29.9%  ·  满层~ 2.91%",
+    "canonical_label": "850E · B44\nMTE2\nC 59.5%\nMBU~ 29.9%\n满层~ 2.91%"
+  },
+  {
+    "operator": "QuantBatchMatmulV3",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2/Cube\nC 69.8%\nMBU~ 27.3%  ·  满层~ 2.73%",
+    "canonical_label": "850E · B60\nMTE2/Cube\nC 69.8%\nMBU~ 27.3%\n满层~ 2.73%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  MTE2/Scalar?\n满层~ 1.54%",
+    "canonical_label": "850 · B1\nMTE2/Scalar?\n满层~ 1.54%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Mixed?\n满层~ 1.76%",
+    "canonical_label": "850 · B14\nMixed?\n满层~ 1.76%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE3\n满层~ 1.98%",
+    "canonical_label": "850 · B28\nMTE3\n满层~ 1.98%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE3\n满层~ 2.08%",
+    "canonical_label": "850 · B44\nMTE3\n满层~ 2.08%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE3\n满层~ 2.67%",
+    "canonical_label": "850 · B60\nMTE3\n满层~ 2.67%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\n满层~ 1.29%",
+    "canonical_label": "850E · B1\nScalar\n满层~ 1.29%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2\n满层~ 4.76%",
+    "canonical_label": "850E · B14\nMTE2\n满层~ 4.76%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE3\n满层~ 2.34%",
+    "canonical_label": "850E · B28\nMTE3\n满层~ 2.34%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE3\n满层~ 2.40%",
+    "canonical_label": "850E · B44\nMTE3\n满层~ 2.40%"
+  },
+  {
+    "operator": "Dispatch",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE3\n满层~ 3.61%",
+    "canonical_label": "850E · B60\nMTE3\n满层~ 3.61%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar\n满层~ 1.18%",
+    "canonical_label": "850 · B1\nScalar\n满层~ 1.18%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  MTE2\n满层~ 1.25%",
+    "canonical_label": "850 · B14\nMTE2\n满层~ 1.25%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2\n满层~ 1.63%",
+    "canonical_label": "850 · B28\nMTE2\n满层~ 1.63%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\n满层~ 1.92%",
+    "canonical_label": "850 · B44\nMTE2\n满层~ 1.92%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\n满层~ 2.09%",
+    "canonical_label": "850 · B60\nMTE2\n满层~ 2.09%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\n满层~ 0.82%",
+    "canonical_label": "850E · B1\nScalar\n满层~ 0.82%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  MTE2/Scalar\n满层~ 1.56%",
+    "canonical_label": "850E · B14\nMTE2/Scalar\n满层~ 1.56%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  MTE2\n满层~ 2.06%",
+    "canonical_label": "850E · B28\nMTE2\n满层~ 2.06%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  MTE2\n满层~ 2.37%",
+    "canonical_label": "850E · B44\nMTE2\n满层~ 2.37%"
+  },
+  {
+    "operator": "Combine",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2/Scalar\n满层~ 2.50%",
+    "canonical_label": "850E · B60\nMTE2/Scalar\n满层~ 2.50%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar\nC 0.18%  V~0.12%\nMBU~ 10.9%  ·  满层~ 1.76%",
+    "canonical_label": "850 · B1\nScalar\nC 0.18%  V~0.12%\nMBU~ 10.9%\n满层~ 1.76%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Fixpipe/Scalar\nC 2.0%  V~1.2%\nMBU~ 23.1%  ·  满层~ 1.47%",
+    "canonical_label": "850 · B14\nFixpipe/Scalar\nC 2.0%  V~1.2%\nMBU~ 23.1%\n满层~ 1.47%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Vector\nC 3.1%  V~1.9%\nMBU~ 30.3%  ·  满层~ 1.64%",
+    "canonical_label": "850 · B28\nVector\nC 3.1%  V~1.9%\nMBU~ 30.3%\n满层~ 1.64%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Vector\nC 4.0%  V~2.5%\nMBU~ 36.7%  ·  满层~ 1.57%",
+    "canonical_label": "850 · B44\nVector\nC 4.0%  V~2.5%\nMBU~ 36.7%\n满层~ 1.57%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Vector\nC 4.9%  V~3.1%\nMBU~ 43.4%  ·  满层~ 1.45%",
+    "canonical_label": "850 · B60\nVector\nC 4.9%  V~3.1%\nMBU~ 43.4%\n满层~ 1.45%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\nC 0.19%  V~0.12%\nMBU~ 3.9%  ·  满层~ 1.75%",
+    "canonical_label": "850E · B1\nScalar\nC 0.19%  V~0.12%\nMBU~ 3.9%\n满层~ 1.75%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Fixpipe/Scalar\nC 2.0%  V~1.2%\nMBU~ 8.1%  ·  满层~ 1.85%",
+    "canonical_label": "850E · B14\nFixpipe/Scalar\nC 2.0%  V~1.2%\nMBU~ 8.1%\n满层~ 1.85%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Vector\nC 3.1%  V~1.9%\nMBU~ 10.6%  ·  满层~ 2.03%",
+    "canonical_label": "850E · B28\nVector\nC 3.1%  V~1.9%\nMBU~ 10.6%\n满层~ 2.03%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Vector\nC 4.0%  V~2.5%\nMBU~ 12.9%  ·  满层~ 1.93%",
+    "canonical_label": "850E · B44\nVector\nC 4.0%  V~2.5%\nMBU~ 12.9%\n满层~ 1.93%"
+  },
+  {
+    "operator": "HcPre",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Vector\nC 4.9%  V~3.1%\nMBU~ 15.3%  ·  满层~ 1.74%",
+    "canonical_label": "850E · B60\nVector\nC 4.9%  V~3.1%\nMBU~ 15.3%\n满层~ 1.74%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar\nV~ 0.01%\nMBU~ 0.90%  ·  满层~ 1.99%",
+    "canonical_label": "850 · B1\nScalar\nV~ 0.01%\nMBU~ 0.90%\n满层~ 1.99%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Scalar?\nV~ 0.08%\nMBU~ 9.8%  ·  满层~ 1.65%",
+    "canonical_label": "850 · B14\nScalar?\nV~ 0.08%\nMBU~ 9.8%\n满层~ 1.65%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Scalar?\nV~ 0.16%\nMBU~ 18.1%  ·  满层~ 1.52%",
+    "canonical_label": "850 · B28\nScalar?\nV~ 0.16%\nMBU~ 18.1%\n满层~ 1.52%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Scalar?\nV~ 0.22%\nMBU~ 26.0%  ·  满层~ 1.33%",
+    "canonical_label": "850 · B44\nScalar?\nV~ 0.22%\nMBU~ 26.0%\n满层~ 1.33%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Scalar?\nV~ 0.28%\nMBU~ 33.2%  ·  满层~ 1.17%",
+    "canonical_label": "850 · B60\nScalar?\nV~ 0.28%\nMBU~ 33.2%\n满层~ 1.17%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\nV~ 0.01%\nMBU~ 0.34%  ·  满层~ 1.86%",
+    "canonical_label": "850E · B1\nScalar\nV~ 0.01%\nMBU~ 0.34%\n满层~ 1.86%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Scalar?\nV~ 0.10%\nMBU~ 3.9%  ·  满层~ 1.77%",
+    "canonical_label": "850E · B14\nScalar?\nV~ 0.10%\nMBU~ 3.9%\n满层~ 1.77%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Scalar?\nV~ 0.18%\nMBU~ 7.3%  ·  满层~ 1.59%",
+    "canonical_label": "850E · B28\nScalar?\nV~ 0.18%\nMBU~ 7.3%\n满层~ 1.59%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Scalar?\nV~ 0.26%\nMBU~ 10.6%  ·  满层~ 1.36%",
+    "canonical_label": "850E · B44\nScalar?\nV~ 0.26%\nMBU~ 10.6%\n满层~ 1.36%"
+  },
+  {
+    "operator": "DynamicMxQuant",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Scalar?\nV~ 0.32%\nMBU~ 13.2%  ·  满层~ 1.21%",
+    "canonical_label": "850E · B60\nScalar?\nV~ 0.32%\nMBU~ 13.2%\n满层~ 1.21%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Fixpipe/MTE2\nC 1.3%\nMBU~ 68.8%  ·  满层~ 0.87%",
+    "canonical_label": "850 · B1\nFixpipe/MTE2\nC 1.3%\nMBU~ 68.8%\n满层~ 0.87%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Fixpipe/MTE2\nC 14.5%\nMBU~ 79.5%  ·  满层~ 0.70%",
+    "canonical_label": "850 · B14\nFixpipe/MTE2\nC 14.5%\nMBU~ 79.5%\n满层~ 0.70%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Fixpipe/MTE2\nC 24.2%\nMBU~ 88.2%  ·  满层~ 0.72%",
+    "canonical_label": "850 · B28\nFixpipe/MTE2\nC 24.2%\nMBU~ 88.2%\n满层~ 0.72%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Fixpipe/MTE2\nC 28.6%\nMBU~ 85.3%  ·  满层~ 0.73%",
+    "canonical_label": "850 · B44\nFixpipe/MTE2\nC 28.6%\nMBU~ 85.3%\n满层~ 0.73%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Fixpipe/MTE2\nC 35.7%\nMBU~ 95.0%  ·  满层~ 0.65%",
+    "canonical_label": "850 · B60\nFixpipe/MTE2\nC 35.7%\nMBU~ 95.0%\n满层~ 0.65%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Fixpipe/MTE2\nC 2.3%\nMBU~ 42.1%  ·  满层~ 0.52%",
+    "canonical_label": "850E · B1\nFixpipe/MTE2\nC 2.3%\nMBU~ 42.1%\n满层~ 0.52%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Fixpipe/MTE2\nC 23.6%\nMBU~ 45.4%  ·  满层~ 0.54%",
+    "canonical_label": "850E · B14\nFixpipe/MTE2\nC 23.6%\nMBU~ 45.4%\n满层~ 0.54%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Fixpipe\nC 38.6%\nMBU~ 49.3%  ·  满层~ 0.55%",
+    "canonical_label": "850E · B28\nFixpipe\nC 38.6%\nMBU~ 49.3%\n满层~ 0.55%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Fixpipe\nC 36.4%\nMBU~ 37.9%  ·  满层~ 0.68%",
+    "canonical_label": "850E · B44\nFixpipe\nC 36.4%\nMBU~ 37.9%\n满层~ 0.68%"
+  },
+  {
+    "operator": "TransposeBatchMatMul",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Fixpipe\nC 48.7%\nMBU~ 45.4%  ·  满层~ 0.57%",
+    "canonical_label": "850E · B60\nFixpipe\nC 48.7%\nMBU~ 45.4%\n满层~ 0.57%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Vector\n满层~ 0.64%",
+    "canonical_label": "850 · B1\nVector\n满层~ 0.64%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Vector/MTE2\n满层~ 0.71%",
+    "canonical_label": "850 · B14\nVector/MTE2\n满层~ 0.71%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  MTE2/Vector\n满层~ 0.82%",
+    "canonical_label": "850 · B28\nMTE2/Vector\n满层~ 0.82%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  MTE2\n满层~ 0.92%",
+    "canonical_label": "850 · B44\nMTE2\n满层~ 0.92%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2\n满层~ 0.98%",
+    "canonical_label": "850 · B60\nMTE2\n满层~ 0.98%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Vector\n满层~ 0.64%",
+    "canonical_label": "850E · B1\nVector\n满层~ 0.64%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Vector\n满层~ 0.87%",
+    "canonical_label": "850E · B14\nVector\n满层~ 0.87%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Vector\n满层~ 0.91%",
+    "canonical_label": "850E · B28\nVector\n满层~ 0.91%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Vector\n满层~ 0.93%",
+    "canonical_label": "850E · B44\nVector\n满层~ 0.93%"
+  },
+  {
+    "operator": "HcPost",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Vector\n满层~ 0.86%",
+    "canonical_label": "850E · B60\nVector\n满层~ 0.86%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar?\n满层~ 0.35%",
+    "canonical_label": "850 · B1\nScalar?\n满层~ 0.35%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Scalar\n满层~ 0.29%",
+    "canonical_label": "850 · B14\nScalar\n满层~ 0.29%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Scalar\n满层~ 0.34%",
+    "canonical_label": "850 · B28\nScalar\n满层~ 0.34%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Scalar/MTE2?\n满层~ 0.58%",
+    "canonical_label": "850 · B44\nScalar/MTE2?\n满层~ 0.58%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  MTE2/Scalar\n满层~ 0.50%",
+    "canonical_label": "850 · B60\nMTE2/Scalar\n满层~ 0.50%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar?\n满层~ 0.35%",
+    "canonical_label": "850E · B1\nScalar?\n满层~ 0.35%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Scalar\n满层~ 0.35%",
+    "canonical_label": "850E · B14\nScalar\n满层~ 0.35%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Scalar\n满层~ 0.41%",
+    "canonical_label": "850E · B28\nScalar\n满层~ 0.41%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Scalar/MTE2?\n满层~ 0.69%",
+    "canonical_label": "850E · B44\nScalar/MTE2?\n满层~ 0.69%"
+  },
+  {
+    "operator": "KeyPool",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  MTE2/Scalar\n满层~ 0.59%",
+    "canonical_label": "850E · B60\nMTE2/Scalar\n满层~ 0.59%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar\n满层~ 0.59%",
+    "canonical_label": "850 · B1\nScalar\n满层~ 0.59%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Vector\n满层~ 0.84%",
+    "canonical_label": "850 · B14\nVector\n满层~ 0.84%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Vector\n满层~ 1.02%",
+    "canonical_label": "850 · B28\nVector\n满层~ 1.02%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Vector\n满层~ 1.27%",
+    "canonical_label": "850 · B44\nVector\n满层~ 1.27%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Vector\n满层~ 1.28%",
+    "canonical_label": "850 · B60\nVector\n满层~ 1.28%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\n满层~ 0.60%",
+    "canonical_label": "850E · B1\nScalar\n满层~ 0.60%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Vector\n满层~ 1.05%",
+    "canonical_label": "850E · B14\nVector\n满层~ 1.05%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Vector\n满层~ 1.27%",
+    "canonical_label": "850E · B28\nVector\n满层~ 1.27%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Vector\n满层~ 1.53%",
+    "canonical_label": "850E · B44\nVector\n满层~ 1.53%"
+  },
+  {
+    "operator": "CausalConv1d",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Vector\n满层~ 1.49%",
+    "canonical_label": "850E · B60\nVector\n满层~ 1.49%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850",
+    "batch": 1,
+    "label": "850 · B1  |  Scalar\n满层~ 0.62%",
+    "canonical_label": "850 · B1\nScalar\n满层~ 0.62%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850",
+    "batch": 14,
+    "label": "850 · B14  |  Scalar\n满层~ 0.65%",
+    "canonical_label": "850 · B14\nScalar\n满层~ 0.65%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850",
+    "batch": 28,
+    "label": "850 · B28  |  Scalar\n满层~ 0.63%",
+    "canonical_label": "850 · B28\nScalar\n满层~ 0.63%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850",
+    "batch": 44,
+    "label": "850 · B44  |  Scalar?\n满层~ 0.54%",
+    "canonical_label": "850 · B44\nScalar?\n满层~ 0.54%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850",
+    "batch": 60,
+    "label": "850 · B60  |  Scalar/Vector?\n满层~ 0.49%",
+    "canonical_label": "850 · B60\nScalar/Vector?\n满层~ 0.49%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850E",
+    "batch": 1,
+    "label": "850E · B1  |  Scalar\n满层~ 0.62%",
+    "canonical_label": "850E · B1\nScalar\n满层~ 0.62%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850E",
+    "batch": 14,
+    "label": "850E · B14  |  Scalar\n满层~ 0.82%",
+    "canonical_label": "850E · B14\nScalar\n满层~ 0.82%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850E",
+    "batch": 28,
+    "label": "850E · B28  |  Scalar\n满层~ 0.78%",
+    "canonical_label": "850E · B28\nScalar\n满层~ 0.78%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850E",
+    "batch": 44,
+    "label": "850E · B44  |  Scalar?\n满层~ 0.67%",
+    "canonical_label": "850E · B44\nScalar?\n满层~ 0.67%"
+  },
+  {
+    "operator": "RmsNorm",
+    "hardware": "850E",
+    "batch": 60,
+    "label": "850E · B60  |  Scalar/Vector?\n满层~ 0.60%",
+    "canonical_label": "850E · B60\nScalar/Vector?\n满层~ 0.60%"
+  }
+]
