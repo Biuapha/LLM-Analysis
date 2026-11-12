@@ -1,0 +1,2102 @@
+{
+  "source": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k.svg",
+  "output": "glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-curve-bound.svg",
+  "bytes": 999270,
+  "annotations": 160,
+  "batches": [
+    1,
+    14,
+    28,
+    44,
+    60
+  ],
+  "all_existing_svg_geometry_text_and_metrics_preserved": true,
+  "all_labels_avoid_both_curve_paths": true,
+  "all_labels_inside_axes_and_pairwise_disjoint": true,
+  "existing_bound_classifications_unchanged": true,
+  "image_files_viewed": 0,
+  "source_sha256": "37412d0c1acc3163f8dd545888f14dcafccc30f24f088413daedd976f293fa37",
+  "svg_sha256": "a3781945a4b26f16eefcf0e75084fb9aa991667dae7ab9f150a0fc79a803fb67",
+  "annotation_details": [
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 253.6400156250001,
+      "box_svg": [
+        83.45454545454545,
+        300.1090909090899,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 118.47333437499994,
+      "box_svg": [
+        78.21818181818182,
+        351.1636363636353,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 439.8467343750001,
+      "box_svg": [
+        125.34545454545454,
+        245.1272727272717,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 201.30757812499994,
+      "box_svg": [
+        125.34545454545454,
+        327.59999999999854,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 467.3541562500002,
+      "box_svg": [
+        209.12727272727273,
+        241.1999999999989,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 221.29880625000004,
+      "box_svg": [
+        209.12727272727273,
+        323.67272727272575,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 491.30198437499985,
+      "box_svg": [
+        287.6727272727273,
+        237.27272727272612,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 245.13551875000002,
+      "box_svg": [
+        303.3818181818182,
+        319.74545454545387,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 520.9631531250002,
+      "box_svg": [
+        397.6363636363636,
+        252.9818181818173,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmulSwigluQuantV2",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 272.59048437499985,
+      "box_svg": [
+        397.6363636363636,
+        311.8909090909083,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar? bound",
+      "duration_us": 81.34921249999996,
+      "box_svg": [
+        643.4181818181818,
+        323.67272727272575,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar? bound",
+      "duration_us": 80.59461875,
+      "box_svg": [
+        674.8363636363637,
+        355.0909090909081,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 212.64051874999993,
+      "box_svg": [
+        690.5454545454545,
+        307.9636363636355,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 211.16688750000003,
+      "box_svg": [
+        737.6727272727272,
+        351.1636363636353,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 410.14815624999983,
+      "box_svg": [
+        769.0909090909091,
+        296.1818181818171,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 405.47947500000004,
+      "box_svg": [
+        774.3272727272728,
+        331.52727272727134,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Scalar bound",
+      "duration_us": 610.7327812499998,
+      "box_svg": [
+        863.3454545454546,
+        272.61818181818035,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Scalar bound",
+      "duration_us": 607.5707875000003,
+      "box_svg": [
+        868.5818181818182,
+        307.9636363636355,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Scalar bound",
+      "duration_us": 810.4404187500002,
+      "box_svg": [
+        957.6,
+        245.1272727272717,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KvQuantSparseFlashAttentionVllm",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Scalar bound",
+      "duration_us": 802.7228000000001,
+      "box_svg": [
+        962.8363636363637,
+        280.47272727272593,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Vector bound",
+      "duration_us": 24.476493749999992,
+      "box_svg": [
+        78.21818181818182,
+        839.4545454545441,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Vector bound",
+      "duration_us": 24.112562499999996,
+      "box_svg": [
+        78.21818181818182,
+        823.7454545454534,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Vector bound",
+      "duration_us": 165.51153749999992,
+      "box_svg": [
+        141.05454545454546,
+        819.8181818181806,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Vector bound",
+      "duration_us": 160.56956874999995,
+      "box_svg": [
+        141.05454545454546,
+        859.0909090909081,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 322.6443687499999,
+      "box_svg": [
+        209.12727272727273,
+        804.1090909090899,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 315.7736250000001,
+      "box_svg": [
+        214.36363636363637,
+        839.4545454545441,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 504.31091874999987,
+      "box_svg": [
+        303.3818181818182,
+        776.6181818181808,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 497.6879062500001,
+      "box_svg": [
+        303.3818181818182,
+        815.8909090909078,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 686.7719750000003,
+      "box_svg": [
+        392.4,
+        753.0545454545445,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "_kda_recoverssm_verify_kernel",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 675.2402750000001,
+      "box_svg": [
+        402.8727272727273,
+        788.3999999999987,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 128.57256874999993,
+      "box_svg": [
+        648.6545454545454,
+        796.2545454545443,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 56.426253125000024,
+      "box_svg": [
+        643.4181818181818,
+        851.2363636363625,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 223.80620937500004,
+      "box_svg": [
+        690.5454545454545,
+        741.2727272727261,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 97.93838125000003,
+      "box_svg": [
+        690.5454545454545,
+        831.599999999999,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 236.40560937499993,
+      "box_svg": [
+        774.3272727272728,
+        760.9090909090896,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 109.06171562499996,
+      "box_svg": [
+        774.3272727272728,
+        827.6727272727262,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 245.7612531250001,
+      "box_svg": [
+        868.5818181818182,
+        756.9818181818173,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 117.84797812499991,
+      "box_svg": [
+        868.5818181818182,
+        823.7454545454534,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 254.16738124999978,
+      "box_svg": [
+        962.8363636363637,
+        753.0545454545445,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "GroupedMatmul",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 130.42392500000005,
+      "box_svg": [
+        962.8363636363637,
+        815.8909090909078,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 277.09685625000014,
+      "box_svg": [
+        78.21818181818182,
+        1272.7636363636352,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 145.29976874999974,
+      "box_svg": [
+        78.21818181818182,
+        1343.4545454545441,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 335.4715687500004,
+      "box_svg": [
+        125.34545454545454,
+        1257.0545454545445,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 201.18436875000006,
+      "box_svg": [
+        135.8181818181818,
+        1335.599999999999,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 359.1880687499997,
+      "box_svg": [
+        209.12727272727273,
+        1257.0545454545445,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 227.1454249999998,
+      "box_svg": [
+        214.36363636363637,
+        1323.8181818181806,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 377.2242250000001,
+      "box_svg": [
+        303.3818181818182,
+        1249.199999999999,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 292.76312500000006,
+      "box_svg": [
+        308.6181818181818,
+        1304.181818181817,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 410.33271874999963,
+      "box_svg": [
+        418.58181818181816,
+        1284.5454545454536,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "MatMulV3",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Cube/MTE2 bound",
+      "duration_us": 347.6669750000002,
+      "box_svg": [
+        387.1636363636364,
+        1300.2545454545443,
+        73.30909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 44.12129375000002,
+      "box_svg": [
+        643.4181818181818,
+        1327.7454545454534,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 44.61051250000002,
+      "box_svg": [
+        674.8363636363637,
+        1363.090909090908,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 139.3028375,
+      "box_svg": [
+        680.0727272727273,
+        1312.0363636363627,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 138.49779375000003,
+      "box_svg": [
+        732.4363636363636,
+        1347.381818181817,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 221.64005625,
+      "box_svg": [
+        763.8545454545455,
+        1296.3272727272715,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 220.30022500000004,
+      "box_svg": [
+        763.8545454545455,
+        1363.090909090908,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 310.12416875,
+      "box_svg": [
+        858.1090909090909,
+        1272.7636363636352,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 309.6123437500001,
+      "box_svg": [
+        863.3454545454546,
+        1319.8909090909078,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 403.4452812500002,
+      "box_svg": [
+        952.3636363636364,
+        1253.1272727272717,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "PoolKeyIndexer",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 403.6451375,
+      "box_svg": [
+        957.6,
+        1296.3272727272715,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 140.85898124999997,
+      "box_svg": [
+        78.21818181818182,
+        1788.5454545454536,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "MTE2 bound",
+      "duration_us": 70.3301812500002,
+      "box_svg": [
+        78.21818181818182,
+        1855.3090909090897,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 162.83033750000004,
+      "box_svg": [
+        135.8181818181818,
+        1780.690909090908,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 92.09640625000004,
+      "box_svg": [
+        135.8181818181818,
+        1843.5272727272718,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 179.82628749999998,
+      "box_svg": [
+        209.12727272727273,
+        1772.8363636363624,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 116.07825625000004,
+      "box_svg": [
+        209.12727272727273,
+        1831.7454545454534,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 225.20203749999976,
+      "box_svg": [
+        303.3818181818182,
+        1749.2727272727261,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 154.94088749999995,
+      "box_svg": [
+        303.3818181818182,
+        1816.0363636363627,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 242.39542499999982,
+      "box_svg": [
+        413.3454545454545,
+        1764.9818181818168,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "QuantBatchMatmulV3",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2/Cube bound",
+      "duration_us": 180.1123124999998,
+      "box_svg": [
+        387.1636363636364,
+        1804.2545454545443,
+        73.30909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850",
+      "batch": 1,
+      "label": "MTE2/Scalar? bound",
+      "duration_us": 20.310175,
+      "box_svg": [
+        653.8909090909091,
+        1867.090909090908,
+        81.16363636363636,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 16.460925,
+      "box_svg": [
+        643.4181818181818,
+        1831.7454545454534,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Mixed? bound",
+      "duration_us": 38.033575,
+      "box_svg": [
+        690.5454545454545,
+        1796.3999999999987,
+        57.36477272727273,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 66.86075,
+      "box_svg": [
+        659.1272727272727,
+        1816.0363636363627,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE3 bound",
+      "duration_us": 50.699225,
+      "box_svg": [
+        769.0909090909091,
+        1800.3272727272715,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE3 bound",
+      "duration_us": 48.095575,
+      "box_svg": [
+        774.3272727272728,
+        1843.5272727272718,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE3 bound",
+      "duration_us": 67.772425,
+      "box_svg": [
+        868.5818181818182,
+        1788.5454545454536,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE3 bound",
+      "duration_us": 63.852025,
+      "box_svg": [
+        868.5818181818182,
+        1827.8181818181806,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE3 bound",
+      "duration_us": 100.87855,
+      "box_svg": [
+        962.8363636363637,
+        1757.1272727272717,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Dispatch",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE3 bound",
+      "duration_us": 106.56435,
+      "box_svg": [
+        962.8363636363637,
+        1808.181818181817,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 14.945175,
+      "box_svg": [
+        78.21818181818182,
+        2339.6727272727267,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 10.585975,
+      "box_svg": [
+        104.4,
+        2371.090909090908,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850",
+      "batch": 14,
+      "label": "MTE2 bound",
+      "duration_us": 26.4013,
+      "box_svg": [
+        135.8181818181818,
+        2327.8909090909083,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 26.484725,
+      "box_svg": [
+        162.0,
+        2359.30909090909,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 40.508375,
+      "box_svg": [
+        209.12727272727273,
+        2312.1818181818176,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "MTE2 bound",
+      "duration_us": 41.747699999999995,
+      "box_svg": [
+        230.07272727272726,
+        2343.599999999999,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 60.550925,
+      "box_svg": [
+        303.3818181818182,
+        2288.618181818181,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 61.0253,
+      "box_svg": [
+        303.3818181818182,
+        2323.9636363636355,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 80.533625,
+      "box_svg": [
+        397.6363636363636,
+        2261.1272727272717,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "Combine",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 80.122025,
+      "box_svg": [
+        392.4,
+        2300.399999999999,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 47.84014999999999,
+      "box_svg": [
+        643.4181818181818,
+        2304.327272727272,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 47.063906250000024,
+      "box_svg": [
+        643.4181818181818,
+        2343.599999999999,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Fixpipe/Scalar bound",
+      "duration_us": 62.14167500000005,
+      "box_svg": [
+        674.8363636363637,
+        2287.9636363636355,
+        83.23977272727272,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Fixpipe/Scalar bound",
+      "duration_us": 62.33695624999993,
+      "box_svg": [
+        690.5454545454545,
+        2327.236363636363,
+        83.23977272727272,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 79.9917625000001,
+      "box_svg": [
+        774.3272727272728,
+        2280.7636363636357,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 79.6596812500001,
+      "box_svg": [
+        779.5636363636363,
+        2312.1818181818176,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 96.68404375,
+      "box_svg": [
+        868.5818181818182,
+        2265.0545454545445,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 96.17172499999997,
+      "box_svg": [
+        873.8181818181818,
+        2296.4727272727264,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 107.6946999999999,
+      "box_svg": [
+        952.3636363636364,
+        2253.2727272727266,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPre",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 107.06021874999993,
+      "box_svg": [
+        962.8363636363637,
+        2280.7636363636357,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 49.68615624999999,
+      "box_svg": [
+        78.21818181818182,
+        2780.836363636363,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 45.52645625000002,
+      "box_svg": [
+        78.21818181818182,
+        2831.8909090909083,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Scalar? bound",
+      "duration_us": 63.67821875000021,
+      "box_svg": [
+        135.8181818181818,
+        2772.9818181818177,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Scalar? bound",
+      "duration_us": 55.931593749999976,
+      "box_svg": [
+        125.34545454545454,
+        2816.1818181818176,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Scalar? bound",
+      "duration_us": 68.84249999999992,
+      "box_svg": [
+        203.89090909090908,
+        2769.054545454545,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Scalar? bound",
+      "duration_us": 59.73256874999989,
+      "box_svg": [
+        203.89090909090908,
+        2812.254545454545,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Scalar? bound",
+      "duration_us": 75.40072500000002,
+      "box_svg": [
+        303.3818181818182,
+        2761.1999999999994,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Scalar? bound",
+      "duration_us": 64.86607499999994,
+      "box_svg": [
+        303.3818181818182,
+        2804.3999999999996,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Scalar? bound",
+      "duration_us": 80.61088750000006,
+      "box_svg": [
+        397.6363636363636,
+        2796.545454545454,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "DynamicMxQuant",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Scalar? bound",
+      "duration_us": 71.01680000000005,
+      "box_svg": [
+        397.6363636363636,
+        2812.254545454545,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 36.06089999999999,
+      "box_svg": [
+        643.4181818181818,
+        2807.6727272727267,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 20.610256250000003,
+      "box_svg": [
+        643.4181818181818,
+        2866.5818181818177,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 45.009375,
+      "box_svg": [
+        680.0727272727273,
+        2788.036363636363,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 27.600981250000018,
+      "box_svg": [
+        727.2,
+        2858.727272727272,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 53.89981250000002,
+      "box_svg": [
+        763.8545454545455,
+        2788.036363636363,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Fixpipe bound",
+      "duration_us": 33.77728749999999,
+      "box_svg": [
+        769.0909090909091,
+        2823.381818181818,
+        57.7125,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 71.60036875,
+      "box_svg": [
+        858.1090909090909,
+        2764.472727272727,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Fixpipe bound",
+      "duration_us": 56.40548750000002,
+      "box_svg": [
+        868.5818181818182,
+        2839.0909090909086,
+        57.7125,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Fixpipe/MTE2 bound",
+      "duration_us": 78.43346249999996,
+      "box_svg": [
+        941.8909090909091,
+        2756.6181818181813,
+        79.96704545454546,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "TransposeBatchMatMul",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Fixpipe bound",
+      "duration_us": 57.43643125,
+      "box_svg": [
+        962.8363636363637,
+        2815.5272727272722,
+        57.7125,
+        13.745454545454546
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Vector bound",
+      "duration_us": 17.40100625000001,
+      "box_svg": [
+        78.21818181818182,
+        3335.8909090909083,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Vector bound",
+      "duration_us": 17.294443750000013,
+      "box_svg": [
+        78.21818181818182,
+        3375.1636363636358,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Vector/MTE2 bound",
+      "duration_us": 30.282306249999966,
+      "box_svg": [
+        114.87272727272727,
+        3320.1818181818176,
+        77.9625,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Vector bound",
+      "duration_us": 29.27933124999995,
+      "box_svg": [
+        135.8181818181818,
+        3359.454545454545,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850",
+      "batch": 28,
+      "label": "MTE2/Vector bound",
+      "duration_us": 40.566831250000035,
+      "box_svg": [
+        198.65454545454546,
+        3312.3272727272724,
+        77.9625,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 36.028281250000006,
+      "box_svg": [
+        209.12727272727273,
+        3351.5999999999995,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850",
+      "batch": 44,
+      "label": "MTE2 bound",
+      "duration_us": 56.72233125,
+      "box_svg": [
+        303.3818181818182,
+        3288.7636363636357,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 46.166506249999955,
+      "box_svg": [
+        303.3818181818182,
+        3339.818181818181,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2 bound",
+      "duration_us": 72.95822499999991,
+      "box_svg": [
+        397.6363636363636,
+        3265.1999999999994,
+        51.70909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "HcPost",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 52.96673749999993,
+      "box_svg": [
+        397.6363636363636,
+        3324.1090909090904,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar? bound",
+      "duration_us": 17.969868749999996,
+      "box_svg": [
+        643.4181818181818,
+        3339.818181818181,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar? bound",
+      "duration_us": 17.70111875,
+      "box_svg": [
+        643.4181818181818,
+        3371.236363636363,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 23.1517625,
+      "box_svg": [
+        690.5454545454545,
+        3324.1090909090904,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 22.296456250000002,
+      "box_svg": [
+        706.2545454545455,
+        3367.30909090909,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 30.938143749999988,
+      "box_svg": [
+        774.3272727272728,
+        3324.1090909090904,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 29.966287500000004,
+      "box_svg": [
+        774.3272727272728,
+        3355.5272727272722,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Scalar/MTE2? bound",
+      "duration_us": 66.45338749999999,
+      "box_svg": [
+        852.8727272727273,
+        3265.1999999999994,
+        81.16363636363636,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Scalar/MTE2? bound",
+      "duration_us": 64.60295000000005,
+      "box_svg": [
+        894.7636363636364,
+        3296.6181818181813,
+        81.16363636363636,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850",
+      "batch": 60,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 69.80564375,
+      "box_svg": [
+        936.6545454545454,
+        3261.272727272727,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "KeyPool",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "MTE2/Scalar bound",
+      "duration_us": 67.79301875000002,
+      "box_svg": [
+        952.3636363636364,
+        3312.3272727272724,
+        77.23636363636363,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 10.647287499999994,
+      "box_svg": [
+        78.21818181818182,
+        3843.818181818181,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 10.687650000000003,
+      "box_svg": [
+        83.45454545454545,
+        3883.0909090909086,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Vector bound",
+      "duration_us": 23.721974999999997,
+      "box_svg": [
+        135.8181818181818,
+        3839.8909090909083,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Vector bound",
+      "duration_us": 23.356387500000015,
+      "box_svg": [
+        135.8181818181818,
+        3867.3818181818174,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 33.30823124999999,
+      "box_svg": [
+        203.89090909090908,
+        3820.2545454545448,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Vector bound",
+      "duration_us": 33.050668750000014,
+      "box_svg": [
+        209.12727272727273,
+        3851.6727272727267,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 51.70189999999999,
+      "box_svg": [
+        303.3818181818182,
+        3796.6909090909085,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Vector bound",
+      "duration_us": 50.52620000000001,
+      "box_svg": [
+        303.3818181818182,
+        3835.9636363636355,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 62.87321875000004,
+      "box_svg": [
+        392.4,
+        3777.0545454545445,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "CausalConv1d",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Vector bound",
+      "duration_us": 60.5359625,
+      "box_svg": [
+        397.6363636363636,
+        3808.472727272727,
+        55.70795454545455,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 20.805256250000006,
+      "box_svg": [
+        648.6545454545454,
+        3835.9636363636355,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850E",
+      "batch": 1,
+      "label": "Scalar bound",
+      "duration_us": 20.476118750000044,
+      "box_svg": [
+        643.4181818181818,
+        3851.6727272727267,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 33.281900000000014,
+      "box_svg": [
+        701.0181818181818,
+        3777.0545454545445,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850E",
+      "batch": 14,
+      "label": "Scalar bound",
+      "duration_us": 32.897781249999994,
+      "box_svg": [
+        690.5454545454545,
+        3812.399999999999,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 36.90391874999998,
+      "box_svg": [
+        774.3272727272728,
+        3769.1999999999994,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850E",
+      "batch": 28,
+      "label": "Scalar bound",
+      "duration_us": 36.396268750000054,
+      "box_svg": [
+        779.5636363636363,
+        3804.545454545454,
+        54.981818181818184,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850",
+      "batch": 44,
+      "label": "Scalar? bound",
+      "duration_us": 40.11453750000004,
+      "box_svg": [
+        852.8727272727273,
+        3765.2727272727266,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850E",
+      "batch": 44,
+      "label": "Scalar? bound",
+      "duration_us": 40.310806249999985,
+      "box_svg": [
+        868.5818181818182,
+        3792.7636363636357,
+        58.90909090909091,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850",
+      "batch": 60,
+      "label": "Scalar/Vector? bound",
+      "duration_us": 44.11520625,
+      "box_svg": [
+        962.8363636363637,
+        3780.9818181818173,
+        85.1625,
+        13.09090909090909
+      ]
+    },
+    {
+      "operator": "RmsNorm",
+      "hardware": "850E",
+      "batch": 60,
+      "label": "Scalar/Vector? bound",
+      "duration_us": 43.90795624999999,
+      "box_svg": [
+        947.1272727272727,
+        3796.6909090909085,
+        85.1625,
+        13.09090909090909
+      ]
+    }
+  ]
+}

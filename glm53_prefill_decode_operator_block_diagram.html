@@ -502,8 +502,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
     </div>
     <figure class="mtp5-curves-figure" id="mtp5-replay-figure">
       <h2>② Replay SSM only · Top 16 · B1–80 · 2×8+1 · 五个标注点 · 128K 输入</h2>
-      <img src="assets/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k.svg" width="1152" height="4666" loading="lazy" decoding="async" alt="输入序列长度 128K（131,072 tokens）。Replay SSM only 的 Top16 与满层 ITL，B1 至 80；B1、B14、B28、B44、B60 五个标注点。两个 GMM、Dispatch、Combine 为单次平均，其他按标题调用次数统计；附 bound、已有 MFU/MBU 和满层耗时占比。" aria-describedby="mtp5-replay-caption">
-      <figcaption id="mtp5-replay-caption"><a href="assets/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k.svg" target="_blank" rel="noopener">打开 SVG 向量图 ↗</a> · 算子单位按子图纵轴：μs / 卡 / 次调用或 μs / 卡 / forward；满层 ITL 为 ms / 轮，不折算接受步长。
+      <img src="assets/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-curve-bound.svg" width="1152" height="4666" loading="lazy" decoding="async" alt="输入序列长度 128K（131,072 tokens）。Replay SSM only 的 Top16 与满层 ITL，B1 至 80；B1、B14、B28、B44、B60 五个标注点。两个 GMM、Dispatch、Combine 为单次平均，其他按标题调用次数统计；附 bound、已有 MFU/MBU 和满层耗时占比。" aria-describedby="mtp5-replay-caption">
+      <figcaption id="mtp5-replay-caption"><a href="assets/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-curve-bound.svg" target="_blank" rel="noopener">打开 SVG 向量图 ↗</a> · 算子单位按子图纵轴：μs / 卡 / 次调用或 μs / 卡 / forward；满层 ITL 为 ms / 轮，不折算接受步长。
       <a href="data/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-plotted-values.csv" download>Top 16 曲线数据 CSV（含单次/合计口径）</a> · <a href="data/glm53-replayssm-only-top16-both-min8-full-shares-b1-80.csv" download>满层耗时占比 CSV</a> · <a href="data/glm53-replayssm-only-full-itl-ep8-ep16-ep32-b1-80.csv" download>ITL 六曲线 CSV · B1–80</a> · <a href="data/glm53-replayssm-only-top16-and-full-itl-b1-80-five-annotation-points-128k-validation.json" target="_blank" rel="noopener">图表校验结果</a></figcaption>
     </figure>
     <hr style="border:0;border-top:1px solid #29445a;margin:32px 0">
