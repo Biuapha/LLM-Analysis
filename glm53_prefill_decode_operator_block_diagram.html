@@ -210,6 +210,20 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 </style>
 <style id="deck-navigation-style">
 .deck-tabs{min-width:0;overflow-x:auto}.deck-tabs button{white-space:nowrap;flex-shrink:0}.deck-tabs button:disabled{opacity:.4;cursor:default}.model-choice{flex-shrink:0}
+
+/* Keep the tab strip centered even when the current page has no toolbar. */
+@media screen{
+ .deck-bar{display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,max-content) minmax(240px,1fr);justify-content:normal}
+ .deck-bar>.model-choice{grid-area:1/1;justify-self:start;min-width:0;max-width:100%}
+ .deck-bar>.deck-tabs{grid-area:1/2;justify-self:stretch}
+ .deck-bar>:not(.model-choice):not(.deck-tabs){grid-area:1/3;justify-self:end;min-width:0;max-width:100%;white-space:nowrap;overflow-x:auto}
+}
+@media screen and (max-width:900px){
+ .deck-bar{height:72px;flex-basis:72px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:36px 36px;gap:0 8px}
+ .deck-bar>.deck-tabs{grid-area:2/1/3/3;justify-content:safe center}
+ .deck-bar>:not(.model-choice):not(.deck-tabs){grid-area:1/2}
+ .deck-bar>.model-choice select{min-width:0;max-width:100%}
+}
 </style>
 <style id="mtp5-curves-style">
 #mtp5-curves-page{display:block;overflow:auto;padding:24px 28px 30px;scrollbar-gutter:stable}
