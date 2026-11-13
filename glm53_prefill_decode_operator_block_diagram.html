@@ -258,18 +258,19 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 </style>
 
 <style id="glm53-model-facts-style">
-#operator-page{display:flex;flex-direction:column;gap:4px}
+#operator-page{display:flex;flex-direction:column;gap:2px;container-type:size}
 #operator-page>svg{flex:1 1 0;min-height:0;width:100%;height:0}
-.model-facts{align-self:stretch;flex:0 0 auto;max-height:55%;min-height:0;overflow:auto;margin:4px 18px 0;border:1px solid #29475b;border-radius:9px;background:#0c1c29;color:#d7e9f4;font:12px/1.45 "Segoe UI","Microsoft YaHei",sans-serif}
-.model-facts-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:10px 16px;gap:14px}
-.model-facts-metrics>div{min-width:0;border-right:1px solid #29475b;padding-right:10px}.model-facts-metrics>div:last-child{border:0}
-.model-facts-metrics span,.model-facts-metrics em{display:block;color:#9fb5c4;font-style:normal}
-.model-facts-metrics strong{display:block;font-size:25px;line-height:1.35;color:#70e1db;font-variant-numeric:tabular-nums}.model-facts-metrics small{font-size:14px;color:#e5f0f7;font-weight:600}
-.model-facts-details{border-top:1px solid #29475b}.model-facts-details>summary{padding:7px 16px;cursor:pointer;color:#e5f0f7;font-weight:600}.model-facts-details>summary span{font-size:11px;color:#9fb5c4;font-weight:400;margin-left:12px}.model-facts-details>summary:focus-visible{outline:2px solid #36d8d2;outline-offset:-3px}
-.model-facts-content{padding:0 16px 12px}.model-facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:0}.model-facts-grid>div{display:grid;grid-template-columns:114px 1fr;padding:8px 0;border-top:1px solid #203b4c;gap:10px}.model-facts-grid dt{font-weight:600;color:#a9c5d6}.model-facts-grid dd{margin:0;overflow-wrap:anywhere}
+/* Match the compact summary to the diagram's 1600:960 drawing area. */
+.model-facts{align-self:center;flex:0 0 auto;width:min(calc(100% - 48px),calc((100cqh - 82px)*1.616667));max-height:45%;min-height:0;overflow:auto;margin:2px 0 0;border:1px solid #29475b;border-radius:5px;background:#0b1925;color:#d7e9f4;font:11px/1.4 "Segoe UI","Microsoft YaHei",sans-serif}
+.model-facts-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:6px 12px;gap:12px}
+.model-facts-metrics>div{min-width:0;border-right:1px solid #29475b;padding-right:8px}.model-facts-metrics>div:last-child{border:0}
+.model-facts-metrics span{display:block;color:#9fb5c4;font-size:11px}.model-facts-metrics em{display:none}
+.model-facts-metrics strong{display:block;font-size:18px;line-height:1.35;color:#cde5ee;font-weight:650;font-variant-numeric:tabular-nums}.model-facts-metrics small{font-size:12px;color:#a9c5d6;font-weight:500}
+.model-facts-details{border-top:1px solid #203b4c}.model-facts-details>summary{padding:4px 12px;cursor:pointer;color:#a9c5d6;font-weight:500}.model-facts-details>summary span{font-size:10px;color:#8fa9ba;font-weight:400;margin-left:10px}.model-facts-details>summary:focus-visible{outline:2px solid #36d8d2;outline-offset:-3px}
+.model-facts-content{padding:0 12px 10px;font-size:12px}.model-facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin:0}.model-facts-grid>div{display:grid;grid-template-columns:102px 1fr;padding:7px 0;border-top:1px solid #203b4c;gap:8px}.model-facts-grid dt{font-weight:600;color:#a9c5d6}.model-facts-grid dd{margin:0;overflow-wrap:anywhere}
 .model-facts-method{border-top:1px solid #355469;margin-top:8px;color:#a9c5d6;font-size:11px}.model-facts-method p{margin:8px 0 0}.model-facts-method a{color:#62d993}
-@media(max-width:850px){.model-facts{margin:3px 5px 0}.model-facts-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 12px}.model-facts-metrics>div:nth-child(2){border:0}.model-facts-metrics strong{font-size:20px}.model-facts-grid{grid-template-columns:1fr}.model-facts-details>summary span{display:block;margin-left:0}}
-@media print{#operator-page{display:flex!important}.model-facts{max-height:none;overflow:visible}.model-facts-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:850px){.model-facts{width:calc(100% - 24px);margin-top:2px}.model-facts-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 10px;padding:6px 10px}.model-facts-metrics>div:nth-child(2){border:0}.model-facts-metrics strong{font-size:16px}.model-facts-grid{grid-template-columns:1fr}.model-facts-details>summary span{display:block;margin-left:0}}
+@media print{#operator-page{display:flex!important;container-type:normal}.model-facts{width:calc(100% - 48px);max-height:none;overflow:visible}.model-facts-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head><body>
 <main class="deck-shell"><nav class="deck-bar" aria-label="文档页签">
