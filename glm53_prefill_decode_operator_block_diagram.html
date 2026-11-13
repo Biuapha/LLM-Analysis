@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E</title><style>
+<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode</title><style>
 :root{--bg:#07111b;--panel:#0c1a26;--stroke:#29445a;--text:#edf6fb;--muted:#8ea7b9;--cyan:#36d8d2;--blue:#58aaff;--violet:#a77bff;--amber:#ffc066;--pink:#ff73aa;--green:#62d993}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif}body{display:grid;place-items:center;background:radial-gradient(circle at 12% 0,#12344a 0,transparent 30%),radial-gradient(circle at 90% 0,#251c4d 0,transparent 27%),var(--bg)}
 .page{width:min(100vw,170.21vh);height:min(100vh,58.75vw);padding:8px}svg{width:100%;height:100%;display:block;filter:drop-shadow(0 18px 48px rgba(0,0,0,.24))}
@@ -244,7 +244,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 </style>
 </head><body>
 <main class="deck-shell"><nav class="deck-bar" aria-label="文档页签">
-<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E</button></div>
+<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E decode · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E decode</button></div>
 <div class="phase-switch" id="phase-switch" aria-label="KV cache 阶段" hidden><button type="button" data-phase="prefill" aria-pressed="false">Prefill · TP8</button><button type="button" data-phase="decode" aria-pressed="true">Decode · TP1 / MTP5</button></div>
 <div id="weight-controls" aria-label="显存计算器示例配置" hidden><button type="button" data-memory-preset="prefill">Prefill 示例</button><button type="button" data-memory-preset="decode">Decode 示例</button></div>
 <div id="pd-controls" aria-label="PD 仿真导出" hidden><button id="pd-export" type="button">导出仿真 JSON</button></div>
@@ -427,7 +427,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <!-- mtp5-curves-page:start -->
 <section class="deck-slide" id="mtp5-curves-page" role="tabpanel" aria-labelledby="mtp5-curves-tab" hidden>
   <div class="mtp5-curves-app">
-    <header class="mtp5-curves-heading"><div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>850 vs 850E</h1><p>按顺序保留：① Replay SSM OFF / QKV TP OFF　② Replay SSM only　③ Replay SSM ON / QKV TP8。</p></div></header>
+    <header class="mtp5-curves-heading"><div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>850 vs 850E decode</h1><p>按顺序保留：① Replay SSM OFF / QKV TP OFF　② Replay SSM only　③ Replay SSM ON / QKV TP8。</p></div></header>
     <div class="mtp5-curves-notes"><p><strong>输入序列长度：128K（131,072 tokens / 请求）。</strong>128K 指输入长度；各组输出长度另列。解码时上下文随生成增长，单轮主模型处理的 6B tokens 与输入序列长度不同。</p><p><strong>阅读口径：</strong>第①、③组为 2×5+1（Top 10）；第②组 Replay SSM only 为 2×8+1（Top 16，B1–80）。上方为各配置的 EP8 算子实测，下方包含 EP8 / EP16 / EP32 总 ITL。EP16/32 均为 GMM 条件估算，不是多机实测；ITL 不折算接受步长。各组算子集合、排名及单次/合计口径可能不同，请按名称和子图标题对照。</p><p><strong>跨图比较：</strong>保留各组原始数据和校准方法。第一组使用旧 B28 满层 profiler 锚点；后两组使用无 profiler 满层稳态窗口，输出长度及采集机器也有差异，不能将跨图差值直接归因为开关收益。</p></div>
     <div class="mtp5-curves-notes"><p><strong>① 两项都关闭：</strong>Replay SSM OFF，KDA QKV TP OFF；DP8 / TP1 / EP8 / MTP5。沿用原算子数据及原校准曲线，没有重新测量。</p><p><strong>旧满层校准：</strong>B28：850 = 100.08 ms，850E = 62.04 ms；取同层 KDA 的轮间隔，8 rank 中位数的中位数，包含 profiler 影响。算子输出 1K，满层输出 4K；其余 batch 为估算。两类 GMM 各自按旧 B28 满层 prof 累计耗时校准；EP16/32 缩至 1/2、1/4，其他耗时不变。</p></div>
     <figure class="mtp5-curves-figure" id="mtp5-baseline-figure"><h2>① Replay SSM OFF · KDA QKV TP OFF · 流水线瓶颈推断 · 128K 输入</h2>
@@ -2706,7 +2706,7 @@ window.dsModelPage=function(page){
 function switchSimulationModel(value,updateURL=true){
  selectedModel=value==='deepseek-v4.1-flash'?value:'glm53';document.getElementById('simulation-model').value=selectedModel;
  if(updateURL){const url=new URL(location.href);if(selectedModel==='glm53')url.searchParams.delete('model');else url.searchParams.set('model',selectedModel);history.replaceState(null,'',url);}
- document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E';
+ document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode';
   const requestedPage=location.hash.slice(1)||'operators',page=selectedModel!=='glm53'&&['comparison','mtp5-curves'].includes(requestedPage)?'performance':requestedPage;
   showPage(page,page!==requestedPage);
  if(selectedModel!=='glm53'&&!ds41Initialized){ds41Initialized=true;DS41.render();}
