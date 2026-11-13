@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 六曲线对比 / MTP5 曲线</title><style>
+<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E</title><style>
 :root{--bg:#07111b;--panel:#0c1a26;--stroke:#29445a;--text:#edf6fb;--muted:#8ea7b9;--cyan:#36d8d2;--blue:#58aaff;--violet:#a77bff;--amber:#ffc066;--pink:#ff73aa;--green:#62d993}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif}body{display:grid;place-items:center;background:radial-gradient(circle at 12% 0,#12344a 0,transparent 30%),radial-gradient(circle at 90% 0,#251c4d 0,transparent 27%),var(--bg)}
 .page{width:min(100vw,170.21vh);height:min(100vh,58.75vw);padding:8px}svg{width:100%;height:100%;display:block;filter:drop-shadow(0 18px 48px rgba(0,0,0,.24))}
@@ -208,21 +208,8 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 @media print{.op-weight-dialog,.op-weight-expand{display:none}}
 
 </style>
-<style id="comparison-style">
+<style id="deck-navigation-style">
 .deck-tabs{min-width:0;overflow-x:auto}.deck-tabs button{white-space:nowrap;flex-shrink:0}.deck-tabs button:disabled{opacity:.4;cursor:default}.model-choice{flex-shrink:0}
-#comparison-page{display:block;overflow:auto;padding:24px 28px 30px;scrollbar-gutter:stable}
-.comparison-app{max-width:1600px;margin:0 auto;color:#d7e6ef;font:14px/1.6 "Segoe UI","Microsoft YaHei",sans-serif}
-.comparison-app h1,.comparison-app h2,.comparison-app p{margin:0}.comparison-app h1{font-size:30px;line-height:1.4;color:#edf6fb}.comparison-app h2{font-size:16px;color:#edf6fb}.comparison-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px}.comparison-heading p{color:#9fb5c4}.comparison-eyebrow{font-size:12px;letter-spacing:1px;color:#6be1ca!important;margin-bottom:5px!important}.comparison-version{display:flex;flex-direction:column;text-align:right;flex-shrink:0;color:#9fb5c4;font-size:12px;gap:3px}.comparison-version strong{color:#6be1ca;font-size:15px}
-.comparison-case{display:flex;gap:12px 28px;flex-wrap:wrap;padding:13px 18px;border:1px solid #29445a;border-radius:8px;background:#0c1a26;margin-bottom:18px;font-size:12px;color:#9fb5c4}.comparison-case b{font-size:14px;color:#edf6fb;margin-right:6px}.comparison-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}.comparison-panel{border:1px solid #29445a;background:#0b1b27;border-radius:10px;padding:18px;min-width:0}.comparison-chart-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.comparison-app button{border:1px solid #3c5a70;border-radius:5px;background:#102a39;color:#c9dfec;padding:6px 10px;font-family:inherit;font-size:12px;line-height:1.4;cursor:pointer}.comparison-app button:hover{border-color:#6be1ca;color:#fff}.comparison-app button:focus-visible,.comparison-app input:focus-visible{outline:2px solid #36d8d2;outline-offset:3px}
-.comparison-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:16px 0 5px}.comparison-legend button{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;white-space:nowrap}.comparison-legend button[aria-pressed=false]{opacity:.42;text-decoration:line-through}.comparison-swatch{width:25px;height:0;border-top:3px solid var(--series);flex-shrink:0}.comparison-swatch.dashed{border-top-style:dashed}
-.comparison-chart-scroll{overflow-x:auto}#comparison-chart{display:block;width:100%;min-width:680px;height:auto;filter:none;cursor:crosshair;touch-action:pan-x pan-y;font-family:"Segoe UI","Microsoft YaHei",sans-serif}
-.comparison-muted{font-size:12px;color:#93adbf;line-height:1.65}.comparison-best>h2{font-size:22px;color:#e9dcba}.comparison-best>.comparison-muted{margin:4px 0 14px}.comparison-summary-row{padding:11px 0;border-top:1px solid #253d50;display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center}.comparison-summary-row b{color:var(--series);font-size:13px}.comparison-summary-row strong{font:700 24px/1.2 Consolas,monospace;color:#edf6fb}.comparison-summary-row small{font:12px/1.5 Consolas,"Microsoft YaHei",monospace;color:#9fb5c4}.comparison-summary-row small:last-child{text-align:right}.comparison-memory-note{margin-top:12px!important;padding:10px 12px;border-left:3px solid #ffc066;background:#2a251b;color:#e2c994;font-size:12px}.comparison-formula{margin-top:14px!important;font:12px/1.7 Consolas,"Microsoft YaHei",monospace;color:#b8d3de}.comparison-formula small{font:11px/1.6 "Microsoft YaHei",sans-serif;color:#93adbf}
-.comparison-inspector{margin-top:18px}.comparison-slider{display:flex;align-items:center;gap:18px;margin-bottom:7px}.comparison-slider label{white-space:nowrap;color:#cde0ec}.comparison-slider output{display:inline-block;width:35px;color:#6be1ca;font:700 20px Consolas,monospace;text-align:center}.comparison-slider input{flex:1;min-width:30px;accent-color:#36d8d2}.comparison-slider>span{color:#93adbf;font-size:12px}.comparison-inspection-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:12px}.comparison-inspection-cell{border-left:2px solid var(--series);padding-left:12px;display:flex;flex-direction:column;font-size:12px}.comparison-inspection-cell b{color:var(--series)}.comparison-inspection-cell strong{font:17px/1.7 Consolas,monospace;color:#edf6fb}.comparison-inspection-cell small{color:#93adbf}.comparison-inspection-cell .comparison-rejected{color:#ffc066}
-.comparison-notes{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:20px;padding:0 2px;font-size:12px;color:#93adbf}.comparison-notes h2{font-size:13px;margin-bottom:7px}.comparison-notes p+p{margin-top:7px}.comparison-footer{margin-top:20px;padding-top:14px;border-top:1px solid #29445a;display:flex;align-items:center;justify-content:space-between;gap:14px;color:#718fa4;font-size:11px}.comparison-footer>div{display:flex;gap:8px;flex-shrink:0}
-@media(max-width:1100px){#comparison-page{padding:20px 16px}.comparison-layout{grid-template-columns:minmax(0,1fr) 255px;gap:12px}.comparison-panel{padding:14px}.comparison-legend button{padding:5px;font-size:10px;gap:5px}.comparison-inspection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:800px){.comparison-layout{grid-template-columns:1fr}.comparison-heading{align-items:start}.comparison-version{font-size:10px}.comparison-heading h1{font-size:23px}.comparison-case{gap:10px 16px}#comparison-summary{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.comparison-notes{grid-template-columns:1fr;gap:18px}.comparison-footer{align-items:start;flex-direction:column}.comparison-app{font-size:12px}}
-@media(max-width:480px){#comparison-page{padding:16px 10px}.comparison-heading{flex-direction:column;gap:10px}.comparison-version{text-align:left}.comparison-legend{grid-template-columns:repeat(2,minmax(0,1fr))}.comparison-inspection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#comparison-summary{grid-template-columns:1fr}.comparison-slider{gap:8px}.comparison-chart-heading h2{font-size:14px}}
-@media print{#comparison-page{height:auto;min-height:100vh;overflow:visible}.comparison-app button,.comparison-inspector,.comparison-footer{display:none}.comparison-layout{grid-template-columns:minmax(0,1fr) 260px}.comparison-heading{margin-bottom:8px}.comparison-notes{break-inside:avoid}.comparison-app{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 <style id="mtp5-curves-style">
 #mtp5-curves-page{display:block;overflow:auto;padding:24px 28px 30px;scrollbar-gutter:stable}
@@ -257,7 +244,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 </style>
 </head><body>
 <main class="deck-shell"><nav class="deck-bar" aria-label="文档页签">
-<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="comparison-tab" type="button" role="tab" aria-controls="comparison-page" aria-selected="false" data-page="comparison" title="GLM-5.3-Flash 六曲线成果">5 · 850 / 850E 对比</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="GLM-5.3-Flash MTP5 Top 10 / Top 16 算子与满层总 ITL">6 · MTP5 算子 / ITL</button></div>
+<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E</button></div>
 <div class="phase-switch" id="phase-switch" aria-label="KV cache 阶段" hidden><button type="button" data-phase="prefill" aria-pressed="false">Prefill · TP8</button><button type="button" data-phase="decode" aria-pressed="true">Decode · TP1 / MTP5</button></div>
 <div id="weight-controls" aria-label="显存计算器示例配置" hidden><button type="button" data-memory-preset="prefill">Prefill 示例</button><button type="button" data-memory-preset="decode">Decode 示例</button></div>
 <div id="pd-controls" aria-label="PD 仿真导出" hidden><button id="pd-export" type="button">导出仿真 JSON</button></div>
@@ -436,47 +423,11 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <article class="mem-panel pure-stage pure-p" id="pd-p-result"><div class="pure-card-heading"><h2>纯 P QPS</h2><span>Prefill · <button class="pure-expand" type="button" data-expand-plot="p">放大图表 ↗</button></span></div><strong id="pd-p-qps" class="pure-qps">—</strong><p id="pd-p-normalized" class="pure-normalized"></p><div class="pure-stats"><div><span id="pd-p-batch-label">最优 batch（每 DP）</span><b id="pd-p-batch">—</b></div><div><span id="pd-p-latency-label">预测 TTFT · 秒</span><b id="pd-p-latency">—</b></div></div><p id="pd-p-status" class="pure-stage-status"></p><p id="pd-p-evidence" class="pure-evidence"></p><svg id="pd-p-plot" class="pure-plot" viewBox="0 0 480 170" aria-label="纯 P batch 与 TTFT 上限"></svg><p id="pd-p-formula" class="pure-formula">QPS = DP × batch ÷ 完整 P 批次耗时</p><div id="pd-p-detail" class="pure-detail"></div><div id="pd-p-breakdown" class="pure-breakdown" aria-label="P 完整批次耗时分解"></div><table class="pure-table"><caption>满足 TTFT 的最优候选</caption><thead><tr><th>batch / DP</th><th>QPS</th><th>TTFT · 秒</th></tr></thead><tbody id="pd-p-candidates"></tbody></table><p id="pd-p-foot" class="pure-card-foot">纯 P 独立服务时间：包含 prompt 计算及末次 LM head。</p></article>
 <article class="mem-panel pure-stage pure-d" id="pd-d-result"><div class="pure-card-heading"><h2>纯 D QPS</h2><span>Decode · <button class="pure-expand" type="button" data-expand-plot="d">放大图表 ↗</button></span></div><strong id="pd-d-qps" class="pure-qps">—</strong><p id="pd-d-normalized" class="pure-normalized"></p><div class="pure-stats pure-d-stats"><div><span id="pd-d-batch-label">最优 batch（每 DP）</span><b id="pd-d-batch">—</b></div><div><span id="pd-d-itl-label">同 batch ITL · 秒</span><b id="pd-d-itl">—</b></div><div><span id="pd-d-latency-label">预测末端 TPOT · 秒</span><b id="pd-d-latency">—</b></div></div><p id="pd-d-status" class="pure-stage-status"></p><p id="pd-d-evidence" class="pure-evidence"></p><svg id="pd-d-plot" class="pure-plot" viewBox="0 0 480 170" aria-label="纯 D batch 与 TPOT 上限"></svg><p class="pure-formula">QPS = DP × batch ÷ ((输出长度 − 1) × 平均 TPOT)<br/><span id="pd-d-metric-note"></span></p><div id="pd-d-detail" class="pure-detail"></div><div id="pd-d-breakdown" class="pure-breakdown" aria-label="D 完整迭代周期耗时分解，不除以 r"></div><table class="pure-table"><caption>最优候选 · 按所选时延统计</caption><thead><tr><th>batch / DP</th><th>QPS</th><th>周期估计 · ms</th><th>TPOT · ms</th></tr></thead><tbody id="pd-d-candidates"></tbody></table><p class="pure-card-foot">MTP 分解为完整周期：目标验证 + 串行草稿；r 为每周期平均产出。校准模式显示均值，不代表 p99。</p></article>
 </div></div></form><p class="pure-foot">默认 A3 560T、16K/1K、TTFT 2s、MTP5，平均 TPOT 20ms，ITL/TPOT=3.5（用户假设）；P: DP2PCP8TP1EP16，D: DP8TP2EP16；接受产出与时延目标独立；无同配置数据时使用保守 r=1。理论容量使用峰值资源且不加实测残差；结果受模型假设限制，不是 p99 保证。</p>
-</div></foreignObject></svg></section><!-- decode-comparison-page:start -->
-<section class="deck-slide" id="comparison-page" role="tabpanel" aria-labelledby="comparison-tab" hidden>
-<div class="comparison-app">
-  <header class="comparison-heading">
-    <div><p class="comparison-eyebrow">GLM-5.3-Flash · 纯 Decode</p><h1>850 / 850E · 六曲线对比</h1><p>按 B28 实测 ITL 校正，保留六条曲线与单卡 QPS 标记。</p></div>
-    <div class="comparison-version"><strong>v13 · B28 实测比例校正</strong><span>850 ITL 100 ms · 850E ITL 62.4 ms</span><span>2026-11-06 · 固定场景</span></div>
-  </header>
-  <div class="comparison-case" aria-label="固定仿真条件">
-    <span><b>128K → 1K</b> 输入 / 输出</span><span><b>95%</b> P prefix cache 命中</span><span><b>MTP5</b> 草稿长度</span><span><b>3.5</b> ITL / TPOT</span><span><b>TP1 · DP=EP</b> 8 / 16 / 32</span>
-  </div>
-  <div class="comparison-layout">
-    <article class="comparison-panel comparison-chart-panel">
-      <div class="comparison-chart-heading"><h2>Batch / DP 与校正后 TPOT</h2><button type="button" id="comparison-reset">显示全部曲线</button></div>
-      <div id="comparison-legend" class="comparison-legend" aria-label="选择显示的曲线"></div>
-      <div class="comparison-chart-scroll"><svg id="comparison-chart" viewBox="0 0 1040 570" role="img" aria-label="850 和 850E 的六条 batch 与 TPOT 曲线，标出 30 ms 约束下的最佳单卡 QPS" aria-describedby="comparison-chart-note"></svg></div>
-      <p id="comparison-chart-note" class="comparison-muted">实线：850；虚线：850E。淡线与 ×：超过模型显存预算，仅表示耗时预测。标注单位为 QPS/卡；菱形锚点为 B28 / EP8 实测 ITL 按 r=3.5 换算。</p>
-    </article>
-    <aside class="comparison-panel comparison-best">
-      <h2>TPOT ≤ 30 ms</h2><p class="comparison-muted">同时满足 ITL ≤ 105 ms 与显存预算<br>取 B1–B90 内单卡 QPS 最高的整数 batch</p>
-      <div id="comparison-summary"></div>
-      <p class="comparison-memory-note" id="comparison-memory-note"></p>
-      <p class="comparison-formula">单卡 QPS = 每 DP 请求数 ÷<br>[(1024 − 1) × 平均 TPOT（秒）]<br><small>首 token 属于 P；本页 TP1，每个 DP 对应一张卡。</small></p>
-    </aside>
-  </div>
-  <section class="comparison-panel comparison-inspector" aria-label="查看指定 batch 的预测">
-    <div class="comparison-slider"><label for="comparison-batch">查看 batch / DP <output id="comparison-batch-value" for="comparison-batch">28</output></label><input type="range" id="comparison-batch" min="0" max="90" step="1" value="28"/><span>0—90</span></div>
-    <p class="comparison-muted">移动滑块或点击图表查看同一 batch；无请求时（B0），TPOT 和 QPS 不定义。</p>
-    <div id="comparison-inspection" aria-live="polite"></div>
-  </section>
-  <section class="comparison-notes" aria-label="硬件画像与建模口径">
-    <div><h2>硬件与显存</h2><p id="comparison-hardware-note">850：112 GiB / 1.4 TB/s（1400 GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。</p><p>两者均使用 80% 显存利用率、4 GiB 运行时预留；D 的输入前缀按 95% 跨请求物理共享估算。</p><p id="comparison-capacity-note"></p></div>
-    <div><h2>校准范围</h2><p>B28 / DP8 / EP8：850 的 ITL 为 100 ms，850E 为 62.4 ms；各自三条曲线分别乘 0.960055、1.253663。六个 QPS 最优点已重新计算。未测 batch 和 EP16 / EP32 为外推，容量模型未重新校准。</p><p>锚点来自 4K 输出采样；曲线沿用 1K 输出，TPOT = ITL / 3.5，是换算值而非流式实测 TPOT。原容量模型保留 95% 物理共享与两种 KV 精度；本轮实测均为 FP8 KV、实际命中 92.96875%。本页不改变第 4 页仿真引擎。</p></div>
-  </section>
-  <footer class="comparison-footer"><span id="comparison-source"></span><div><button id="comparison-csv" type="button">下载 CSV</button><button id="comparison-json" type="button">下载 JSON</button><button id="comparison-svg" type="button">下载曲线 SVG</button></div></footer>
-</div>
-</section>
-<!-- decode-comparison-page:end -->
+</div></foreignObject></svg></section>
 <!-- mtp5-curves-page:start -->
 <section class="deck-slide" id="mtp5-curves-page" role="tabpanel" aria-labelledby="mtp5-curves-tab" hidden>
   <div class="mtp5-curves-app">
-    <header class="mtp5-curves-heading"><div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>三组配置 · 128K 输入 · Top 10 / Top 16 算子与满层总 ITL</h1><p>按顺序保留：① Replay SSM OFF / QKV TP OFF　② Replay SSM only　③ Replay SSM ON / QKV TP8。</p></div></header>
+    <header class="mtp5-curves-heading"><div><p class="mtp5-curves-eyebrow">GLM-5.3-Flash · MTP5 · 850 / 850E</p><h1>850 vs 850E</h1><p>按顺序保留：① Replay SSM OFF / QKV TP OFF　② Replay SSM only　③ Replay SSM ON / QKV TP8。</p></div></header>
     <div class="mtp5-curves-notes"><p><strong>输入序列长度：128K（131,072 tokens / 请求）。</strong>128K 指输入长度；各组输出长度另列。解码时上下文随生成增长，单轮主模型处理的 6B tokens 与输入序列长度不同。</p><p><strong>阅读口径：</strong>第①、③组为 2×5+1（Top 10）；第②组 Replay SSM only 为 2×8+1（Top 16，B1–80）。上方为各配置的 EP8 算子实测，下方包含 EP8 / EP16 / EP32 总 ITL。EP16/32 均为 GMM 条件估算，不是多机实测；ITL 不折算接受步长。各组算子集合、排名及单次/合计口径可能不同，请按名称和子图标题对照。</p><p><strong>跨图比较：</strong>保留各组原始数据和校准方法。第一组使用旧 B28 满层 profiler 锚点；后两组使用无 profiler 满层稳态窗口，输出长度及采集机器也有差异，不能将跨图差值直接归因为开关收益。</p></div>
     <div class="mtp5-curves-notes"><p><strong>① 两项都关闭：</strong>Replay SSM OFF，KDA QKV TP OFF；DP8 / TP1 / EP8 / MTP5。沿用原算子数据及原校准曲线，没有重新测量。</p><p><strong>旧满层校准：</strong>B28：850 = 100.08 ms，850E = 62.04 ms；取同层 KDA 的轮间隔，8 rank 中位数的中位数，包含 profiler 影响。算子输出 1K，满层输出 4K；其余 batch 为估算。两类 GMM 各自按旧 B28 满层 prof 累计耗时校准；EP16/32 缩至 1/2、1/4，其他耗时不变。</p></div>
     <figure class="mtp5-curves-figure" id="mtp5-baseline-figure"><h2>① Replay SSM OFF · KDA QKV TP OFF · 流水线瓶颈推断 · 128K 输入</h2>
@@ -753,12 +704,13 @@ document.querySelectorAll('[data-phase]').forEach(b=>b.addEventListener('click',
 if(isRuntime){document.getElementById('kv-source').setAttribute('href','runtime/runtime-cache-data.json');document.querySelector('#kv-source text').textContent='原始快照 / 启动配置 / 源码 SHA256 ↗';}
 else{const source=cacheData.source_path,ref=cacheData.source_ref,line=cacheData.source_lines.get_glm5_next_kv_cache_config;document.getElementById('kv-source').setAttribute('href',`https://github.com/vllm-project/vllm-ascend/blob/${ref}/${source}#L${line}`);}
 function showPage(id,updateHash=true){
- if(!['operators','cache','weights','performance','comparison','mtp5-curves'].includes(id))id='operators';
+ if(id==='comparison'){id='mtp5-curves';updateHash=true;}
+ if(!['operators','cache','weights','performance','mtp5-curves'].includes(id))id='operators';
  document.getElementById('operator-page').hidden=id!=='operators';document.getElementById('cache-page').hidden=id!=='cache';document.getElementById('weight-page').hidden=id!=='weights';document.getElementById('phase-switch').hidden=id!=='cache';
  document.getElementById('weight-controls').hidden=id!=='weights';
  document.getElementById('pd-page').hidden=id!=='performance';document.getElementById('pd-controls').hidden=id!=='performance';
  document.getElementById('operator-controls').hidden=id!=='operators';
- document.getElementById('comparison-page').hidden=id!=='comparison';
+
  document.getElementById('mtp5-curves-page').hidden=id!=='mtp5-curves';
  document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.page===id)));
  if(updateHash)history.replaceState(null,'','#'+id);
@@ -2746,7 +2698,7 @@ window.dsModelPage=function(page){
  document.getElementById('ds41-root').hidden=!selected;
  for(const key of ['operators','cache','weights','performance'])document.getElementById('ds41-page-'+key).hidden=!selected||key!==page;
  if(selected)for(const id of ['operator-page','cache-page','weight-page','pd-page','phase-switch','weight-controls','pd-controls','operator-controls'])document.getElementById(id).hidden=true;
- document.getElementById('comparison-tab').disabled=selected;
+
  document.getElementById('mtp5-curves-tab').disabled=selected;
  document.getElementById('ds41-controls').hidden=!selected;document.getElementById('ds41-operator-controls').hidden=page!=='operators';document.getElementById('ds41-cache-controls').hidden=page!=='cache';document.getElementById('ds41-reset-top').hidden=!['weights','performance'].includes(page);
  for(const [key,id] of Object.entries({operators:'operators',cache:'cache',weights:'weights',performance:'pd'}))document.getElementById(id+'-tab').setAttribute('aria-controls',selected?'ds41-page-'+key:({operators:'operator-page',cache:'cache-page',weights:'weight-page',performance:'pd-page'})[key]);
@@ -2754,7 +2706,7 @@ window.dsModelPage=function(page){
 function switchSimulationModel(value,updateURL=true){
  selectedModel=value==='deepseek-v4.1-flash'?value:'glm53';document.getElementById('simulation-model').value=selectedModel;
  if(updateURL){const url=new URL(location.href);if(selectedModel==='glm53')url.searchParams.delete('model');else url.searchParams.set('model',selectedModel);history.replaceState(null,'',url);}
- document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 六曲线对比 / MTP5 曲线';
+ document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E';
   const requestedPage=location.hash.slice(1)||'operators',page=selectedModel!=='glm53'&&['comparison','mtp5-curves'].includes(requestedPage)?'performance':requestedPage;
   showPage(page,page!==requestedPage);
  if(selectedModel!=='glm53'&&!ds41Initialized){ds41Initialized=true;DS41.render();}
@@ -2835,130 +2787,6 @@ switchSimulationModel(new URLSearchParams(location.search).get('model')||'glm53'
  update();
 })();
 </script>
-<script id="comparison-data-loader" src="data/decode-comparison-b28.js"></script>
-<script id="comparison-script">
-/* Fixed, reproducible v13 result; independent of the editable page-four form. */
-(() => {
-  'use strict';
-  const data = JSON.parse(document.getElementById('comparison-data').textContent);
-  const el = id => document.getElementById('comparison-' + id);
-  const atlas850 = data.hardwareProfiles.find(h => h.id === 'a5-128');
-  const hardwareNote = `850：${atlas850.memoryGiB} GiB / ${atlas850.memoryBandwidth/1e12} TB/s（${atlas850.memoryBandwidth/1e9} GB/s）/ INT8 KV。850E：96 GiB / 4 TiB/s / FP8 KV，可见容量按 91.75 GiB。`;
-  const colors = {8:'#69adff',16:'#ffad71',32:'#61d8ba'};
-  const positions = [[14,35],[38,44],[58,52],[65,16],[74,35],[44,13]];
-  const visible = new Set(data.series.map((_, i) => i));
-  const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const name = s => `${s.hardware} · DP${s.ranks} EP${s.ranks}`;
-  const x = b => 68 + b / 90 * 934;
-  const yMax = Math.max(65, Math.ceil(Math.max(...data.series.flatMap(s => s.rows.map(r => r.tpotMs || 0))) / 5) * 5);
-  const y = ms => 488 - ms / yMax * 452;
-  const text = (px, py, label, attrs = '') => `<text x="${px}" y="${py}" fill="#9fb5c4" ${attrs.includes("font-size=") ? "" : 'font-size="13"'} ${attrs}>${esc(label)}</text>`;
-  const path = rows => rows.map((r, i) => `${i ? 'L' : 'M'}${x(r.batchPerDP).toFixed(2)},${y(r.tpotMs).toFixed(2)}`).join(' ');
-  const marker = (px, py, color, diamond, size = 5) => diamond
-    ? `<path d="M${px},${py-size}l${size},${size}l-${size},${size}l-${size},-${size}Z" fill="#0b1b27" stroke="${color}" stroke-width="2"/>`
-    : `<circle cx="${px}" cy="${py}" r="${size}" fill="#0b1b27" stroke="${color}" stroke-width="2"/>`;
-  function renderChart() {
-    let svg = '<title>GLM-5.3-Flash：850 / 850E 六条纯 Decode 曲线</title><desc>横轴 batch/DP 0 到 90，纵轴平均 TPOT 毫秒。标签是满足 30ms 与显存约束的最佳单卡 QPS；淡线为显存不可行预测。</desc><rect width="1040" height="570" fill="#0b1b27"/>';
-    for (let t = 0; t <= yMax; t += 10) svg += `<line x1="68" y1="${y(t)}" x2="1002" y2="${y(t)}" stroke="#263f50"/>` + text(55,y(t)+4,t,'text-anchor="end"');
-    for (let b = 0; b <= 90; b += 10) svg += text(x(b),513,b,'text-anchor="middle"');
-    svg += `<path d="M68 36V488H1002" fill="none" stroke="#527087"/>`;
-    svg += text(535,550,'Batch / DP（每个 DP 的请求数）','text-anchor="middle" font-size="15"');
-    svg += text(18,260,'校正后 TPOT（ms）','text-anchor="middle" transform="rotate(-90 18 260)"');
-    svg += `<line x1="68" y1="${y(30)}" x2="1002" y2="${y(30)}" stroke="#e3cc91" stroke-dasharray="7 5"/>` + text(996,y(30)-10,'30 ms · ITL 105 ms','text-anchor="end"');
-    data.series.forEach((s, i) => {
-      if (!visible.has(i)) return;
-      const color = colors[s.ranks], dash = s.hardware === '850E' ? 'stroke-dasharray="7 5"' : '';
-      const rows = s.rows.filter(r => r.batchPerDP > 0);
-      const feasible = rows.filter(r => r.memoryFeasible), rejected = rows.filter(r => !r.memoryFeasible);
-      svg += `<g data-series="${i}"><title>${esc(name(s))}</title><path data-feasible="true" d="${path(feasible)}" fill="none" stroke="${color}" stroke-width="2.7" ${dash}/>`;
-      if (rejected.length) {
-        svg += `<path data-feasible="false" d="${path([...feasible.slice(-1),...rejected])}" fill="none" stroke="${color}" stroke-width="2" opacity="0.24" ${dash}/>`;
-        rejected.filter((_, j) => j % 5 === 0).forEach(r => {
-          const px=x(r.batchPerDP),py=y(r.tpotMs);
-          svg += `<path d="M${px-3},${py-3}l6,6m0,-6l-6,6" fill="none" stroke="${color}" opacity="0.5"/>`;
-        });
-      }
-      svg += '</g>';
-    });
-    // Keep labels in their own layer, with fixed, non-overlapping positions.
-    data.series.forEach((s, i) => {
-      if (!visible.has(i)) return;
-      const p=s.summary,color=colors[s.ranks],diamond=s.hardware==='850E';
-      const px=x(p.batchPerDP),py=y(p.tpotMs),lx=x(positions[i][0]),ly=y(positions[i][1]);
-      svg += `<g data-best="${i}"><title>${esc(name(s))}: B${p.batchPerDP}, ${p.tpotMs.toFixed(3)} ms, ${p.qpsPerCard.toFixed(6)} QPS/卡</title><path d="M${px},${py}L${lx},${ly}" stroke="${color}" stroke-width="1"/>`;
-      svg += marker(px,py,color,diamond,6);
-      svg += `<rect data-qps-label="${i}" x="${lx-62}" y="${ly-17}" width="124" height="34" rx="5" fill="#102230" stroke="${color}" ${diamond?'stroke-dasharray="4 2"':''}/>`;
-      svg += text(lx,ly+5,p.qpsPerCard.toFixed(3)+' QPS/卡'+(p.limit==='memory'?' *':''),`text-anchor="middle" font-weight="700" style="fill:${color}"`)+'</g>';
-    });
-    // B28 EP8 anchors are the only measured inputs to this fixed comparison.
-    Object.entries(data.anchors).forEach(([hardware,a])=>{
-      const index=data.series.findIndex(s=>s.hardware===hardware&&s.ranks===8);
-      if(!visible.has(index))return;
-      const px=x(a.batchPerDP),py=y(a.targetNormalizedTPOTms);
-      const labelX=x(hardware==='850'?17:17),labelY=y(hardware==='850'?46:7);
-      svg+=`<g data-calibration-anchor="${hardware}"><title>${hardware} B28 EP8: ITL ${a.targetITLms} ms; TPOT ${a.targetNormalizedTPOTms.toFixed(3)} ms at r=3.5</title><path d="M${px},${py}L${labelX},${labelY}" stroke="#d6e5ef" stroke-width="1"/>`;
-      svg+=marker(px,py,'#f4e3aa',true,8);
-      svg+=`<rect data-anchor-label="${hardware}" x="${labelX-112}" y="${labelY-17}" width="224" height="34" rx="5" fill="#102230" stroke="#b3cadb"/>`;
-      svg+=text(labelX,labelY+5,`${hardware} B28 · ITL ${a.targetITLms} ms`,'text-anchor="middle" style="fill:#e4eff6"')+'</g>';
-    });
-    const batch=Number(el('batch').value);
-    svg += `<line id="comparison-cursor" x1="${x(batch)}" y1="36" x2="${x(batch)}" y2="488" stroke="#c3d8e5" opacity="0.35" stroke-dasharray="2 5" pointer-events="none"/>`;
-    el('chart').innerHTML=svg;
-  }
-  function inspect() {
-    const batch=Number(el('batch').value);
-    el('batch-value').value=batch;
-    el('batch').setAttribute('aria-valuetext',`每 DP ${batch} 个请求`);
-    const cursor=el('cursor');
-    if(cursor){cursor.setAttribute('x1',x(batch));cursor.setAttribute('x2',x(batch));}
-    el('inspection').innerHTML='<div class="comparison-inspection-grid">'+data.series.map(s => {
-      const r=s.rows.find(r => r.batchPerDP===batch);
-      const status=batch===0?'无请求':!r.memoryFeasible?'显存超预算，不可用':!r.meets30msLimit?'超过 30 ms 约束':'满足显存与时延约束';
-      return `<div class="comparison-inspection-cell" style="--series:${colors[s.ranks]}"><b>${esc(name(s))}</b><strong>${batch?r.tpotMs.toFixed(3)+' ms':'—'}</strong><span>${batch&&r.memoryFeasible?r.qpsPerCard.toFixed(3)+' QPS/卡':'可用 QPS：—'}</span><small class="${batch&&(!r.memoryFeasible||!r.meets30msLimit)?'comparison-rejected':''}">${status}</small></div>`;
-    }).join('')+'</div>';
-  }
-  el('legend').innerHTML=data.series.map((s,i)=>`<button type="button" data-series-toggle="${i}" aria-pressed="true"><span aria-hidden="true" class="comparison-swatch ${s.hardware==='850E'?'dashed':''}" style="--series:${colors[s.ranks]}"></span>${esc(name(s))}</button>`).join('');
-  el('summary').innerHTML=data.series.map(s=>`<div class="comparison-summary-row" style="--series:${colors[s.ranks]}"><b>${esc(name(s))}</b><strong>${s.summary.qpsPerCard.toFixed(3)}</strong><small>B${s.summary.batchPerDP} · ${s.summary.tpotMs.toFixed(3)} ms${s.summary.limit==='memory'?' *':''}</small><small>QPS/卡</small></div>`).join('');
-  const memoryPoint=data.series.find(s=>s.hardware==='850E'&&s.ranks===8).summary;
-  el('memory-note').textContent=`* 850E EP8：B${memoryPoint.batchPerDP} 已到模型显存边界，TPOT ${memoryPoint.tpotMs.toFixed(3)} ms；B${memoryPoint.firstMemoryRejected} 起超预算，不能继续加 batch 到 30 ms。`;
-  el('source').textContent=`来源：${data.engine} · 曲线基线 ${data.commit.slice(0,7)} · 540 个非零 batch 测算点 · 850 ×0.960055 / 850E ×1.253663`;
-  el('hardware-note').textContent=hardwareNote+'每台 8 卡，EP8 / 16 / 32 分别为 1 / 2 / 4 台。';
-  const atlasPoint=data.series.find(s=>s.hardware==='850'&&s.ranks===8).summary;
-  el('capacity-note').textContent=`850 的显存预算为 ${atlas850.memoryGiB} × 80% = ${atlasPoint.budgetGiB} GiB，包含 4 GiB 运行时预留；EP8 从 B${atlasPoint.firstMemoryRejected} 起超预算。30 ms 最优 B${atlasPoint.batchPerDP} 仍满足显存约束。`;
-  el('legend').addEventListener('click',event=>{
-    const button=event.target.closest('[data-series-toggle]');if(!button)return;
-    const i=Number(button.dataset.seriesToggle);visible.has(i)?visible.delete(i):visible.add(i);
-    button.setAttribute('aria-pressed',String(visible.has(i)));renderChart();
-  });
-  el('reset').addEventListener('click',()=>{
-    data.series.forEach((_,i)=>visible.add(i));
-    el('legend').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed','true'));renderChart();
-  });
-  el('batch').addEventListener('input',inspect);
-  el('chart').addEventListener('click',event=>{
-    const pt=el('chart').createSVGPoint();pt.x=event.clientX;pt.y=event.clientY;
-    const local=pt.matrixTransform(el('chart').getScreenCTM().inverse());
-    if(local.x<68||local.x>1002||local.y<36||local.y>488)return;
-    el('batch').value=Math.max(0,Math.min(90,Math.round((local.x-68)/934*90)));inspect();
-  });
-  function download(content,mime,extension){
-    const url=URL.createObjectURL(new Blob([content],{type:mime}));
-    const a=document.createElement('a');a.href=url;a.download=`GLM53-850-850E-six-curves-B28-corrected-QPS.${extension}`;
-    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-  }
-  el('json').addEventListener('click',()=>download(JSON.stringify(data,null,2),'application/json','json'));
-  el('csv').addEventListener('click',()=>{
-    const columns=['hardware','id','batchPerDP','totalInFlight','tpotMs','itlMs','qpsPerCard','peakGiB','memoryBudgetGiB','memoryFeasible','meets30msLimit','calibrationApplied','calibrationTransferred','calibrationFactor','baselineTPOTms','baselineITLms','isCalibrationAnchor','extrapolated'];
-    const rows=data.series.flatMap(s=>s.rows.map(r=>columns.map(k=>r[k]??s[k]??'').join(',')));
-    download('\uFEFF'+[columns.join(','),...rows].join('\r\n')+'\r\n','text/csv;charset=utf-8','csv');
-  });
-  el('svg').addEventListener('click',()=>{
-    // Export the visible curves with the fixed case and model scope attached.
-    const chart=el('chart').cloneNode(true);chart.querySelector('#comparison-cursor')?.remove();
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 790" width="1040" height="790" font-family="Segoe UI,Microsoft YaHei,sans-serif"><rect width="1040" height="790" fill="#0b1b27"/>${text(24,32,'GLM-5.3-Flash · 850 / 850E · B28 ITL 校正 · QPS/卡','font-weight="700"')}${text(24,58,'128K / 1K · P 命中 95% · D 物理共享 95% · MTP5 · ITL/TPOT=3.5 · TP1 · 多流开启')}<g transform="translate(0 130)">${chart.innerHTML}</g>${data.series.filter((_,i)=>visible.has(i)).map((s,i)=>text(24+(i%3)*340,88+Math.floor(i/3)*24,`${s.hardware==='850'?'实线':'虚线'} ${name(s)}: ${s.summary.qpsPerCard.toFixed(3)} QPS/卡`, `style="fill:${colors[s.ranks]}"`)).join('')}${text(24,720,'80% 显存利用率 / 4 GiB 预留；淡线为超显存预算。B0 时延不定义。')}${text(24,746,'B28 EP8 ITL: 850 100 ms / 850E 62.4 ms；其余 batch 与 EP16/32 外推；TPOT=ITL/3.5。')}${text(24,772,hardwareNote)}</svg>`;
-    download(svg,'image/svg+xml;charset=utf-8','svg');
-  });
-  renderChart();inspect();
-})();
-</script>
+
+
 </body></html>
