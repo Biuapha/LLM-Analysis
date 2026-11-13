@@ -256,6 +256,21 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 @media(max-width:1399px){.qkv-case-layout{grid-template-columns:minmax(0,1fr)}}
 @media print{.qkv-case-layout{display:block}.qkv-compare-card{break-inside:avoid}}
 </style>
+
+<style id="glm53-model-facts-style">
+#operator-page{display:flex;flex-direction:column;gap:4px}
+#operator-page>svg{flex:1 1 0;min-height:0;width:100%;height:0}
+.model-facts{align-self:stretch;flex:0 0 auto;max-height:55%;min-height:0;overflow:auto;margin:4px 18px 0;border:1px solid #29475b;border-radius:9px;background:#0c1c29;color:#d7e9f4;font:12px/1.45 "Segoe UI","Microsoft YaHei",sans-serif}
+.model-facts-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:10px 16px;gap:14px}
+.model-facts-metrics>div{min-width:0;border-right:1px solid #29475b;padding-right:10px}.model-facts-metrics>div:last-child{border:0}
+.model-facts-metrics span,.model-facts-metrics em{display:block;color:#9fb5c4;font-style:normal}
+.model-facts-metrics strong{display:block;font-size:25px;line-height:1.35;color:#70e1db;font-variant-numeric:tabular-nums}.model-facts-metrics small{font-size:14px;color:#e5f0f7;font-weight:600}
+.model-facts-details{border-top:1px solid #29475b}.model-facts-details>summary{padding:7px 16px;cursor:pointer;color:#e5f0f7;font-weight:600}.model-facts-details>summary span{font-size:11px;color:#9fb5c4;font-weight:400;margin-left:12px}.model-facts-details>summary:focus-visible{outline:2px solid #36d8d2;outline-offset:-3px}
+.model-facts-content{padding:0 16px 12px}.model-facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:0}.model-facts-grid>div{display:grid;grid-template-columns:114px 1fr;padding:8px 0;border-top:1px solid #203b4c;gap:10px}.model-facts-grid dt{font-weight:600;color:#a9c5d6}.model-facts-grid dd{margin:0;overflow-wrap:anywhere}
+.model-facts-method{border-top:1px solid #355469;margin-top:8px;color:#a9c5d6;font-size:11px}.model-facts-method p{margin:8px 0 0}.model-facts-method a{color:#62d993}
+@media(max-width:850px){.model-facts{margin:3px 5px 0}.model-facts-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:8px 12px}.model-facts-metrics>div:nth-child(2){border:0}.model-facts-metrics strong{font-size:20px}.model-facts-grid{grid-template-columns:1fr}.model-facts-details>summary span{display:block;margin-left:0}}
+@media print{#operator-page{display:flex!important}.model-facts{max-height:none;overflow:visible}.model-facts-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
 </head><body>
 <main class="deck-shell"><nav class="deck-bar" aria-label="文档页签">
 <label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E decode · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E decode</button></div>
@@ -263,7 +278,22 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <div id="weight-controls" aria-label="显存计算器示例配置" hidden><button type="button" data-memory-preset="prefill">Prefill 示例</button><button type="button" data-memory-preset="decode">Decode 示例</button></div>
 <div id="pd-controls" aria-label="PD 仿真导出" hidden><button id="pd-export" type="button">导出仿真 JSON</button></div>
 <div id="operator-controls" aria-label="算子视图"><button type="button" data-opview="flow" aria-pressed="true">Tensor 数据流</button><button type="button" data-opview="overview" aria-pressed="false">执行总览</button></div>
-<div id="ds41-controls" hidden><div id="ds41-operator-controls"><button type="button" data-ds-view="flow" aria-pressed="true">Tensor 数据流</button><button type="button" data-ds-view="overview" aria-pressed="false">执行总览</button></div><div id="ds41-cache-controls" hidden><button type="button" data-ds-cache-phase="prefill">Prefill</button><button type="button" data-ds-cache-phase="decode">Decode</button></div><button id="ds41-reset-top" type="button" hidden>恢复默认</button><button id="ds41-export" type="button">导出 JSON</button></div></nav><div class="deck-stage"><section class="deck-slide" id="operator-page" role="tabpanel" aria-labelledby="operators-tab"><svg id="operator-diagram" viewBox="0 0 1600 960" role="img" aria-label="执行总览：共享模型主路径，点击 KDA、SFA 或 FFN 进入对应阶段的 Tensor 数据流">
+<div id="ds41-controls" hidden><div id="ds41-operator-controls"><button type="button" data-ds-view="flow" aria-pressed="true">Tensor 数据流</button><button type="button" data-ds-view="overview" aria-pressed="false">执行总览</button></div><div id="ds41-cache-controls" hidden><button type="button" data-ds-cache-phase="prefill">Prefill</button><button type="button" data-ds-cache-phase="decode">Decode</button></div><button id="ds41-reset-top" type="button" hidden>恢复默认</button><button id="ds41-export" type="button">导出 JSON</button></div></nav><div class="deck-stage"><section class="deck-slide" id="operator-page" role="tabpanel" aria-labelledby="operators-tab">
+<!-- GLM summary is inside its model-specific panel, shared by flow and overview. -->
+<aside class="model-facts" aria-label="GLM-5.3-Flash 模型参数与超参">
+<div class="model-facts-metrics">
+<div><span>文本主干总参数</span><strong>313.33<small> B</small></strong><em>含全部专家 · 不含 MTP / Vision</em></div>
+<div><span>每 token 激活参数 · 结构估算</span><strong>17.38<small> B</small></strong><em>Top-8 + 共享部分 · 口径见下方</em></div>
+<div><span>模型结构</span><strong>45<small> 层 · H 4096</small></strong><em>34 KDA + 11 SFA</em></div>
+<div><span>MoE / 上下文配置上限</span><strong>288<small> 专家 · Top-8</small></strong><em>+ 1 共享专家 / 层 · 1M tokens</em></div>
+</div>
+<details class="model-facts-details"><summary>模型超参与参数量口径 <span>Checkpoint 合计 322.59B（含 MTP / Vision） · 展开查看</span></summary>
+<div class="model-facts-content"><dl class="model-facts-grid"><div><dt>层数 / FFN</dt><dd>45 层：34 KDA + 11 SFA；前 3 层 Dense + 后 42 层 MoE</dd></div><div><dt>Hidden / 词表</dt><dd>H = 4,096；vocab = 154,880；Embedding 与 LM Head 不绑权重</dd></div><div><dt>MoE 路由</dt><dd>每层 288 个路由专家，Top-8/token + 1 个共享专家</dd></div><div><dt>FFN 中间维度</dt><dd>Dense = 12,288；每个 MoE 专家 = 2,048；激活 SiLU / SwiGLU</dd></div><div><dt>KDA</dt><dd>64 heads × 128；short-conv kernel = 4</dd></div><div><dt>SFA / MLA</dt><dd>64 heads；QK / V head dim = 256；Q LoRA = 1,536；KV LoRA = 512；RoPE dim = 0</dd></div><div><dt>稀疏 Indexer</dt><dd>32 heads × 128；Top-k = 2,048；KeyPool = 4</dd></div><div><dt>mHC</dt><dd>4 条 residual streams；Sinkhorn = 20 次</dd></div><div><dt>上下文长度</dt><dd>配置上限 1,048,576 tokens（1M）；第 5 页性能曲线使用 128K 输入</dd></div><div><dt>MTP</dt><dd>模型含 1 个预测层；第 5 页 MTP5 表示运行配置，不是 5 个不同权重层</dd></div><div><dt>当前权重精度</dt><dd>FFN：W8A8_DYNAMIC（INT8）；Attention / Embedding / Vision：BF16</dd></div><div><dt>视觉模块</dt><dd>24 层；H = 1,024；16 heads；FFN = 4,096；patch = 14；输出 H = 4,096</dd></div></dl>
+<div class="model-facts-method"><p><b>参数拆分：</b>文本主干 313.33B + MTP 8.70B + Vision 0.56B = checkpoint 逻辑模型张量合计 322.59B。MTP 包含单独存储的 Embedding / Head；合计按 checkpoint 条目统计，不代表运行时共享权重去重后的常驻量。</p>
+<p><b>激活量口径：</b>非路由专家部分 8.921B + 路由专家 304.406B × 8/288 ≈ 17.38B。包含完整 Embedding / LM Head、共享专家、Attention、Router、Norm / mHC 等；这是架构统计，不能直接当成单 token 实际读取的权重数或 FLOPs。</p>
+<p><b>来源与单位：</b>依据本页 W8A8 checkpoint 的 113,353 个 tensor header 与 config 核算；B = 10⁹ 个元素。排除量化 scale / offset 和旋转矩阵；量化改变字节数，不改变矩阵参数量。<a href="data/glm53-model-summary.json" target="_blank" rel="noopener">查看精确计数、配置与来源哈希 ↗</a></p></div></div>
+</details></aside>
+<svg id="operator-diagram" viewBox="0 0 1600 960" role="img" aria-label="执行总览：共享模型主路径，点击 KDA、SFA 或 FFN 进入对应阶段的 Tensor 数据流">
 <defs><marker id="ev-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#648ba5"/></marker><marker id="ev-residual-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#c39a6c"/></marker></defs>
 <text class="ev-title" x="24" y="38">GLM-5.3-Flash · 执行总览</text>
 <text class="ev-subtitle" x="24" y="68">模型主路径与阶段差异 · 点击模块，进入前面的 Tensor 数据流查看算子、shape 和公式</text>
