@@ -1,0 +1,19 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>曲线实际权重 · MXFP8 计算依据</title><style>
+body{max-width:1080px;margin:28px auto;padding:0 20px;background:#07111b;color:#c6dae6;font:15px/1.7 "Segoe UI","Microsoft YaHei",sans-serif}h1{font-size:25px;color:#edf6fb}h2{font-size:19px;color:#53e1d7}a{color:#62d993}table{border-collapse:collapse;width:100%}td,th{border:1px solid #355469;padding:10px;text-align:left}th{background:#102634}code{overflow-wrap:anywhere;color:#ffe0a0}.note{padding:12px 16px;background:#102230;border-left:3px solid #36bfb6}.table{overflow-x:auto}
+</style><p><a href="../glm53_prefill_decode_operator_block_diagram.html#weights">返回显存计算器</a></p><h1>三组曲线同源权重 · MXFP8-0918</h1>
+<p>使用 <code>GLM-5.3-Flash-W8A8-MXFP8-0918</code> 的实际 safetensors header 重算。原始 checkpoint 共 76,108 个 tensor，包含视觉的文件载荷为 338,074,909,560 B；不是 NPU 实测驻留。</p>
+<p class="note">网页计算完整 45 个主模型层 + 1 个 MTP 层。曲线实验使用 L4 / L7 / L45 → L0 / L1 / L2 的缩层模型。按同样规则生成的 config 与量化描述 SHA256，和当时曲线运行记录完全一致；缩层载荷 25,695,681,840 B、5,284 个 tensor 也吻合。不要把缩层模型加载显存直接当成完整模型显存。</p>
+<h2>精度与字节数</h2><div class="table"><table><thead><tr><th>模块</th><th>实际权重口径</th></tr></thead><tbody>
+<tr><td>SFA</td><td>q_a / kv_a / q_b / o_proj：MXFP8。kv_b 与 Norm：BF16。</td></tr>
+<tr><td>Dense / Shared / Routed FFN</td><td>MXFP8，矩阵 F8_E4M3，block32 scale 以 U8 存储、运行时解释为 E8M0。</td></tr>
+<tr><td>KDA</td><td>投影 BF16；conv 运行时 FP32，A_log / dt_bias 已为 FP32。</td></tr>
+<tr><td>Indexer</td><td>投影 BF16；APE 转 FP32。backend 保留原参数并创建 weights_proj / k_norm 的 FP32 副本，勾选转换时额外计入。</td></tr>
+<tr><td>Norm / HC</td><td>Norm BF16；HC base / scale 原已 FP32，HC fn 按运行时 FP32 计入。</td></tr>
+<tr><td>MTP</td><td>SFA 主投影和 FFN 为 MXFP8；其余按实际精度。只计一个物理层，不按 draft tokens 乘 5。</td></tr>
+</tbody></table></div>
+<p>矩阵形状为 <code>[N,K]</code> 时，权重载荷为 <code>N × K B + N × (K / 32) B</code>。本 checkpoint 的相关 K 均整除 32。第二项是 block scale；不能套用 INT8 的逐输出通道 FP32 scale / offset 公式。</p>
+<h2>TP、EP 与共享权重</h2><p>EP 开启时，一个 rank 持有分配到的完整专家，不再除 TP；EP 关闭时专家按 DP×TP 切中间维。MXFP8 的 down projection scale 同样随 K 维切分。Dense / Shared MLP 按所选 SP 复制或 TP 切分。非整除 EP 使用最多专家的 rank 做容量规划，并显示最小 rank 的权重。</p>
+<p>该 checkpoint 没有独立的 MTP Embedding / LM Head；运行时 MTP 共享目标模型的 Embedding，且 <code>has_own_lm_head=False</code> 使用目标 LM Head。全局只计一份 Embedding 和一份 LM Head；这两者本身仍是独立权重。q=0 关闭 MTP 时，这两份全局权重仍需保留。</p>
+<h2>计算边界</h2><p>默认关闭视觉，与曲线的 <code>--language-model-only</code> 一致。DP / TP / EP、显存容量和预留仍可自行设置；曲线实际是 DP8 / TP1 / EP8。已知 FP32 转换和常驻副本可勾选计入，NZ 打包、scale 成对 padding、vocab padding、临时缓冲、激活和 workspace 仍由预留覆盖。4 GiB 是可调整的预算，不是此次实测值。</p>
+<p class="note">本次对齐的是权重。第三页的 KV 分配继续使用原 BF16 / FP32 预算布局；曲线实际使用 FP8 KV / Indexer，因此该 KV 结果不是曲线运行的实测值。第四页性能仿真保留独立的历史校准口径。</p>
+<p><a href="glm53-curve-weight-memory.json">系数、来源 SHA256 与核验结果</a> · <a href="glm53-curve-checkpoint-headers.json.gz">原始 header 汇总（gzip，约 22 KB）</a></p>

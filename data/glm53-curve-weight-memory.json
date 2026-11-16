@@ -1,0 +1,531 @@
+{
+  "authority": "actual_curve_checkpoint_headers_and_captured_runtime_source",
+  "model": "GLM-5.3-Flash-W8A8-MXFP8-0918 / full 45 main layers + one MTP layer",
+  "coefficients": [
+    {
+      "id": "global",
+      "title": "Embedding / LM Head",
+      "bytes": {
+        "rep": 8192,
+        "tp": 2537553920,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 3,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "BF16": 2537562112
+        }
+      }
+    },
+    {
+      "id": "kda",
+      "title": "KDA Attention ×34",
+      "bytes": {
+        "rep": 71311872,
+        "tp": 9295045120,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 6684672,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 510,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F32": 1122816,
+          "BF16": 9365234176
+        }
+      }
+    },
+    {
+      "id": "sfa",
+      "title": "SFA Attention ×11",
+      "bytes": {
+        "rep": 95203328,
+        "tp": 1415839744,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 121,
+      "quantization": {
+        "declarations": [
+          "FLOAT",
+          "W8A8_MXFP8"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F8_E4M3": 1107296256,
+          "U8": 34603008,
+          "BF16": 369143808
+        }
+      }
+    },
+    {
+      "id": "indexer",
+      "title": "SFA Indexer ×11",
+      "bytes": {
+        "rep": 164381184,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 5789696,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 77,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "BF16": 164381184
+        }
+      }
+    },
+    {
+      "id": "dense",
+      "title": "Dense MLP ×3",
+      "bytes": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 467140608,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 18,
+      "quantization": {
+        "declarations": [
+          "W8A8_MXFP8"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F8_E4M3": 452984832,
+          "U8": 14155776
+        }
+      }
+    },
+    {
+      "id": "shared",
+      "title": "Shared Expert ×42",
+      "bytes": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 1089994752,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 252,
+      "quantization": {
+        "declarations": [
+          "W8A8_MXFP8"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F8_E4M3": 1056964608,
+          "U8": 33030144
+        }
+      }
+    },
+    {
+      "id": "router",
+      "title": "MoE Router ×42",
+      "bytes": {
+        "rep": 99138816,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 84,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F32": 48384,
+          "BF16": 99090432
+        }
+      }
+    },
+    {
+      "id": "norm",
+      "title": "Norm / HC",
+      "bytes": {
+        "rep": 71525880,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 70778880,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 360,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F32": 9720,
+          "BF16": 71516160
+        }
+      }
+    },
+    {
+      "id": "routed",
+      "title": "Routed Experts ×42",
+      "bytes": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 1089994752,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 72576,
+      "quantization": {
+        "declarations": [
+          "W8A8_MXFP8"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F8_E4M3": 304405807104,
+          "U8": 9512681472
+        }
+      }
+    },
+    {
+      "id": "mtp",
+      "title": "MTP L45（1 个物理层）",
+      "bytes": {
+        "rep": 93108864,
+        "tp": 128712704,
+        "mlp": 25952256,
+        "expert_split": 25952256,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 526336,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 1760,
+      "quantization": {
+        "declarations": [
+          "FLOAT",
+          "W8A8_MXFP8"
+        ],
+        "checkpoint_dtype_bytes": {
+          "F8_E4M3": 7373586432,
+          "U8": 230424576,
+          "F32": 1152,
+          "BF16": 118011392
+        }
+      }
+    },
+    {
+      "id": "vision",
+      "title": "Vision Encoder",
+      "bytes": {
+        "rep": 36194304,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 1091059712
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 347,
+      "quantization": {
+        "declarations": [
+          "FLOAT"
+        ],
+        "checkpoint_dtype_bytes": {
+          "BF16": 1127254016
+        }
+      }
+    },
+    {
+      "id": "other",
+      "title": "其他 checkpoint 参数",
+      "bytes": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "fp32_extra": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "sfa_w8a8_delta": {
+        "rep": 0,
+        "tp": 0,
+        "mlp": 0,
+        "expert_split": 0,
+        "expert_rep": 0,
+        "vision_tp": 0
+      },
+      "count": 0,
+      "quantization": {
+        "declarations": [],
+        "checkpoint_dtype_bytes": {}
+      }
+    }
+  ],
+  "expert_count": 288,
+  "vision_heads": 16,
+  "model_config": {
+    "kv_lora_rank": 512,
+    "qk_rope_head_dim": 0,
+    "index_head_dim": 128,
+    "index_kpool": 4,
+    "linear_num_heads": 64,
+    "linear_head_dim": 128,
+    "linear_conv_kernel_dim": 4
+  },
+  "quantization": {
+    "matrix": "F8_E4M3 / runtime FLOAT8_E4M3FN",
+    "scale": "U8 storage / E8M0 runtime; [N,K/32], 1 byte/block",
+    "offset": "none",
+    "SFA": "q_a, kv_a, q_b, o_proj MXFP8; kv_b BF16",
+    "indexer": "BF16; weights_proj and k_norm retain separate FP32 runtime copies",
+    "KDA": "BF16 projections; FP32 conv, A_log, dt_bias",
+    "FFN": "MXFP8 dense, shared and routed experts"
+  },
+  "sharing": {
+    "mtp_embedding": "aliases target embedding",
+    "mtp_head": "checkpoint contains no own head; runtime has_own_lm_head=False selects target head",
+    "count": "one main embedding and one main LM head; distinct from each other; no additional MTP embedding/head"
+  },
+  "source": {
+    "checkpoint": "GLM-5.3-Flash-W8A8-MXFP8-0918",
+    "headers": "glm53-curve-checkpoint-headers.json.gz",
+    "headers_sha256": "10c825a3e3581981acbbe1420b3672c5296f4dc1cbbf13b89abdbc43dcbd1f22",
+    "full_checkpoint_payload_bytes": 338074909560,
+    "tensor_count": 76108,
+    "checkpoint_source_sha256": {
+      "config.json": "1131b99ef7cd672666b56992b9921d709d4f3f6f9b777cefb7444499f17db37a",
+      "quant_model_description.json": "a3f880fa69af0373bc54e0d99cb31cda5060718f7e194ba8b7b1280dc6a08515",
+      "quant_model_weights.safetensors.index.json": "0f070ffa17d0f8c05dabecc99166bbf576d905d9fe755e38a2a87bfbc11aa115"
+    },
+    "reduced_run_metadata_sha256": {
+      "config.json": "2367838f90a1bc1dd625cfce3c34f1f9c36505151fc04146bffbc692e620729d",
+      "quant_model_description.json": "ac40eb93a080863686fd06fb9c195c8449081b46ff5c185edbd580f954c317eb"
+    },
+    "reduced_run_payload_bytes": 25695681840,
+    "reduced_run_tensor_count": 5284,
+    "reduction_mapping": {
+      "4": 0,
+      "7": 1,
+      "45": 2
+    },
+    "runtime_source_sha256": {
+      "work/mfu-model/glm5next/mtp.py": "c50d10ab7add8de934e5451fb73bdb48c34b6af4c295d94f07b8639af6e65030",
+      "work/mfu-model/glm5next/model.py": "b419ccb456101b3c69aba75913113a214e70d5ec733935e129d13ebd39c05d08",
+      "work/mfu-model/glm5next/kda.py": "871e5b0bebe354cb17eefcb794e63c58b7f523a3c7078b3ec7d36885739eef28",
+      "work/mfu-model/glm5next/attention.py": "3cbd612bd34f0ce8c8fafc9394bcab1edf881a32787606c4133c595daf52c00d",
+      "work/mfu-runtime/vllm_ascend/attention/indexer_kpool.py": "20e308ee6a4f5adaea545433dc92ee2c4ebd1679e00b8f40d299c743764f1906",
+      "work/mfu-sources/container/quantization/methods/w8a8/w8a8_mxfp8.py": "ac1ff38c2507910a454d6e56678e7655093204f8c51dc7c6800f37071d47a5f2"
+    }
+  },
+  "assumptions": [
+    "Full-model payload estimate, not the 2-main-layer benchmark allocation.",
+    "EP on: full experts distributed across ranks; EP off: expert TP = DP*TP*PCP.",
+    "SP on: dense/shared MLP replicated; SP off: matrices and block scales sharded along the same TP axis.",
+    "MTP q>0 enables ONE physical layer; shared embedding/head counted once globally.",
+    "Known FP32 casts and retained indexer copies are optional. NZ packing, scale-pair padding, vocab padding, temporary buffers and other runtime allocations remain in the user-supplied reserve.",
+    "Page 3 cache budget retains its BF16/FP32 planning geometry; curve runs use FP8 KV/indexer. This update aligns weights, not a measurement of live cache usage.",
+    "Page 4 retains its separately calibrated historical weight profile."
+  ],
+  "validation": {
+    "full_checkpoint_bytes_reconcile": true,
+    "reduced_payload_and_count_match": true,
+    "reduced_config_and_quantization_hashes_match": true,
+    "mxfp8_scale_shapes_match_block32": true,
+    "mtp_own_embedding_and_head_absent": true
+  }
+}
