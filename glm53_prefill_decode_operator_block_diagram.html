@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode / prompt链接</title><style>
+<title>GLM-5.3-Flash · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode / TileLang 算子流水 / prompt链接</title><style>
 :root{--bg:#07111b;--panel:#0c1a26;--stroke:#29445a;--text:#edf6fb;--muted:#8ea7b9;--cyan:#36d8d2;--blue:#58aaff;--violet:#a77bff;--amber:#ffc066;--pink:#ff73aa;--green:#62d993}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif}body{display:grid;place-items:center;background:radial-gradient(circle at 12% 0,#12344a 0,transparent 30%),radial-gradient(circle at 90% 0,#251c4d 0,transparent 27%),var(--bg)}
 .page{width:min(100vw,170.21vh);height:min(100vh,58.75vw);padding:8px}svg{width:100%;height:100%;display:block;filter:drop-shadow(0 18px 48px rgba(0,0,0,.24))}
@@ -309,7 +309,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 </style>
 </head><body>
 <main class="deck-shell"><nav class="deck-bar" aria-label="文档页签">
-<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E decode · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E decode</button><button id="prompt-links-tab" type="button" role="tab" aria-controls="prompt-links-page" aria-selected="false" data-page="prompt-links">6 · prompt链接</button></div>
+<label class="model-choice">模型<select id="simulation-model" aria-label="模型选择"><option value="glm53">GLM-5.3-Flash</option><option value="deepseek-v4.1-flash">DeepSeek-V4.1-Flash</option></select></label><div class="deck-tabs" role="tablist" aria-label="页面"><button id="operators-tab" type="button" role="tab" aria-controls="operator-page" aria-selected="true" data-page="operators">1 · 算子框图</button><button id="cache-tab" type="button" role="tab" aria-controls="cache-page" aria-selected="false" data-page="cache">2 · KV cache 分组</button><button id="weights-tab" type="button" role="tab" aria-controls="weight-page" aria-selected="false" data-page="weights">3 · 显存计算器</button><button id="pd-tab" type="button" role="tab" aria-controls="pd-page" aria-selected="false" data-page="performance">4 · 纯 P / 纯 D 仿真</button><button id="mtp5-curves-tab" type="button" role="tab" aria-controls="mtp5-curves-page" aria-selected="false" data-page="mtp5-curves" title="850 vs 850E decode · Top 10 / Top 16 算子与满层总 ITL">5 · 850 vs 850E decode</button><button id="tilelang-tab" type="button" role="tab" aria-controls="tilelang-page" aria-selected="false" data-page="tilelang">6 · TileLang 算子流水</button><button id="prompt-links-tab" type="button" role="tab" aria-controls="prompt-links-page" aria-selected="false" data-page="prompt-links">7 · prompt链接</button></div>
 <div class="phase-switch" id="phase-switch" aria-label="KV cache 配置" hidden><select id="cache-profile" aria-label="缓存配置"><option value="replay850E">Replay SSM · 850E</option><option value="replay850">Replay SSM · 850</option><option value="prefill">历史 BF16 · Prefill TP8</option><option value="decode">历史 BF16 · Decode TP1</option></select></div>
 <div id="weight-controls" aria-label="显存计算器示例配置" hidden><button type="button" data-memory-preset="prefill">Prefill 示例</button><button type="button" data-memory-preset="decode">Decode 示例</button></div>
 <div id="pd-controls" aria-label="PD 仿真导出" hidden><button id="pd-export" type="button">导出仿真 JSON</button></div>
@@ -559,6 +559,9 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden}body{display:block;bac
 <!-- mtp5-curves-page:end -->
 
 
+<section class="deck-slide" id="tilelang-page" role="tabpanel" aria-labelledby="tilelang-tab" hidden>
+ <iframe title="850E Batch 10 · TileLang KDA 算子内部流水与逐框源码" loading="lazy" src="assets/glm53-tilelang-kda-timeline.html" style="width:100%;height:100%;min-height:0;border:0;background:white"></iframe>
+</section>
 <!-- prompt-links-page:start -->
 <section class="deck-slide" id="prompt-links-page" role="tabpanel" aria-labelledby="prompt-links-tab" tabindex="0" hidden>
  <div class="prompt-index">
@@ -844,13 +847,14 @@ if(isRuntime){document.getElementById('kv-source').setAttribute('href','runtime/
 else{const source=cacheData.source_path,ref=cacheData.source_ref,line=cacheData.source_lines.get_glm5_next_kv_cache_config;document.getElementById('kv-source').setAttribute('href',`https://github.com/vllm-project/vllm-ascend/blob/${ref}/${source}#L${line}`);}
 function showPage(id,updateHash=true){
  if(id==='comparison'){id='mtp5-curves';updateHash=true;}
- if(!['operators','cache','weights','performance','mtp5-curves','prompt-links'].includes(id))id='operators';
+ if(!['operators','cache','weights','performance','mtp5-curves','tilelang','prompt-links'].includes(id))id='operators';
  document.getElementById('operator-page').hidden=id!=='operators';document.getElementById('cache-page').hidden=id!=='cache';document.getElementById('weight-page').hidden=id!=='weights';document.getElementById('phase-switch').hidden=id!=='cache';
  document.getElementById('weight-controls').hidden=id!=='weights';
  document.getElementById('pd-page').hidden=id!=='performance';document.getElementById('pd-controls').hidden=id!=='performance';
  document.getElementById('operator-controls').hidden=id!=='operators';
 
  document.getElementById('mtp5-curves-page').hidden=id!=='mtp5-curves';
+ document.getElementById('tilelang-page').hidden=id!=='tilelang';
  document.getElementById('prompt-links-page').hidden=id!=='prompt-links';
  document.querySelectorAll('[data-page]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.page===id)));
  if(updateHash)history.replaceState(null,'','#'+id);
@@ -2854,20 +2858,21 @@ DS41.init();
 let selectedModel='glm53',ds41Initialized=false;
 window.dsModelPage=function(page){
  const selected=selectedModel==='deepseek-v4.1-flash';
- if(selected&&['comparison','mtp5-curves'].includes(page)){showPage('performance');return;}
+ if(selected&&['comparison','mtp5-curves','tilelang'].includes(page)){showPage('performance');return;}
  document.getElementById('ds41-root').hidden=!selected||page==='prompt-links';
  for(const key of ['operators','cache','weights','performance'])document.getElementById('ds41-page-'+key).hidden=!selected||key!==page;
  if(selected)for(const id of ['operator-page','cache-page','weight-page','pd-page','phase-switch','weight-controls','pd-controls','operator-controls'])document.getElementById(id).hidden=true;
 
  document.getElementById('mtp5-curves-tab').disabled=selected;
+ document.getElementById('tilelang-tab').disabled=selected;
  document.getElementById('ds41-controls').hidden=!selected||page==='prompt-links';document.getElementById('ds41-operator-controls').hidden=page!=='operators';document.getElementById('ds41-cache-controls').hidden=page!=='cache';document.getElementById('ds41-reset-top').hidden=!['weights','performance'].includes(page);
  for(const [key,id] of Object.entries({operators:'operators',cache:'cache',weights:'weights',performance:'pd'}))document.getElementById(id+'-tab').setAttribute('aria-controls',selected?'ds41-page-'+key:({operators:'operator-page',cache:'cache-page',weights:'weight-page',performance:'pd-page'})[key]);
 };
 function switchSimulationModel(value,updateURL=true){
  selectedModel=value==='deepseek-v4.1-flash'?value:'glm53';document.getElementById('simulation-model').value=selectedModel;
  if(updateURL){const url=new URL(location.href);if(selectedModel==='glm53')url.searchParams.delete('model');else url.searchParams.set('model',selectedModel);history.replaceState(null,'',url);}
- document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode / prompt链接';
-  const requestedPage=location.hash.slice(1)||'operators',page=selectedModel!=='glm53'&&['comparison','mtp5-curves'].includes(requestedPage)?'performance':requestedPage;
+ document.title=(selectedModel==='glm53'?'GLM-5.3-Flash':'DeepSeek-V4.1-Flash')+' · 算子 / KV cache / 显存 / PD 仿真 / 850 vs 850E decode / TileLang 算子流水 / prompt链接';
+  const requestedPage=location.hash.slice(1)||'operators',page=selectedModel!=='glm53'&&['comparison','mtp5-curves','tilelang'].includes(requestedPage)?'performance':requestedPage;
   showPage(page,page!==requestedPage);
  if(selectedModel!=='glm53'&&!ds41Initialized){ds41Initialized=true;DS41.render();}
 }
